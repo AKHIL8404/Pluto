@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgroMart — Complete Development Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0D1117;--surface:#161B22;--surface2:#21262D;
+  --border:#30363D;--border2:#444C56;
+  --green:#3FB950;--green-dim:#238636;--green-glow:rgba(63,185,80,0.15);
+  --blue:#58A6FF;--amber:#E3B341;--red:#F85149;--purple:#BC8CFF;
+  --text:#E6EDF3;--text-mid:#8B949E;--text-dim:#6E7681;
+  --gold:#D4A853;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Merriweather',Georgia,serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15px}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--green-dim);border-radius:3px}
+
+/* SIDEBAR */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:280px;
+  background:var(--surface);border-right:1px solid var(--border);
+  overflow-y:auto;z-index:100;
+}
+.sidebar-top{
+  padding:24px 20px;border-bottom:1px solid var(--border);
+  background:linear-gradient(135deg,var(--green-dim),#0A3D1A);
+}
+.sidebar-top h1{
+  font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:800;
+  color:var(--text);letter-spacing:-0.5px;
+}
+.sidebar-top .sub{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--green);margin-top:4px;letter-spacing:1px;text-transform:uppercase}
+.nav-section-title{
+  font-family:'JetBrains Mono',monospace;font-size:0.6rem;
+  text-transform:uppercase;letter-spacing:2px;color:var(--text-dim);
+  padding:16px 20px 6px;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 20px;color:var(--text-mid);font-family:'Syne',sans-serif;
+  font-size:0.78rem;font-weight:600;cursor:pointer;
+  border-left:2px solid transparent;transition:all 0.15s;
+  text-decoration:none;
+}
+.nav-item:hover,.nav-item.active{
+  color:var(--green);border-left-color:var(--green);
+  background:var(--green-glow);
+}
+
+/* MAIN */
+.main{margin-left:280px;min-height:100vh}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#0A2E14 0%,#0D1117 60%);
+  padding:72px 60px 56px;border-bottom:1px solid var(--border);
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'🌾';position:absolute;right:60px;top:40px;
+  font-size:10rem;opacity:0.06;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--green-glow);border:1px solid var(--green-dim);
+  color:var(--green);padding:6px 14px;border-radius:50px;
+  font-family:'JetBrains Mono',monospace;font-size:0.65rem;
+  letter-spacing:1px;text-transform:uppercase;margin-bottom:20px;
+}
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:800;color:var(--text);line-height:1.1;margin-bottom:16px;
+}
+.hero h1 span{color:var(--green)}
+.hero p{color:var(--text-mid);max-width:640px;font-size:1rem;margin-bottom:32px;font-family:'Syne',sans-serif;font-weight:400}
+.tech-pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{
+  font-family:'JetBrains Mono',monospace;font-size:0.72rem;
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--text-mid);padding:5px 12px;border-radius:50px;
+}
+.pill.green{background:var(--green-glow);border-color:var(--green-dim);color:var(--green)}
+.pill.blue{background:rgba(88,166,255,0.1);border-color:rgba(88,166,255,0.3);color:var(--blue)}
+
+/* SECTIONS */
+.section{padding:56px 60px;border-bottom:1px solid var(--border)}
+.section:nth-child(even){background:rgba(255,255,255,0.01)}
+.section-id{
+  font-family:'JetBrains Mono',monospace;font-size:0.65rem;
+  color:var(--green);letter-spacing:2px;text-transform:uppercase;
+  background:var(--green-glow);border:1px solid var(--green-dim);
+  padding:4px 12px;border-radius:50px;display:inline-block;margin-bottom:16px;
+}
+.section h2{
+  font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:800;
+  color:var(--text);letter-spacing:-0.5px;margin-bottom:8px;
+}
+.section > p{color:var(--text-mid);margin-bottom:24px;font-size:0.92rem}
+.section h3{
+  font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;
+  color:var(--blue);margin:32px 0 14px;
+  padding-left:14px;border-left:3px solid var(--green-dim);
+}
+.section h4{
+  font-family:'Syne',sans-serif;font-size:0.95rem;font-weight:700;
+  color:var(--amber);margin:20px 0 8px;
+}
+.section p{color:var(--text-mid);margin-bottom:14px;font-size:0.9rem}
+ul,ol{padding-left:22px;margin-bottom:16px}
+li{color:var(--text-mid);margin-bottom:6px;font-size:0.88rem}
+li strong{color:var(--text)}
+
+/* CODE */
+.code-block{
+  background:var(--surface);border:1px solid var(--border);
+  border-left:3px solid var(--green);border-radius:8px;
+  margin:20px 0;overflow:hidden;
+}
+.code-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 16px;background:var(--surface2);border-bottom:1px solid var(--border);
+}
+.code-lang{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--green);text-transform:uppercase;letter-spacing:1px}
+.code-file{font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--amber)}
+pre{
+  padding:20px;overflow-x:auto;
+  font-family:'JetBrains Mono',monospace;font-size:0.77rem;
+  line-height:1.65;color:#A9D3AA;
+}
+.kw{color:#79C0FF} .str{color:#A5D6FF} .cm{color:#4B5263;font-style:italic}
+.ann{color:#E3B341} .type{color:#79C0FF} .num{color:#F2CC60} .fn{color:#D2A8FF}
+.xml-tag{color:#7EE787} .xml-attr{color:#79C0FF}
+
+/* STEP CARDS */
+.steps{counter-reset:step;display:flex;flex-direction:column;gap:16px;margin:20px 0}
+.step-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:20px 20px 20px 64px;
+  position:relative;
+}
+.step-card::before{
+  counter-increment:step;content:counter(step);
+  position:absolute;left:16px;top:20px;
+  width:32px;height:32px;background:var(--green-dim);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:0.85rem;
+  color:white;
+}
+.step-card h4{font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin-bottom:6px}
+.step-card p{color:var(--text-mid);font-size:0.85rem;margin:0}
+
+/* CALLOUTS */
+.callout{padding:14px 18px;border-radius:8px;margin:16px 0;border-left:3px solid;font-size:0.85rem}
+.callout.tip{background:rgba(63,185,80,0.08);border-color:var(--green);color:#7EE787}
+.callout.warn{background:rgba(227,179,65,0.08);border-color:var(--amber);color:var(--amber)}
+.callout.info{background:rgba(88,166,255,0.08);border-color:var(--blue);color:var(--blue)}
+.callout.cred{background:rgba(248,81,73,0.08);border-color:var(--red);color:#FF7B72}
+.callout strong{font-family:'Syne',sans-serif}
+
+/* TABLES */
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.83rem}
+th{background:var(--surface2);color:var(--text-mid);font-family:'Syne',sans-serif;font-weight:700;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);font-size:0.78rem;text-transform:uppercase;letter-spacing:0.5px}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-mid)}
+tr:last-child td{border-bottom:none}
+td code{font-family:'JetBrains Mono',monospace;font-size:0.78rem;background:var(--surface2);color:var(--green);padding:2px 6px;border-radius:4px}
+
+/* INLINE CODE */
+p code,li code{font-family:'JetBrains Mono',monospace;font-size:0.8rem;background:var(--surface2);color:var(--amber);padding:1px 6px;border-radius:4px;border:1px solid var(--border)}
+
+/* GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:16px 0}
+.info-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.info-card h4{font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.info-card p{font-size:0.83rem;color:var(--text-mid);margin:0}
+
+/* API ENDPOINT */
+.endpoint{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 16px;background:var(--surface);
+  border:1px solid var(--border);border-radius:8px;
+  margin:6px 0;font-family:'JetBrains Mono',monospace;font-size:0.78rem;
+}
+.method{padding:3px 10px;border-radius:4px;font-weight:700;font-size:0.68rem;letter-spacing:1px;min-width:56px;text-align:center}
+.get{background:rgba(63,185,80,0.15);color:var(--green);border:1px solid var(--green-dim)}
+.post{background:rgba(88,166,255,0.15);color:var(--blue);border:1px solid rgba(88,166,255,0.3)}
+.put{background:rgba(227,179,65,0.15);color:var(--amber);border:1px solid rgba(227,179,65,0.3)}
+.del{background:rgba(248,81,73,0.15);color:var(--red);border:1px solid rgba(248,81,73,0.3)}
+.ep-path{color:var(--text);flex:1}
+.ep-note{color:var(--text-dim);font-size:0.7rem}
+
+/* DEPLOY BOX */
+.deploy-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:24px;margin:16px 0;
+}
+.deploy-box h4{font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:8px;font-size:1rem}
+.deploy-step{
+  display:flex;gap:14px;padding:10px 0;
+  border-bottom:1px solid var(--border);
+}
+.deploy-step:last-child{border-bottom:none}
+.deploy-num{
+  width:24px;height:24px;background:var(--green-dim);border-radius:50%;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:0.75rem;color:white;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;
+}
+.deploy-step-content h5{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;color:var(--text);margin-bottom:4px}
+.deploy-step-content p{font-size:0.8rem;color:var(--text-mid);margin:0}
+.deploy-step-content code{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--green);background:var(--surface2);padding:2px 6px;border-radius:4px;display:inline-block;margin-top:4px}
+
+/* CHECKLIST */
+.checklist{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin:16px 0}
+.checklist h4{font-family:'Syne',sans-serif;font-weight:700;color:var(--text);margin-bottom:14px}
+.check-item{display:flex;align-items:flex-start;gap:10px;padding:6px 0;font-size:0.85rem;color:var(--text-mid)}
+.check-item .chk{color:var(--green);font-size:1rem;flex-shrink:0;margin-top:1px}
+.check-item .todo{color:var(--amber)}
+
+@media(max-width:900px){.sidebar{display:none}.main{margin-left:0}.hero,.section{padding:40px 24px}.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-top">
+    <h1>🌾 AgroMart</h1>
+    <div class="sub">Complete Dev Guide</div>
+  </div>
+  <div class="nav-section-title">Getting Started</div>
+  <a class="nav-item" href="#s1">01 · Project Overview</a>
+  <a class="nav-item" href="#s2">02 · System Architecture</a>
+  <a class="nav-item" href="#s3">03 · Database Design</a>
+  <div class="nav-section-title">Backend</div>
+  <a class="nav-item" href="#s4">04 · Spring Boot Setup</a>
+  <a class="nav-item" href="#s5">05 · Entities (Full Code)</a>
+  <a class="nav-item" href="#s6">06 · Repositories</a>
+  <a class="nav-item" href="#s7">07 · Services</a>
+  <a class="nav-item" href="#s8">08 · Controllers</a>
+  <a class="nav-item" href="#s9">09 · JWT Auth</a>
+  <div class="nav-section-title">Frontend</div>
+  <a class="nav-item" href="#s10">10 · Angular Setup</a>
+  <a class="nav-item" href="#s11">11 · Services & Guards</a>
+  <a class="nav-item" href="#s12">12 · Components</a>
+  <div class="nav-section-title">Integrations</div>
+  <a class="nav-item" href="#s13">13 · Paytm Payment</a>
+  <a class="nav-item" href="#s14">14 · Demo Seed Data</a>
+  <a class="nav-item" href="#s15">15 · API Reference</a>
+  <div class="nav-section-title">Production</div>
+  <a class="nav-item" href="#s16">16 · Testing</a>
+  <a class="nav-item" href="#s17">17 · Deployment</a>
+  <a class="nav-item" href="#s18">18 · Credentials Setup</a>
+  <a class="nav-item" href="#s19">19 · Advanced Features</a>
+</nav>
+
+<main class="main">
+
+<div class="hero">
+  <div class="hero-badge">✦ Production-Ready Guide — Every Import Included</div>
+  <h1>AgroMart: <span>Complete</span><br>Development Guide</h1>
+  <p>Full-stack agricultural e-commerce app. Spring Boot + Angular + MySQL + Paytm. Zero gaps — every import, every config, every credential step explained.</p>
+  <div class="tech-pills">
+    <span class="pill green">☕ Spring Boot 3.2</span>
+    <span class="pill green">🅰️ Angular 17</span>
+    <span class="pill green">🐬 MySQL 8</span>
+    <span class="pill blue">🔐 JWT Auth</span>
+    <span class="pill blue">💳 Paytm PG</span>
+    <span class="pill">☁️ AWS EC2</span>
+    <span class="pill">🐳 Docker</span>
+  </div>
+</div>
+
+<!-- S1: OVERVIEW -->
+<section class="section" id="s1">
+  <div class="section-id">Section 01</div>
+  <h2>Project Overview & Roles</h2>
+  <p>AgroMart is a B2C marketplace connecting farmers directly with customers, removing intermediaries. Three distinct user types with different permissions.</p>
+  <div class="two-col">
+    <div class="info-card"><h4>🧑‍🌾 Farmer</h4><p>Register → Get verified by Admin → List products (photos, price, qty) → Receive orders → Get paid via Paytm UPI directly</p></div>
+    <div class="info-card"><h4>🛒 Customer</h4><p>Browse products → Search/filter by category/state/price → Add to cart → Checkout → Pay via Paytm → Track order</p></div>
+    <div class="info-card"><h4>⚙️ Admin</h4><p>Approve/reject farmers → Manage categories → View all orders & payments → Analytics dashboard → Moderate listings</p></div>
+    <div class="info-card"><h4>🎯 Core Goals</h4><p>Fair pricing for farmers. Fresh produce for customers. Transparent transactions. India-first UPI payment. Mobile-friendly UI.</p></div>
+  </div>
+</section>
+
+<!-- S2: ARCHITECTURE -->
+<section class="section" id="s2">
+  <div class="section-id">Section 02</div>
+  <h2>System Architecture</h2>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Architecture Diagram</span></div>
+    <pre>
+┌──────────────── ANGULAR FRONTEND (Port 4200) ────────────────────┐
+│  AuthModule │ ProductsModule │ CartModule │ OrdersModule │ Admin │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │  HTTP/REST  ▸  Bearer JWT Token
+                            │  CORS Allowed Origins configured
+┌───────────────────────────▼──────────────────────────────────────┐
+│              SPRING BOOT REST API  (Port 8080)                   │
+│  ┌─────────────────────────────────────────────────────────┐     │
+│  │  @RestController  →  @Service  →  @Repository (JPA)    │     │
+│  │  GlobalExceptionHandler   |   JWT Security Filter       │     │
+│  └──────────────────────────────────┬────────────────────--┘     │
+│                                     │ JPA / Hibernate            │
+│  ┌──────────────────────────────────▼────────────────────────┐   │
+│  │                  MySQL 8 Database                         │   │
+│  │  users │ roles │ products │ categories │ orders │ payments│   │
+│  └────────────────────────────────────────────────────────---┘   │
+│                                                                   │
+│  ┌──────────────────┐  ┌──────────────────┐  ┌───────────────┐   │
+│  │   Paytm PG API   │  │   AWS S3 (imgs)  │  │  SMTP (email) │   │
+│  └──────────────────┘  └──────────────────┘  └───────────────┘   │
+└──────────────────────────────────────────────────────────────────┘
+    </pre>
+  </div>
+
+  <h3>Spring Boot Layered Architecture</h3>
+  <table>
+    <tr><th>Layer</th><th>Package</th><th>Annotation</th><th>Role</th></tr>
+    <tr><td>Controller</td><td><code>controller/</code></td><td><code>@RestController</code></td><td>HTTP in, DTO out</td></tr>
+    <tr><td>Service</td><td><code>service/</code></td><td><code>@Service @Transactional</code></td><td>Business logic</td></tr>
+    <tr><td>Repository</td><td><code>repository/</code></td><td><code>@Repository</code></td><td>DB access via JPA</td></tr>
+    <tr><td>Entity</td><td><code>entity/</code></td><td><code>@Entity @Table</code></td><td>DB table mapping</td></tr>
+    <tr><td>DTO</td><td><code>dto/</code></td><td>Plain POJO</td><td>Transfer objects</td></tr>
+    <tr><td>Security</td><td><code>security/</code></td><td><code>@Component</code></td><td>JWT filter & auth</td></tr>
+    <tr><td>Exception</td><td><code>exception/</code></td><td><code>@RestControllerAdvice</code></td><td>Global error handling</td></tr>
+  </table>
+</section>
+
+<!-- S3: DATABASE -->
+<section class="section" id="s3">
+  <div class="section-id">Section 03</div>
+  <h2>Complete Database Schema (MySQL)</h2>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">SQL</span><span class="code-file">schema.sql — Run this FIRST in MySQL Workbench</span></div>
+    <pre>
+<span class="cm">-- ============================================================</span>
+<span class="cm">-- AGROMART COMPLETE DATABASE SCHEMA</span>
+<span class="cm">-- Run in MySQL Workbench or: mysql -u root -p < schema.sql</span>
+<span class="cm">-- ============================================================</span>
+
+<span class="kw">CREATE DATABASE IF NOT EXISTS</span> agromart_db
+    <span class="kw">CHARACTER SET</span> utf8mb4 <span class="kw">COLLATE</span> utf8mb4_unicode_ci;
+<span class="kw">USE</span> agromart_db;
+
+<span class="cm">-- 1. ROLES (lookup table)</span>
+<span class="kw">CREATE TABLE</span> roles (
+    id   <span class="type">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    name <span class="type">ENUM</span>(<span class="str">'ROLE_FARMER'</span>, <span class="str">'ROLE_CUSTOMER'</span>, <span class="str">'ROLE_ADMIN'</span>) <span class="kw">NOT NULL UNIQUE</span>
+);
+
+<span class="cm">-- 2. USERS</span>
+<span class="kw">CREATE TABLE</span> users (
+    id             <span class="type">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    name           <span class="type">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL</span>,
+    email          <span class="type">VARCHAR</span>(<span class="num">150</span>) <span class="kw">NOT NULL UNIQUE</span>,
+    password       <span class="type">VARCHAR</span>(<span class="num">255</span>) <span class="kw">NOT NULL</span>,
+    phone          <span class="type">VARCHAR</span>(<span class="num">15</span>),
+    address        <span class="type">TEXT</span>,
+    profile_image  <span class="type">VARCHAR</span>(<span class="num">500</span>),
+    is_active      <span class="type">TINYINT(1) DEFAULT</span> <span class="num">1</span>,
+    is_verified    <span class="type">TINYINT(1) DEFAULT</span> <span class="num">0</span>,
+    created_at     <span class="type">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,
+    updated_at     <span class="type">TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP</span>,
+    <span class="kw">INDEX</span> idx_email (email)
+);
+
+<span class="cm">-- 3. USER-ROLES (Many-to-Many join table)</span>
+<span class="kw">CREATE TABLE</span> user_roles (
+    user_id <span class="type">BIGINT NOT NULL</span>,
+    role_id <span class="type">BIGINT NOT NULL</span>,
+    <span class="kw">PRIMARY KEY</span> (user_id, role_id),
+    <span class="kw">FOREIGN KEY</span> (user_id) <span class="kw">REFERENCES</span> users(id) <span class="kw">ON DELETE CASCADE</span>,
+    <span class="kw">FOREIGN KEY</span> (role_id) <span class="kw">REFERENCES</span> roles(id)
+);
+
+<span class="cm">-- 4. CATEGORIES</span>
+<span class="kw">CREATE TABLE</span> categories (
+    id          <span class="type">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    name        <span class="type">VARCHAR</span>(<span class="num">100</span>) <span class="kw">NOT NULL UNIQUE</span>,
+    description <span class="type">TEXT</span>,
+    image_url   <span class="type">VARCHAR</span>(<span class="num">500</span>),
+    is_active   <span class="type">TINYINT(1) DEFAULT</span> <span class="num">1</span>
+);
+
+<span class="cm">-- 5. PRODUCTS</span>
+<span class="kw">CREATE TABLE</span> products (
+    id            <span class="type">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    farmer_id     <span class="type">BIGINT NOT NULL</span>,
+    category_id   <span class="type">BIGINT NOT NULL</span>,
+    name          <span class="type">VARCHAR</span>(<span class="num">200</span>) <span class="kw">NOT NULL</span>,
+    description   <span class="type">TEXT</span>,
+    price         <span class="type">DECIMAL</span>(<span class="num">10,2</span>) <span class="kw">NOT NULL</span>,
+    unit          <span class="type">VARCHAR</span>(<span class="num">20</span>) <span class="kw">NOT NULL</span>,
+    stock_qty     <span class="type">INT DEFAULT</span> <span class="num">0</span>,
+    image_url     <span class="type">VARCHAR</span>(<span class="num">500</span>),
+    is_organic    <span class="type">TINYINT(1) DEFAULT</span> <span class="num">0</span>,
+    is_available  <span class="type">TINYINT(1) DEFAULT</span> <span class="num">1</span>,
+    origin_state  <span class="type">VARCHAR</span>(<span class="num">100</span>),
+    created_at    <span class="type">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,
+    updated_at    <span class="type">TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP</span>,
+    <span class="kw">FOREIGN KEY</span> (farmer_id) <span class="kw">REFERENCES</span> users(id),
+    <span class="kw">FOREIGN KEY</span> (category_id) <span class="kw">REFERENCES</span> categories(id),
+    <span class="kw">INDEX</span> idx_farmer (farmer_id),
+    <span class="kw">INDEX</span> idx_category (category_id),
+    <span class="kw">FULLTEXT</span> idx_search (name, description)
+);
+
+<span class="cm">-- 6. ORDERS</span>
+<span class="kw">CREATE TABLE</span> orders (
+    id               <span class="type">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    customer_id      <span class="type">BIGINT NOT NULL</span>,
+    order_number     <span class="type">VARCHAR</span>(<span class="num">50</span>) <span class="kw">NOT NULL UNIQUE</span>,
+    total_amount     <span class="type">DECIMAL</span>(<span class="num">12,2</span>) <span class="kw">NOT NULL</span>,
+    delivery_address <span class="type">TEXT NOT NULL</span>,
+    status           <span class="type">ENUM</span>(<span class="str">'PENDING'</span>,<span class="str">'CONFIRMED'</span>,<span class="str">'PACKED'</span>,<span class="str">'SHIPPED'</span>,<span class="str">'DELIVERED'</span>,<span class="str">'CANCELLED'</span>) <span class="kw">DEFAULT</span> <span class="str">'PENDING'</span>,
+    payment_status   <span class="type">ENUM</span>(<span class="str">'PENDING'</span>,<span class="str">'PAID'</span>,<span class="str">'FAILED'</span>,<span class="str">'REFUNDED'</span>) <span class="kw">DEFAULT</span> <span class="str">'PENDING'</span>,
+    notes            <span class="type">TEXT</span>,
+    created_at       <span class="type">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,
+    <span class="kw">FOREIGN KEY</span> (customer_id) <span class="kw">REFERENCES</span> users(id),
+    <span class="kw">INDEX</span> idx_customer (customer_id),
+    <span class="kw">INDEX</span> idx_order_status (status)
+);
+
+<span class="cm">-- 7. ORDER_ITEMS</span>
+<span class="kw">CREATE TABLE</span> order_items (
+    id          <span class="type">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    order_id    <span class="type">BIGINT NOT NULL</span>,
+    product_id  <span class="type">BIGINT NOT NULL</span>,
+    farmer_id   <span class="type">BIGINT NOT NULL</span>,
+    quantity    <span class="type">INT NOT NULL</span>,
+    unit_price  <span class="type">DECIMAL</span>(<span class="num">10,2</span>) <span class="kw">NOT NULL</span>,
+    subtotal    <span class="type">DECIMAL</span>(<span class="num">10,2</span>) <span class="kw">NOT NULL</span>,
+    <span class="kw">FOREIGN KEY</span> (order_id) <span class="kw">REFERENCES</span> orders(id) <span class="kw">ON DELETE CASCADE</span>,
+    <span class="kw">FOREIGN KEY</span> (product_id) <span class="kw">REFERENCES</span> products(id),
+    <span class="kw">FOREIGN KEY</span> (farmer_id) <span class="kw">REFERENCES</span> users(id)
+);
+
+<span class="cm">-- 8. PAYMENTS</span>
+<span class="kw">CREATE TABLE</span> payments (
+    id                <span class="type">BIGINT AUTO_INCREMENT PRIMARY KEY</span>,
+    order_id          <span class="type">BIGINT NOT NULL UNIQUE</span>,
+    txn_id            <span class="type">VARCHAR</span>(<span class="num">200</span>) <span class="kw">UNIQUE</span>,
+    paytm_order_id    <span class="type">VARCHAR</span>(<span class="num">200</span>),
+    gateway           <span class="type">ENUM</span>(<span class="str">'PAYTM'</span>,<span class="str">'COD'</span>,<span class="str">'UPI'</span>) <span class="kw">DEFAULT</span> <span class="str">'PAYTM'</span>,
+    amount            <span class="type">DECIMAL</span>(<span class="num">12,2</span>) <span class="kw">NOT NULL</span>,
+    currency          <span class="type">VARCHAR</span>(<span class="num">5</span>) <span class="kw">DEFAULT</span> <span class="str">'INR'</span>,
+    status            <span class="type">ENUM</span>(<span class="str">'INITIATED'</span>,<span class="str">'SUCCESS'</span>,<span class="str">'FAILED'</span>,<span class="str">'REFUNDED'</span>) <span class="kw">DEFAULT</span> <span class="str">'INITIATED'</span>,
+    bank_txn_id       <span class="type">VARCHAR</span>(<span class="num">200</span>),
+    gateway_response  <span class="type">JSON</span>,
+    paid_at           <span class="type">TIMESTAMP</span>,
+    created_at        <span class="type">TIMESTAMP DEFAULT CURRENT_TIMESTAMP</span>,
+    <span class="kw">FOREIGN KEY</span> (order_id) <span class="kw">REFERENCES</span> orders(id)
+);
+
+<span class="cm">-- ===================== SEED DATA =====================</span>
+<span class="kw">INSERT INTO</span> roles (name) <span class="kw">VALUES</span>
+    (<span class="str">'ROLE_FARMER'</span>), (<span class="str">'ROLE_CUSTOMER'</span>), (<span class="str">'ROLE_ADMIN'</span>);
+
+<span class="kw">INSERT INTO</span> categories (name, description) <span class="kw">VALUES</span>
+    (<span class="str">'Vegetables'</span>, <span class="str">'Fresh farm vegetables'</span>),
+    (<span class="str">'Grains & Rice'</span>, <span class="str">'Rice, wheat, millets, ragi'</span>),
+    (<span class="str">'Fruits'</span>, <span class="str">'Seasonal fresh fruits'</span>),
+    (<span class="str">'Dairy'</span>, <span class="str">'Milk, ghee, paneer, curd'</span>),
+    (<span class="str">'Pulses'</span>, <span class="str">'Dal, lentils, legumes'</span>),
+    (<span class="str">'Spices'</span>, <span class="str">'Turmeric, chilli, coriander'</span>),
+    (<span class="str">'Oils'</span>, <span class="str">'Groundnut, coconut, mustard oils'</span>),
+    (<span class="str">'Organic'</span>, <span class="str">'Certified organic produce'</span>);</pre>
+  </div>
+</section>
+
+<!-- S4: SPRING BOOT SETUP -->
+<section class="section" id="s4">
+  <div class="section-id">Section 04</div>
+  <h2>Spring Boot Project Setup</h2>
+
+  <div class="steps">
+    <div class="step-card">
+      <h4>Go to start.spring.io</h4>
+      <p>Project: Maven · Language: Java · Spring Boot: 3.2.x · Java: 17 · Group: com.agromart · Artifact: backend</p>
+    </div>
+    <div class="step-card">
+      <h4>Select these dependencies</h4>
+      <p>Spring Web, Spring Data JPA, Spring Security, Lombok, MySQL Driver, Spring Boot Validation, Spring Boot DevTools</p>
+    </div>
+    <div class="step-card">
+      <h4>Generate and extract</h4>
+      <p>Click Generate → Download ZIP → Extract → Open in IntelliJ IDEA or VS Code</p>
+    </div>
+    <div class="step-card">
+      <h4>Add JWT & Paytm dependencies to pom.xml</h4>
+      <p>jjwt-api, jjwt-impl, jjwt-jackson for JWT. Paytm SDK via Maven.</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">XML</span><span class="code-file">pom.xml — COMPLETE with all imports</span></div>
+    <pre>
+<span class="xml-tag">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="xml-tag">&lt;project</span> <span class="xml-attr">xmlns</span>=<span class="str">"http://maven.apache.org/POM/4.0.0"</span><span class="xml-tag">&gt;</span>
+    <span class="xml-tag">&lt;modelVersion&gt;</span>4.0.0<span class="xml-tag">&lt;/modelVersion&gt;</span>
+    <span class="xml-tag">&lt;parent&gt;</span>
+        <span class="xml-tag">&lt;groupId&gt;</span>org.springframework.boot<span class="xml-tag">&lt;/groupId&gt;</span>
+        <span class="xml-tag">&lt;artifactId&gt;</span>spring-boot-starter-parent<span class="xml-tag">&lt;/artifactId&gt;</span>
+        <span class="xml-tag">&lt;version&gt;</span>3.2.4<span class="xml-tag">&lt;/version&gt;</span>
+    <span class="xml-tag">&lt;/parent&gt;</span>
+    <span class="xml-tag">&lt;groupId&gt;</span>com.agromart<span class="xml-tag">&lt;/groupId&gt;</span>
+    <span class="xml-tag">&lt;artifactId&gt;</span>backend<span class="xml-tag">&lt;/artifactId&gt;</span>
+    <span class="xml-tag">&lt;version&gt;</span>1.0.0<span class="xml-tag">&lt;/version&gt;</span>
+    <span class="xml-tag">&lt;properties&gt;&lt;java.version&gt;</span>17<span class="xml-tag">&lt;/java.version&gt;&lt;/properties&gt;</span>
+    <span class="xml-tag">&lt;dependencies&gt;</span>
+        <span class="cm">&lt;!-- CORE --&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.springframework.boot<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>spring-boot-starter-web<span class="xml-tag">&lt;/artifactId&gt;&lt;/dependency&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.springframework.boot<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>spring-boot-starter-data-jpa<span class="xml-tag">&lt;/artifactId&gt;&lt;/dependency&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.springframework.boot<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>spring-boot-starter-security<span class="xml-tag">&lt;/artifactId&gt;&lt;/dependency&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.springframework.boot<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>spring-boot-starter-validation<span class="xml-tag">&lt;/artifactId&gt;&lt;/dependency&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.springframework.boot<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>spring-boot-starter-mail<span class="xml-tag">&lt;/artifactId&gt;&lt;/dependency&gt;</span>
+        <span class="cm">&lt;!-- DATABASE --&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>com.mysql<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>mysql-connector-j<span class="xml-tag">&lt;/artifactId&gt;&lt;scope&gt;</span>runtime<span class="xml-tag">&lt;/scope&gt;&lt;/dependency&gt;</span>
+        <span class="cm">&lt;!-- LOMBOK --&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.projectlombok<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>lombok<span class="xml-tag">&lt;/artifactId&gt;&lt;optional&gt;</span>true<span class="xml-tag">&lt;/optional&gt;&lt;/dependency&gt;</span>
+        <span class="cm">&lt;!-- JWT (ALL THREE needed) --&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>io.jsonwebtoken<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>jjwt-api<span class="xml-tag">&lt;/artifactId&gt;&lt;version&gt;</span>0.11.5<span class="xml-tag">&lt;/version&gt;&lt;/dependency&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>io.jsonwebtoken<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>jjwt-impl<span class="xml-tag">&lt;/artifactId&gt;&lt;version&gt;</span>0.11.5<span class="xml-tag">&lt;/version&gt;&lt;scope&gt;</span>runtime<span class="xml-tag">&lt;/scope&gt;&lt;/dependency&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>io.jsonwebtoken<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>jjwt-jackson<span class="xml-tag">&lt;/artifactId&gt;&lt;version&gt;</span>0.11.5<span class="xml-tag">&lt;/version&gt;&lt;scope&gt;</span>runtime<span class="xml-tag">&lt;/scope&gt;&lt;/dependency&gt;</span>
+        <span class="cm">&lt;!-- AWS S3 (optional - for image upload) --&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>software.amazon.awssdk<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>s3<span class="xml-tag">&lt;/artifactId&gt;&lt;version&gt;</span>2.25.6<span class="xml-tag">&lt;/version&gt;&lt;/dependency&gt;</span>
+        <span class="cm">&lt;!-- Apache Commons for Paytm checksum --&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>commons-codec<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>commons-codec<span class="xml-tag">&lt;/artifactId&gt;&lt;version&gt;</span>1.16.1<span class="xml-tag">&lt;/version&gt;&lt;/dependency&gt;</span>
+        <span class="cm">&lt;!-- TEST --&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.springframework.boot<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>spring-boot-starter-test<span class="xml-tag">&lt;/artifactId&gt;&lt;scope&gt;</span>test<span class="xml-tag">&lt;/scope&gt;&lt;/dependency&gt;</span>
+        <span class="xml-tag">&lt;dependency&gt;&lt;groupId&gt;</span>org.springframework.security<span class="xml-tag">&lt;/groupId&gt;</span>
+            <span class="xml-tag">&lt;artifactId&gt;</span>spring-security-test<span class="xml-tag">&lt;/artifactId&gt;&lt;scope&gt;</span>test<span class="xml-tag">&lt;/scope&gt;&lt;/dependency&gt;</span>
+    <span class="xml-tag">&lt;/dependencies&gt;</span>
+<span class="xml-tag">&lt;/project&gt;</span></pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Properties</span><span class="code-file">src/main/resources/application.properties</span></div>
+    <pre>
+<span class="cm"># ===== SERVER =====</span>
+server.port=<span class="num">8080</span>
+spring.application.name=agromart
+
+<span class="cm"># ===== MYSQL DATABASE =====</span>
+<span class="cm"># ⚠️ REPLACE these with your actual credentials</span>
+spring.datasource.url=jdbc:mysql://localhost:<span class="num">3306</span>/agromart_db?useSSL=<span class="kw">false</span>&serverTimezone=Asia/Kolkata&allowPublicKeyRetrieval=<span class="kw">true</span>
+spring.datasource.username=root
+spring.datasource.password=<span class="ann">YOUR_MYSQL_PASSWORD_HERE</span>
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+<span class="cm"># ===== JPA / HIBERNATE =====</span>
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=<span class="kw">false</span>
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.properties.hibernate.format_sql=<span class="kw">true</span>
+spring.jpa.open-in-view=<span class="kw">false</span>
+
+<span class="cm"># ===== JWT =====</span>
+<span class="cm"># ⚠️ REPLACE with your own 64-char base64 secret</span>
+<span class="cm"># Generate: openssl rand -base64 64</span>
+jwt.secret=<span class="ann">YWdyb21hcnRfc2VjcmV0X2tleV9tdXN0X2JlX3ZlcnlfbG9uZ19hbmRfc2VjdXJl</span>
+jwt.expiration=<span class="num">86400000</span>
+
+<span class="cm"># ===== PAYTM PAYMENT GATEWAY =====</span>
+<span class="cm"># ⚠️ Get these from: business.paytm.com → Developer → API Keys</span>
+paytm.merchant.id=<span class="ann">YOUR_PAYTM_MERCHANT_ID</span>
+paytm.merchant.key=<span class="ann">YOUR_PAYTM_MERCHANT_KEY</span>
+paytm.website=WEBSTAGING
+paytm.channel.id=WEB
+paytm.industry.type=Retail
+paytm.transaction.url=https://securegw-stage.paytm.in/theia/processTransaction
+paytm.status.url=https://securegw-stage.paytm.in/order/status
+
+<span class="cm"># ===== AWS S3 (optional for image upload) =====</span>
+<span class="cm"># ⚠️ Get from: AWS Console → IAM → Access Keys</span>
+aws.s3.bucket=<span class="ann">your-agromart-bucket-name</span>
+aws.access.key=<span class="ann">YOUR_AWS_ACCESS_KEY</span>
+aws.secret.key=<span class="ann">YOUR_AWS_SECRET_KEY</span>
+aws.region=ap-south-1
+
+<span class="cm"># ===== EMAIL (for order notifications) =====</span>
+<span class="cm"># ⚠️ Use a Gmail App Password (not your real password)</span>
+spring.mail.host=smtp.gmail.com
+spring.mail.port=<span class="num">587</span>
+spring.mail.username=<span class="ann">your-email@gmail.com</span>
+spring.mail.password=<span class="ann">YOUR_GMAIL_APP_PASSWORD</span>
+spring.mail.properties.mail.smtp.auth=<span class="kw">true</span>
+spring.mail.properties.mail.smtp.starttls.enable=<span class="kw">true</span>
+
+<span class="cm"># ===== FILE UPLOAD =====</span>
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+
+<span class="cm"># ===== CORS =====</span>
+app.cors.allowed-origins=http://localhost:4200
+
+<span class="cm"># ===== LOGGING =====</span>
+logging.level.com.agromart=DEBUG
+logging.level.org.springframework.security=WARN
+logging.file.name=logs/agromart.log</pre>
+  </div>
+</section>
+
+<!-- S5: ENTITIES -->
+<section class="section" id="s5">
+  <div class="section-id">Section 05</div>
+  <h2>Entities — Full Code with All Imports</h2>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Java</span><span class="code-file">entity/User.java — COMPLETE with every import</span></div>
+    <pre>
+<span class="kw">package</span> com.agromart.entity;
+
+<span class="cm">// ⚠️ ALL imports below — do not skip any</span>
+<span class="kw">import</span> jakarta.persistence.*;
+<span class="kw">import</span> jakarta.validation.constraints.Email;
+<span class="kw">import</span> jakarta.validation.constraints.NotBlank;
+<span class="kw">import</span> lombok.*;
+<span class="kw">import</span> org.hibernate.annotations.CreationTimestamp;
+<span class="kw">import</span> org.hibernate.annotations.UpdateTimestamp;
+<span class="kw">import</span> org.springframework.security.core.GrantedAuthority;
+<span class="kw">import</span> org.springframework.security.core.authority.SimpleGrantedAuthority;
+<span class="kw">import</span> org.springframework.security.core.userdetails.UserDetails;
+
+<span class="kw">import</span> java.time.LocalDateTime;
+<span class="kw">import</span> java.util.*;
+<span class="kw">import</span> java.util.stream.Collectors;
+
+<span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"users"</span>)
+<span class="ann">@Data</span>
+<span class="ann">@NoArgsConstructor</span>
+<span class="ann">@AllArgsConstructor</span>
+<span class="ann">@Builder</span>
+<span class="kw">public class</span> <span class="type">User</span> <span class="kw">implements</span> <span class="type">UserDetails</span> {
+
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="type">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="type">Long</span> id;
+
+    <span class="ann">@NotBlank</span>
+    <span class="ann">@Column</span>(nullable = <span class="kw">false</span>)
+    <span class="kw">private</span> <span class="type">String</span> name;
+
+    <span class="ann">@Email</span>
+    <span class="ann">@Column</span>(unique = <span class="kw">true</span>, nullable = <span class="kw">false</span>)
+    <span class="kw">private</span> <span class="type">String</span> email;
+
+    <span class="ann">@Column</span>(nullable = <span class="kw">false</span>)
+    <span class="kw">private</span> <span class="type">String</span> password;
+
+    <span class="kw">private</span> <span class="type">String</span> phone;
+    <span class="kw">private</span> <span class="type">String</span> address;
+    <span class="kw">private</span> <span class="type">String</span> profileImage;
+
+    <span class="ann">@Column</span>(name = <span class="str">"is_active"</span>)
+    <span class="kw">private boolean</span> active = <span class="kw">true</span>;
+
+    <span class="ann">@Column</span>(name = <span class="str">"is_verified"</span>)
+    <span class="kw">private boolean</span> verified = <span class="kw">false</span>;
+
+    <span class="ann">@ManyToMany</span>(fetch = <span class="type">FetchType</span>.EAGER)
+    <span class="ann">@JoinTable</span>(
+        name = <span class="str">"user_roles"</span>,
+        joinColumns = <span class="ann">@JoinColumn</span>(name = <span class="str">"user_id"</span>),
+        inverseJoinColumns = <span class="ann">@JoinColumn</span>(name = <span class="str">"role_id"</span>)
+    )
+    <span class="kw">private</span> <span class="type">Set</span>&lt;<span class="type">Role</span>&gt; roles = <span class="kw">new</span> <span class="type">HashSet</span>&lt;&gt;();
+
+    <span class="ann">@CreationTimestamp</span>
+    <span class="kw">private</span> <span class="type">LocalDateTime</span> createdAt;
+
+    <span class="ann">@UpdateTimestamp</span>
+    <span class="kw">private</span> <span class="type">LocalDateTime</span> updatedAt;
+
+    <span class="cm">// UserDetails implementation</span>
+    <span class="ann">@Override</span>
+    <span class="kw">public</span> <span class="type">Collection</span>&lt;? <span class="kw">extends</span> <span class="type">GrantedAuthority</span>&gt; getAuthorities() {
+        <span class="kw">return</span> roles.stream()
+            .map(r -> <span class="kw">new</span> <span class="type">SimpleGrantedAuthority</span>(r.getName().name()))
+            .collect(<span class="type">Collectors</span>.toList());
+    }
+
+    <span class="ann">@Override</span> <span class="kw">public</span> <span class="type">String</span> getUsername() { <span class="kw">return</span> email; }
+    <span class="ann">@Override</span> <span class="kw">public boolean</span> isAccountNonExpired()  { <span class="kw">return true</span>; }
+    <span class="ann">@Override</span> <span class="kw">public boolean</span> isAccountNonLocked()   { <span class="kw">return</span> active; }
+    <span class="ann">@Override</span> <span class="kw">public boolean</span> isCredentialsNonExpired() { <span class="kw">return true</span>; }
+    <span class="ann">@Override</span> <span class="kw">public boolean</span> isEnabled()            { <span class="kw">return</span> active; }
+}
+
+<span class="cm">// ─────────────────────────────────────────────────</span>
+<span class="cm">// entity/Role.java</span>
+<span class="kw">package</span> com.agromart.entity;
+
+<span class="kw">import</span> jakarta.persistence.*;
+<span class="kw">import</span> lombok.*;
+
+<span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"roles"</span>)
+<span class="ann">@Data</span> <span class="ann">@NoArgsConstructor</span> <span class="ann">@AllArgsConstructor</span>
+<span class="kw">public class</span> <span class="type">Role</span> {
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="type">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="type">Long</span> id;
+
+    <span class="ann">@Enumerated</span>(<span class="type">EnumType</span>.STRING)
+    <span class="kw">private</span> <span class="type">RoleName</span> name;
+
+    <span class="kw">public enum</span> <span class="type">RoleName</span> {
+        <span class="str">ROLE_FARMER</span>, <span class="str">ROLE_CUSTOMER</span>, <span class="str">ROLE_ADMIN</span>
+    }
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Java</span><span class="code-file">entity/Product.java — COMPLETE</span></div>
+    <pre>
+<span class="kw">package</span> com.agromart.entity;
+
+<span class="kw">import</span> jakarta.persistence.*;
+<span class="kw">import</span> jakarta.validation.constraints.*;
+<span class="kw">import</span> lombok.*;
+<span class="kw">import</span> org.hibernate.annotations.CreationTimestamp;
+<span class="kw">import</span> org.hibernate.annotations.UpdateTimestamp;
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.time.LocalDateTime;
+
+<span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"products"</span>)
+<span class="ann">@Data</span> <span class="ann">@NoArgsConstructor</span> <span class="ann">@AllArgsConstructor</span> <span class="ann">@Builder</span>
+<span class="kw">public class</span> <span class="type">Product</span> {
+
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="type">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="type">Long</span> id;
+
+    <span class="ann">@ManyToOne</span>(fetch = <span class="type">FetchType</span>.LAZY)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"farmer_id"</span>, nullable = <span class="kw">false</span>)
+    <span class="kw">private</span> <span class="type">User</span> farmer;
+
+    <span class="ann">@ManyToOne</span>(fetch = <span class="type">FetchType</span>.LAZY)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"category_id"</span>, nullable = <span class="kw">false</span>)
+    <span class="kw">private</span> <span class="type">Category</span> category;
+
+    <span class="ann">@NotBlank</span> <span class="ann">@Size</span>(max = <span class="num">200</span>)
+    <span class="kw">private</span> <span class="type">String</span> name;
+
+    <span class="ann">@Column</span>(columnDefinition = <span class="str">"TEXT"</span>)
+    <span class="kw">private</span> <span class="type">String</span> description;
+
+    <span class="ann">@NotNull</span> <span class="ann">@DecimalMin</span>(<span class="str">"0.01"</span>)
+    <span class="kw">private</span> <span class="type">BigDecimal</span> price;
+
+    <span class="ann">@NotBlank</span>
+    <span class="kw">private</span> <span class="type">String</span> unit;
+
+    <span class="ann">@Min</span>(<span class="num">0</span>)
+    <span class="kw">private</span> <span class="type">Integer</span> stockQty;
+
+    <span class="kw">private</span> <span class="type">String</span> imageUrl;
+
+    <span class="ann">@Column</span>(name = <span class="str">"is_organic"</span>)
+    <span class="kw">private</span> <span class="type">Boolean</span> isOrganic = <span class="kw">false</span>;
+
+    <span class="ann">@Column</span>(name = <span class="str">"is_available"</span>)
+    <span class="kw">private</span> <span class="type">Boolean</span> isAvailable = <span class="kw">true</span>;
+
+    <span class="kw">private</span> <span class="type">String</span> originState;
+
+    <span class="ann">@CreationTimestamp</span>
+    <span class="kw">private</span> <span class="type">LocalDateTime</span> createdAt;
+
+    <span class="ann">@UpdateTimestamp</span>
+    <span class="kw">private</span> <span class="type">LocalDateTime</span> updatedAt;
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Java</span><span class="code-file">entity/Order.java + OrderItem.java + Payment.java</span></div>
+    <pre>
+<span class="cm">// ── Order.java ──</span>
+<span class="kw">package</span> com.agromart.entity;
+
+<span class="kw">import</span> jakarta.persistence.*;
+<span class="kw">import</span> lombok.*;
+<span class="kw">import</span> org.hibernate.annotations.CreationTimestamp;
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.time.LocalDateTime;
+<span class="kw">import</span> java.util.List;
+
+<span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"orders"</span>)
+<span class="ann">@Data</span> <span class="ann">@NoArgsConstructor</span> <span class="ann">@AllArgsConstructor</span> <span class="ann">@Builder</span>
+<span class="kw">public class</span> <span class="type">Order</span> {
+
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="type">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="type">Long</span> id;
+
+    <span class="ann">@ManyToOne</span>(fetch = <span class="type">FetchType</span>.LAZY)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"customer_id"</span>)
+    <span class="kw">private</span> <span class="type">User</span> customer;
+
+    <span class="ann">@Column</span>(unique = <span class="kw">true</span>)
+    <span class="kw">private</span> <span class="type">String</span> orderNumber;
+
+    <span class="kw">private</span> <span class="type">BigDecimal</span> totalAmount;
+
+    <span class="ann">@Column</span>(columnDefinition = <span class="str">"TEXT"</span>)
+    <span class="kw">private</span> <span class="type">String</span> deliveryAddress;
+
+    <span class="ann">@Enumerated</span>(<span class="type">EnumType</span>.STRING)
+    <span class="kw">private</span> <span class="type">OrderStatus</span> status = <span class="type">OrderStatus</span>.PENDING;
+
+    <span class="ann">@Enumerated</span>(<span class="type">EnumType</span>.STRING)
+    <span class="kw">private</span> <span class="type">PaymentStatus</span> paymentStatus = <span class="type">PaymentStatus</span>.PENDING;
+
+    <span class="kw">private</span> <span class="type">String</span> notes;
+
+    <span class="ann">@OneToMany</span>(mappedBy = <span class="str">"order"</span>, cascade = <span class="type">CascadeType</span>.ALL, fetch = <span class="type">FetchType</span>.LAZY)
+    <span class="kw">private</span> <span class="type">List</span>&lt;<span class="type">OrderItem</span>&gt; items;
+
+    <span class="ann">@CreationTimestamp</span>
+    <span class="kw">private</span> <span class="type">LocalDateTime</span> createdAt;
+
+    <span class="kw">public enum</span> <span class="type">OrderStatus</span>  { PENDING, CONFIRMED, PACKED, SHIPPED, DELIVERED, CANCELLED }
+    <span class="kw">public enum</span> <span class="type">PaymentStatus</span> { PENDING, PAID, FAILED, REFUNDED }
+}
+
+<span class="cm">// ── OrderItem.java ──</span>
+<span class="kw">package</span> com.agromart.entity;
+
+<span class="kw">import</span> jakarta.persistence.*;
+<span class="kw">import</span> lombok.*;
+<span class="kw">import</span> java.math.BigDecimal;
+
+<span class="ann">@Entity</span>
+<span class="ann">@Table</span>(name = <span class="str">"order_items"</span>)
+<span class="ann">@Data</span> <span class="ann">@NoArgsConstructor</span> <span class="ann">@AllArgsConstructor</span> <span class="ann">@Builder</span>
+<span class="kw">public class</span> <span class="type">OrderItem</span> {
+
+    <span class="ann">@Id</span>
+    <span class="ann">@GeneratedValue</span>(strategy = <span class="type">GenerationType</span>.IDENTITY)
+    <span class="kw">private</span> <span class="type">Long</span> id;
+
+    <span class="ann">@ManyToOne</span>(fetch = <span class="type">FetchType</span>.LAZY)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"order_id"</span>)
+    <span class="kw">private</span> <span class="type">Order</span> order;
+
+    <span class="ann">@ManyToOne</span>(fetch = <span class="type">FetchType</span>.LAZY)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"product_id"</span>)
+    <span class="kw">private</span> <span class="type">Product</span> product;
+
+    <span class="ann">@ManyToOne</span>(fetch = <span class="type">FetchType</span>.LAZY)
+    <span class="ann">@JoinColumn</span>(name = <span class="str">"farmer_id"</span>)
+    <span class="kw">private</span> <span class="type">User</span> farmer;
+
+    <span class="kw">private</span> <span class="type">Integer</span> quantity;
+    <span class="kw">private</span> <span class="type">BigDecimal</span> unitPrice;
+    <span class="kw">private</span> <span class="type">BigDecimal</span> subtotal;
+}</pre>
+  </div>
+</section>
+
+<!-- S6: REPOSITORIES -->
+<section class="section" id="s6">
+  <div class="section-id">Section 06</div>
+  <h2>Repository Layer — Full Code</h2>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Java</span><span class="code-file">repository/ — All 5 Repositories</span></div>
+    <pre>
+<span class="cm">// UserRepository.java</span>
+<span class="kw">package</span> com.agromart.repository;
+
+<span class="kw">import</span> com.agromart.entity.User;
+<span class="kw">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="kw">import</span> org.springframework.stereotype.Repository;
+<span class="kw">import</span> java.util.Optional;
+
+<span class="ann">@Repository</span>
+<span class="kw">public interface</span> <span class="type">UserRepository</span> <span class="kw">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">User</span>, <span class="type">Long</span>&gt; {
+    <span class="type">Optional</span>&lt;<span class="type">User</span>&gt; <span class="fn">findByEmail</span>(<span class="type">String</span> email);
+    <span class="kw">boolean</span> <span class="fn">existsByEmail</span>(<span class="type">String</span> email);
+    <span class="kw">boolean</span> <span class="fn">existsByPhone</span>(<span class="type">String</span> phone);
+}
+
+<span class="cm">// RoleRepository.java</span>
+<span class="kw">package</span> com.agromart.repository;
+
+<span class="kw">import</span> com.agromart.entity.Role;
+<span class="kw">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="kw">import</span> org.springframework.stereotype.Repository;
+<span class="kw">import</span> java.util.Optional;
+
+<span class="ann">@Repository</span>
+<span class="kw">public interface</span> <span class="type">RoleRepository</span> <span class="kw">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Role</span>, <span class="type">Long</span>&gt; {
+    <span class="type">Optional</span>&lt;<span class="type">Role</span>&gt; <span class="fn">findByName</span>(<span class="type">Role.RoleName</span> name);
+}
+
+<span class="cm">// ProductRepository.java</span>
+<span class="kw">package</span> com.agromart.repository;
+
+<span class="kw">import</span> com.agromart.entity.Product;
+<span class="kw">import</span> org.springframework.data.domain.Page;
+<span class="kw">import</span> org.springframework.data.domain.Pageable;
+<span class="kw">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="kw">import</span> org.springframework.data.jpa.repository.Query;
+<span class="kw">import</span> org.springframework.data.repository.query.Param;
+<span class="kw">import</span> org.springframework.stereotype.Repository;
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.util.List;
+
+<span class="ann">@Repository</span>
+<span class="kw">public interface</span> <span class="type">ProductRepository</span> <span class="kw">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Product</span>, <span class="type">Long</span>&gt; {
+
+    <span class="type">Page</span>&lt;<span class="type">Product</span>&gt; <span class="fn">findByIsAvailableTrue</span>(<span class="type">Pageable</span> pageable);
+
+    <span class="type">Page</span>&lt;<span class="type">Product</span>&gt; <span class="fn">findByCategoryIdAndIsAvailableTrue</span>(<span class="type">Long</span> catId, <span class="type">Pageable</span> pageable);
+
+    <span class="type">Page</span>&lt;<span class="type">Product</span>&gt; <span class="fn">findByFarmerIdAndIsAvailableTrue</span>(<span class="type">Long</span> farmerId, <span class="type">Pageable</span> pageable);
+
+    <span class="type">List</span>&lt;<span class="type">Product</span>&gt; <span class="fn">findByFarmerId</span>(<span class="type">Long</span> farmerId);
+
+    <span class="ann">@Query</span>(<span class="str">"SELECT p FROM Product p WHERE "</span> +
+           <span class="str">"(LOWER(p.name) LIKE LOWER(CONCAT('%',:q,'%')) OR "</span> +
+           <span class="str">"LOWER(p.description) LIKE LOWER(CONCAT('%',:q,'%'))) "</span> +
+           <span class="str">"AND p.isAvailable = true"</span>)
+    <span class="type">Page</span>&lt;<span class="type">Product</span>&gt; <span class="fn">searchProducts</span>(<span class="ann">@Param</span>(<span class="str">"q"</span>) <span class="type">String</span> q, <span class="type">Pageable</span> pageable);
+
+    <span class="ann">@Query</span>(<span class="str">"SELECT p FROM Product p WHERE p.price BETWEEN :min AND :max AND p.isAvailable = true"</span>)
+    <span class="type">Page</span>&lt;<span class="type">Product</span>&gt; <span class="fn">findByPriceRange</span>(<span class="ann">@Param</span>(<span class="str">"min"</span>) <span class="type">BigDecimal</span> min,
+                                     <span class="ann">@Param</span>(<span class="str">"max"</span>) <span class="type">BigDecimal</span> max,
+                                     <span class="type">Pageable</span> pageable);
+    <span class="type">Page</span>&lt;<span class="type">Product</span>&gt; <span class="fn">findByIsOrganicTrueAndIsAvailableTrue</span>(<span class="type">Pageable</span> pageable);
+}
+
+<span class="cm">// OrderRepository.java</span>
+<span class="kw">package</span> com.agromart.repository;
+
+<span class="kw">import</span> com.agromart.entity.Order;
+<span class="kw">import</span> org.springframework.data.domain.Page;
+<span class="kw">import</span> org.springframework.data.domain.Pageable;
+<span class="kw">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="kw">import</span> org.springframework.stereotype.Repository;
+<span class="kw">import</span> java.util.Optional;
+
+<span class="ann">@Repository</span>
+<span class="kw">public interface</span> <span class="type">OrderRepository</span> <span class="kw">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Order</span>, <span class="type">Long</span>&gt; {
+    <span class="type">Page</span>&lt;<span class="type">Order</span>&gt; <span class="fn">findByCustomerId</span>(<span class="type">Long</span> customerId, <span class="type">Pageable</span> pageable);
+    <span class="type">Optional</span>&lt;<span class="type">Order</span>&gt; <span class="fn">findByOrderNumber</span>(<span class="type">String</span> orderNumber);
+}
+
+<span class="cm">// PaymentRepository.java</span>
+<span class="kw">package</span> com.agromart.repository;
+
+<span class="kw">import</span> com.agromart.entity.Payment;
+<span class="kw">import</span> org.springframework.data.jpa.repository.JpaRepository;
+<span class="kw">import</span> org.springframework.stereotype.Repository;
+<span class="kw">import</span> java.util.Optional;
+
+<span class="ann">@Repository</span>
+<span class="kw">public interface</span> <span class="type">PaymentRepository</span> <span class="kw">extends</span> <span class="type">JpaRepository</span>&lt;<span class="type">Payment</span>, <span class="type">Long</span>&gt; {
+    <span class="type">Optional</span>&lt;<span class="type">Payment</span>&gt; <span class="fn">findByOrderId</span>(<span class="type">Long</span> orderId);
+    <span class="type">Optional</span>&lt;<span class="type">Payment</span>&gt; <span class="fn">findByPaytmOrderId</span>(<span class="type">String</span> paytmOrderId);
+}</pre>
+  </div>
+</section>
+
+<!-- S9: JWT -->
+<section class="section" id="s9">
+  <div class="section-id">Section 09</div>
+  <h2>JWT Auth — Complete Security Setup</h2>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Java</span><span class="code-file">security/JwtTokenProvider.java — Full with imports</span></div>
+    <pre>
+<span class="kw">package</span> com.agromart.security;
+
+<span class="kw">import</span> io.jsonwebtoken.*;
+<span class="kw">import</span> io.jsonwebtoken.io.Decoders;
+<span class="kw">import</span> io.jsonwebtoken.security.Keys;
+<span class="kw">import</span> lombok.extern.slf4j.Slf4j;
+<span class="kw">import</span> org.springframework.beans.factory.annotation.Value;
+<span class="kw">import</span> org.springframework.security.core.userdetails.UserDetails;
+<span class="kw">import</span> org.springframework.stereotype.Component;
+<span class="kw">import</span> java.security.Key;
+<span class="kw">import</span> java.util.*;
+<span class="kw">import</span> java.util.function.Function;
+<span class="kw">import</span> java.util.stream.Collectors;
+
+<span class="ann">@Component</span>
+<span class="ann">@Slf4j</span>
+<span class="kw">public class</span> <span class="type">JwtTokenProvider</span> {
+
+    <span class="ann">@Value</span>(<span class="str">"${jwt.secret}"</span>)
+    <span class="kw">private</span> <span class="type">String</span> secret;
+
+    <span class="ann">@Value</span>(<span class="str">"${jwt.expiration}"</span>)
+    <span class="kw">private long</span> expiration;
+
+    <span class="kw">public</span> <span class="type">String</span> <span class="fn">generateToken</span>(<span class="type">UserDetails</span> userDetails) {
+        <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">Object</span>&gt; claims = <span class="kw">new</span> <span class="type">HashMap</span>&lt;&gt;();
+        com.agromart.entity.<span class="type">User</span> user = (com.agromart.entity.<span class="type">User</span>) userDetails;
+        claims.put(<span class="str">"userId"</span>, user.getId());
+        claims.put(<span class="str">"name"</span>, user.getName());
+        claims.put(<span class="str">"roles"</span>, user.getRoles().stream()
+            .map(r -> r.getName().name()).collect(<span class="type">Collectors</span>.toList()));
+        <span class="kw">return</span> <span class="type">Jwts</span>.builder()
+            .setClaims(claims)
+            .setSubject(userDetails.getUsername())
+            .setIssuedAt(<span class="kw">new</span> <span class="type">Date</span>())
+            .setExpiration(<span class="kw">new</span> <span class="type">Date</span>(<span class="type">System</span>.currentTimeMillis() + expiration))
+            .signWith(<span class="fn">getSignKey</span>(), <span class="type">SignatureAlgorithm</span>.HS256)
+            .compact();
+    }
+
+    <span class="kw">public</span> <span class="type">String</span> <span class="fn">extractUsername</span>(<span class="type">String</span> token) {
+        <span class="kw">return</span> <span class="fn">extractClaim</span>(token, <span class="type">Claims</span>::getSubject);
+    }
+
+    <span class="kw">public boolean</span> <span class="fn">validateToken</span>(<span class="type">String</span> token, <span class="type">UserDetails</span> ud) {
+        <span class="kw">return</span> <span class="fn">extractUsername</span>(token).equals(ud.getUsername()) && !<span class="fn">isTokenExpired</span>(token);
+    }
+
+    <span class="kw">private</span> &lt;T&gt; T <span class="fn">extractClaim</span>(<span class="type">String</span> token, <span class="type">Function</span>&lt;<span class="type">Claims</span>, T&gt; resolver) {
+        <span class="kw">return</span> resolver.apply(
+            <span class="type">Jwts</span>.parserBuilder().setSigningKey(<span class="fn">getSignKey</span>()).build()
+               .parseClaimsJws(token).getBody());
+    }
+
+    <span class="kw">private boolean</span> <span class="fn">isTokenExpired</span>(<span class="type">String</span> t) {
+        <span class="kw">return</span> <span class="fn">extractClaim</span>(t, <span class="type">Claims</span>::getExpiration).before(<span class="kw">new</span> <span class="type">Date</span>());
+    }
+
+    <span class="kw">private</span> <span class="type">Key</span> <span class="fn">getSignKey</span>() {
+        <span class="kw">return</span> <span class="type">Keys</span>.hmacShaKeyFor(<span class="type">Decoders</span>.BASE64.decode(secret));
+    }
+}</pre>
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Java</span><span class="code-file">security/JwtAuthFilter.java + config/SecurityConfig.java</span></div>
+    <pre>
+<span class="cm">// JwtAuthFilter.java</span>
+<span class="kw">package</span> com.agromart.security;
+
+<span class="kw">import</span> jakarta.servlet.FilterChain;
+<span class="kw">import</span> jakarta.servlet.ServletException;
+<span class="kw">import</span> jakarta.servlet.http.HttpServletRequest;
+<span class="kw">import</span> jakarta.servlet.http.HttpServletResponse;
+<span class="kw">import</span> lombok.RequiredArgsConstructor;
+<span class="kw">import</span> lombok.extern.slf4j.Slf4j;
+<span class="kw">import</span> org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+<span class="kw">import</span> org.springframework.security.core.context.SecurityContextHolder;
+<span class="kw">import</span> org.springframework.security.core.userdetails.UserDetails;
+<span class="kw">import</span> org.springframework.security.core.userdetails.UserDetailsService;
+<span class="kw">import</span> org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+<span class="kw">import</span> org.springframework.stereotype.Component;
+<span class="kw">import</span> org.springframework.util.StringUtils;
+<span class="kw">import</span> org.springframework.web.filter.OncePerRequestFilter;
+<span class="kw">import</span> java.io.IOException;
+
+<span class="ann">@Component</span>
+<span class="ann">@RequiredArgsConstructor</span>
+<span class="ann">@Slf4j</span>
+<span class="kw">public class</span> <span class="type">JwtAuthFilter</span> <span class="kw">extends</span> <span class="type">OncePerRequestFilter</span> {
+
+    <span class="kw">private final</span> <span class="type">JwtTokenProvider</span> tokenProvider;
+    <span class="kw">private final</span> <span class="type">UserDetailsService</span> userDetailsService;
+
+    <span class="ann">@Override</span>
+    <span class="kw">protected void</span> <span class="fn">doFilterInternal</span>(
+            <span class="type">HttpServletRequest</span> request,
+            <span class="type">HttpServletResponse</span> response,
+            <span class="type">FilterChain</span> chain) <span class="kw">throws</span> <span class="type">ServletException</span>, <span class="type">IOException</span> {
+        <span class="kw">try</span> {
+            <span class="type">String</span> token = <span class="fn">getTokenFromRequest</span>(request);
+            <span class="kw">if</span> (<span class="type">StringUtils</span>.hasText(token)) {
+                <span class="type">String</span> username = tokenProvider.extractUsername(token);
+                <span class="type">UserDetails</span> ud = userDetailsService.loadUserByUsername(username);
+                <span class="kw">if</span> (tokenProvider.validateToken(token, ud)) {
+                    <span class="kw">var</span> auth = <span class="kw">new</span> <span class="type">UsernamePasswordAuthenticationToken</span>(
+                        ud, <span class="kw">null</span>, ud.getAuthorities());
+                    auth.setDetails(<span class="kw">new</span> <span class="type">WebAuthenticationDetailsSource</span>().buildDetails(request));
+                    <span class="type">SecurityContextHolder</span>.getContext().setAuthentication(auth);
+                }
+            }
+        } <span class="kw">catch</span> (<span class="type">Exception</span> e) {
+            log.error(<span class="str">"JWT authentication failed: {}"</span>, e.getMessage());
+        }
+        chain.doFilter(request, response);
+    }
+
+    <span class="kw">private</span> <span class="type">String</span> <span class="fn">getTokenFromRequest</span>(<span class="type">HttpServletRequest</span> req) {
+        <span class="type">String</span> bearer = req.getHeader(<span class="str">"Authorization"</span>);
+        <span class="kw">if</span> (<span class="type">StringUtils</span>.hasText(bearer) && bearer.startsWith(<span class="str">"Bearer "</span>)) {
+            <span class="kw">return</span> bearer.substring(<span class="num">7</span>);
+        }
+        <span class="kw">return null</span>;
+    }
+}
+
+<span class="cm">// ── SecurityConfig.java ──</span>
+<span class="kw">package</span> com.agromart.config;
+
+<span class="kw">import</span> com.agromart.security.JwtAuthFilter;
+<span class="kw">import</span> lombok.RequiredArgsConstructor;
+<span class="kw">import</span> org.springframework.context.annotation.Bean;
+<span class="kw">import</span> org.springframework.context.annotation.Configuration;
+<span class="kw">import</span> org.springframework.http.HttpMethod;
+<span class="kw">import</span> org.springframework.security.authentication.AuthenticationManager;
+<span class="kw">import</span> org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+<span class="kw">import</span> org.springframework.security.config.Customizer;
+<span class="kw">import</span> org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+<span class="kw">import</span> org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+<span class="kw">import</span> org.springframework.security.config.annotation.web.builders.HttpSecurity;
+<span class="kw">import</span> org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+<span class="kw">import</span> org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+<span class="kw">import</span> org.springframework.security.config.http.SessionCreationPolicy;
+<span class="kw">import</span> org.springframework.security.core.userdetails.UserDetailsService;
+<span class="kw">import</span> org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+<span class="kw">import</span> org.springframework.security.crypto.password.PasswordEncoder;
+<span class="kw">import</span> org.springframework.security.web.SecurityFilterChain;
+<span class="kw">import</span> org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+<span class="ann">@Configuration</span>
+<span class="ann">@EnableWebSecurity</span>
+<span class="ann">@EnableMethodSecurity</span>
+<span class="ann">@RequiredArgsConstructor</span>
+<span class="kw">public class</span> <span class="type">SecurityConfig</span> {
+
+    <span class="kw">private final</span> <span class="type">JwtAuthFilter</span> jwtAuthFilter;
+    <span class="kw">private final</span> <span class="type">UserDetailsService</span> userDetailsService;
+
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="type">SecurityFilterChain</span> <span class="fn">filterChain</span>(<span class="type">HttpSecurity</span> http) <span class="kw">throws</span> <span class="type">Exception</span> {
+        http
+            .csrf(<span class="type">AbstractHttpConfigurer</span>::disable)
+            .cors(<span class="type">Customizer</span>.withDefaults())
+            .sessionManagement(s -> s.sessionCreationPolicy(<span class="type">SessionCreationPolicy</span>.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(<span class="str">"/api/v1/auth/**"</span>).permitAll()
+                .requestMatchers(<span class="type">HttpMethod</span>.GET, <span class="str">"/api/v1/products/**"</span>).permitAll()
+                .requestMatchers(<span class="type">HttpMethod</span>.GET, <span class="str">"/api/v1/categories/**"</span>).permitAll()
+                .requestMatchers(<span class="str">"/api/v1/payments/paytm/callback"</span>).permitAll()
+                .requestMatchers(<span class="str">"/api/v1/admin/**"</span>).hasRole(<span class="str">"ADMIN"</span>)
+                .anyRequest().authenticated()
+            )
+            .authenticationProvider(<span class="fn">authProvider</span>())
+            .addFilterBefore(jwtAuthFilter, <span class="type">UsernamePasswordAuthenticationFilter</span>.class);
+        <span class="kw">return</span> http.build();
+    }
+
+    <span class="ann">@Bean</span> <span class="kw">public</span> <span class="type">PasswordEncoder</span> <span class="fn">passwordEncoder</span>() { <span class="kw">return new</span> <span class="type">BCryptPasswordEncoder</span>(); }
+
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="type">DaoAuthenticationProvider</span> <span class="fn">authProvider</span>() {
+        <span class="kw">var</span> p = <span class="kw">new</span> <span class="type">DaoAuthenticationProvider</span>();
+        p.setUserDetailsService(userDetailsService);
+        p.setPasswordEncoder(<span class="fn">passwordEncoder</span>());
+        <span class="kw">return</span> p;
+    }
+
+    <span class="ann">@Bean</span>
+    <span class="kw">public</span> <span class="type">AuthenticationManager</span> <span class="fn">authManager</span>(<span class="type">AuthenticationConfiguration</span> cfg) <span class="kw">throws</span> <span class="type">Exception</span> {
+        <span class="kw">return</span> cfg.getAuthenticationManager();
+    }
+}</pre>
+  </div>
+</section>
+
+<!-- S13: PAYTM -->
+<section class="section" id="s13">
+  <div class="section-id">Section 13</div>
+  <h2>Paytm Payment Gateway — Complete Integration</h2>
+
+  <div class="callout warn">
+    <strong>⚠️ Getting Paytm Credentials:</strong> Go to business.paytm.com → Create Merchant Account → Dashboard → Developer → API Keys → Copy MID and Merchant Key. Use STAGING keys during development.
+  </div>
+
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">Java</span><span class="code-file">service/PaytmPaymentService.java — COMPLETE</span></div>
+    <pre>
+<span class="kw">package</span> com.agromart.service;
+
+<span class="kw">import</span> com.agromart.entity.Order;
+<span class="kw">import</span> com.agromart.entity.Payment;
+<span class="kw">import</span> com.agromart.exception.ResourceNotFoundException;
+<span class="kw">import</span> com.agromart.repository.OrderRepository;
+<span class="kw">import</span> com.agromart.repository.PaymentRepository;
+<span class="kw">import</span> lombok.RequiredArgsConstructor;
+<span class="kw">import</span> lombok.extern.slf4j.Slf4j;
+<span class="kw">import</span> org.apache.commons.codec.digest.HmacUtils;
+<span class="kw">import</span> org.springframework.beans.factory.annotation.Value;
+<span class="kw">import</span> org.springframework.http.*;
+<span class="kw">import</span> org.springframework.stereotype.Service;
+<span class="kw">import</span> org.springframework.transaction.annotation.Transactional;
+<span class="kw">import</span> org.springframework.web.client.RestTemplate;
+<span class="kw">import</span> java.math.BigDecimal;
+<span class="kw">import</span> java.time.LocalDateTime;
+<span class="kw">import</span> java.util.*;
+
+<span class="ann">@Service</span>
+<span class="ann">@RequiredArgsConstructor</span>
+<span class="ann">@Slf4j</span>
+<span class="kw">public class</span> <span class="type">PaytmPaymentService</span> {
+
+    <span class="ann">@Value</span>(<span class="str">"${paytm.merchant.id}"</span>)     <span class="kw">private</span> <span class="type">String</span> merchantId;
+    <span class="ann">@Value</span>(<span class="str">"${paytm.merchant.key}"</span>)    <span class="kw">private</span> <span class="type">String</span> merchantKey;
+    <span class="ann">@Value</span>(<span class="str">"${paytm.website}"</span>)         <span class="kw">private</span> <span class="type">String</span> website;
+    <span class="ann">@Value</span>(<span class="str">"${paytm.channel.id}"</span>)      <span class="kw">private</span> <span class="type">String</span> channelId;
+    <span class="ann">@Value</span>(<span class="str">"${paytm.industry.type}"</span>)   <span class="kw">private</span> <span class="type">String</span> industryType;
+    <span class="ann">@Value</span>(<span class="str">"${paytm.transaction.url}"</span>) <span class="kw">private</span> <span class="type">String</span> txnUrl;
+    <span class="ann">@Value</span>(<span class="str">"${paytm.status.url}"</span>)     <span class="kw">private</span> <span class="type">String</span> statusUrl;
+
+    <span class="kw">private final</span> <span class="type">OrderRepository</span> orderRepository;
+    <span class="kw">private final</span> <span class="type">PaymentRepository</span> paymentRepository;
+    <span class="kw">private final</span> <span class="type">RestTemplate</span> restTemplate;
+
+    <span class="cm">/**
+     * STEP 1: Initiate Paytm transaction
+     * Called when customer clicks "Pay" on checkout page
+     */</span>
+    <span class="kw">public</span> <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; <span class="fn">initiateTransaction</span>(<span class="type">Long</span> orderId, <span class="type">String</span> customerEmail) {
+        <span class="type">Order</span> order = orderRepository.findById(orderId)
+            .orElseThrow(() -> <span class="kw">new</span> <span class="type">ResourceNotFoundException</span>(<span class="str">"Order not found: "</span> + orderId));
+
+        <span class="type">String</span> paytmOrderId = <span class="str">"AGRO_"</span> + orderId + <span class="str">"_"</span> + <span class="type">System</span>.currentTimeMillis();
+
+        <span class="cm">// Build Paytm request parameters</span>
+        <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; params = <span class="kw">new</span> <span class="type">TreeMap</span>&lt;&gt;();
+        params.put(<span class="str">"MID"</span>, merchantId);
+        params.put(<span class="str">"WEBSITE"</span>, website);
+        params.put(<span class="str">"CHANNEL_ID"</span>, channelId);
+        params.put(<span class="str">"INDUSTRY_TYPE_ID"</span>, industryType);
+        params.put(<span class="str">"ORDER_ID"</span>, paytmOrderId);
+        params.put(<span class="str">"CUST_ID"</span>, customerEmail);
+        params.put(<span class="str">"TXN_AMOUNT"</span>, order.getTotalAmount().toPlainString());
+        params.put(<span class="str">"CURRENCY"</span>, <span class="str">"INR"</span>);
+        params.put(<span class="str">"CALLBACK_URL"</span>, <span class="str">"http://localhost:8080/api/v1/payments/paytm/callback"</span>);
+
+        <span class="cm">// Generate checksum</span>
+        <span class="type">String</span> checksum = <span class="fn">generateChecksum</span>(params, merchantKey);
+        params.put(<span class="str">"CHECKSUMHASH"</span>, checksum);
+
+        <span class="cm">// Save payment record</span>
+        <span class="type">Payment</span> payment = <span class="type">Payment</span>.builder()
+            .order(order)
+            .paytmOrderId(paytmOrderId)
+            .amount(order.getTotalAmount())
+            .status(<span class="type">Payment</span>.<span class="type">PaymentStatus</span>.INITIATED)
+            .gateway(<span class="type">Payment</span>.<span class="type">Gateway</span>.PAYTM)
+            .build();
+        paymentRepository.save(payment);
+
+        <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; response = <span class="kw">new</span> <span class="type">HashMap</span>&lt;&gt;();
+        response.put(<span class="str">"paytmOrderId"</span>, paytmOrderId);
+        response.put(<span class="str">"txnUrl"</span>, txnUrl);
+        response.put(<span class="str">"checksum"</span>, checksum);
+        response.put(<span class="str">"amount"</span>, order.getTotalAmount().toPlainString());
+        response.put(<span class="str">"merchantId"</span>, merchantId);
+        <span class="kw">return</span> response;
+    }
+
+    <span class="cm">/**
+     * STEP 2: Verify Paytm callback
+     * Paytm calls this URL after payment
+     */</span>
+    <span class="ann">@Transactional</span>
+    <span class="kw">public</span> <span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; <span class="fn">verifyCallback</span>(<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; paytmParams) {
+        <span class="kw">try</span> {
+            <span class="type">String</span> receivedChecksum = paytmParams.remove(<span class="str">"CHECKSUMHASH"</span>);
+            <span class="kw">boolean</span> isValid = <span class="fn">verifyChecksum</span>(paytmParams, merchantKey, receivedChecksum);
+
+            <span class="kw">if</span> (!isValid) {
+                <span class="kw">throw new</span> <span class="type">RuntimeException</span>(<span class="str">"Invalid Paytm checksum"</span>);
+            }
+
+            <span class="type">String</span> txnStatus = paytmParams.get(<span class="str">"STATUS"</span>);
+            <span class="type">String</span> paytmOrderId = paytmParams.get(<span class="str">"ORDERID"</span>);
+            <span class="type">String</span> txnId = paytmParams.get(<span class="str">"TXNID"</span>);
+
+            <span class="type">Payment</span> payment = paymentRepository.findByPaytmOrderId(paytmOrderId)
+                .orElseThrow(() -> <span class="kw">new</span> <span class="type">ResourceNotFoundException</span>(<span class="str">"Payment not found"</span>));
+
+            <span class="kw">if</span> (<span class="str">"TXN_SUCCESS"</span>.equals(txnStatus)) {
+                payment.setTxnId(txnId);
+                payment.setStatus(<span class="type">Payment</span>.<span class="type">PaymentStatus</span>.SUCCESS);
+                payment.setPaidAt(<span class="type">LocalDateTime</span>.now());
+
+                <span class="type">Order</span> order = payment.getOrder();
+                order.setPaymentStatus(<span class="type">Order</span>.<span class="type">PaymentStatus</span>.PAID);
+                order.setStatus(<span class="type">Order</span>.<span class="type">OrderStatus</span>.CONFIRMED);
+                orderRepository.save(order);
+            } <span class="kw">else</span> {
+                payment.setStatus(<span class="type">Payment</span>.<span class="type">PaymentStatus</span>.FAILED);
+            }
+
+            paymentRepository.save(payment);
+            <span class="kw">return</span> <span class="type">Map</span>.of(<span class="str">"status"</span>, txnStatus, <span class="str">"txnId"</span>, txnId != <span class="kw">null</span> ? txnId : <span class="str">""</span>);
+
+        } <span class="kw">catch</span> (<span class="type">Exception</span> e) {
+            log.error(<span class="str">"Paytm callback error"</span>, e);
+            <span class="kw">throw new</span> <span class="type">RuntimeException</span>(<span class="str">"Payment verification failed: "</span> + e.getMessage());
+        }
+    }
+
+    <span class="cm">// Paytm checksum generation using HMAC-SHA256</span>
+    <span class="kw">private</span> <span class="type">String</span> <span class="fn">generateChecksum</span>(<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; params, <span class="type">String</span> key) {
+        <span class="type">StringBuilder</span> sb = <span class="kw">new</span> <span class="type">StringBuilder</span>();
+        params.entrySet().stream()
+            .sorted(<span class="type">Map</span>.<span class="type">Entry</span>.comparingByKey())
+            .forEach(e -> sb.append(e.getValue()).append(<span class="str">"|"</span>));
+        <span class="type">String</span> salt = <span class="type">UUID</span>.randomUUID().toString().substring(<span class="num">0</span>, <span class="num">8</span>);
+        sb.append(salt);
+        <span class="type">String</span> hash = <span class="type">HmacUtils</span>.hmacSha256Hex(key, sb.toString());
+        <span class="kw">return</span> hash + salt;
+    }
+
+    <span class="kw">private boolean</span> <span class="fn">verifyChecksum</span>(<span class="type">Map</span>&lt;<span class="type">String</span>, <span class="type">String</span>&gt; params, <span class="type">String</span> key, <span class="type">String</span> checksum) {
+        <span class="kw">if</span> (checksum == <span class="kw">null</span> || checksum.length() < <span class="num">8</span>) <span class="kw">return false</span>;
+        <span class="type">String</span> salt = checksum.substring(checksum.length() - <span class="num">8</span>);
+        <span class="type">StringBuilder</span> sb = <span class="kw">new</span> <span class="type">StringBuilder</span>();
+        params.entrySet().stream()
+            .sorted(<span class="type">Map</span>.<span class="type">Entry</span>.comparingByKey())
+            .forEach(e -> sb.append(e.getValue()).append(<span class="str">"|"</span>));
+        sb.append(salt);
+        <span class="type">String</span> expected = <span class="type">HmacUtils</span>.hmacSha256Hex(key, sb.toString()) + salt;
+        <span class="kw">return</span> expected.equals(checksum);
+    }
+}</pre>
+  </div>
+
+  <h3>Angular — Paytm Frontend Flow</h3>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">TypeScript</span><span class="code-file">checkout.component.ts — Full Paytm redirect flow</span></div>
+    <pre>
+<span class="cm">// ⚠️ ALL imports</span>
+<span class="kw">import</span> { Component, OnInit } <span class="kw">from</span> <span class="str">'@angular/core'</span>;
+<span class="kw">import</span> { FormBuilder, FormGroup, Validators } <span class="kw">from</span> <span class="str">'@angular/forms'</span>;
+<span class="kw">import</span> { Router } <span class="kw">from</span> <span class="str">'@angular/router'</span>;
+<span class="kw">import</span> { PaymentService } <span class="kw">from</span> <span class="str">'../../core/services/payment.service'</span>;
+<span class="kw">import</span> { OrderService } <span class="kw">from</span> <span class="str">'../../core/services/order.service'</span>;
+<span class="kw">import</span> { CartService } <span class="kw">from</span> <span class="str">'../../core/services/cart.service'</span>;
+<span class="kw">import</span> { AuthService } <span class="kw">from</span> <span class="str">'../../core/services/auth.service'</span>;
+
+<span class="ann">@Component</span>({
+  selector: <span class="str">'app-checkout'</span>,
+  templateUrl: <span class="str">'./checkout.component.html'</span>
+})
+<span class="kw">export class</span> <span class="type">CheckoutComponent</span> <span class="kw">implements</span> <span class="type">OnInit</span> {
+
+  checkoutForm!: <span class="type">FormGroup</span>;
+  isLoading = <span class="kw">false</span>;
+
+  <span class="kw">constructor</span>(
+    <span class="kw">private</span> fb: <span class="type">FormBuilder</span>,
+    <span class="kw">private</span> orderService: <span class="type">OrderService</span>,
+    <span class="kw">private</span> paymentService: <span class="type">PaymentService</span>,
+    <span class="kw">private</span> cartService: <span class="type">CartService</span>,
+    <span class="kw">private</span> authService: <span class="type">AuthService</span>,
+    <span class="kw">private</span> router: <span class="type">Router</span>
+  ) {}
+
+  ngOnInit() {
+    <span class="kw">this</span>.checkoutForm = <span class="kw">this</span>.fb.group({
+      firstName: [<span class="str">''</span>, <span class="type">Validators</span>.required],
+      lastName: [<span class="str">''</span>, <span class="type">Validators</span>.required],
+      phone: [<span class="str">''</span>, [<span class="type">Validators</span>.required, <span class="type">Validators</span>.pattern(<span class="str">'^[6-9][0-9]{9}$'</span>)]],
+      address: [<span class="str">''</span>, <span class="type">Validators</span>.required],
+      city: [<span class="str">''</span>, <span class="type">Validators</span>.required],
+      state: [<span class="str">''</span>, <span class="type">Validators</span>.required],
+      pincode: [<span class="str">''</span>, [<span class="type">Validators</span>.required, <span class="type">Validators</span>.pattern(<span class="str">'^[1-9][0-9]{5}$'</span>)]],
+      paymentMethod: [<span class="str">'PAYTM'</span>, <span class="type">Validators</span>.required]
+    });
+  }
+
+  <span class="kw">async</span> placeOrder() {
+    <span class="kw">if</span> (<span class="kw">this</span>.checkoutForm.invalid) { <span class="kw">this</span>.checkoutForm.markAllAsTouched(); <span class="kw">return</span>; }
+    <span class="kw">this</span>.isLoading = <span class="kw">true</span>;
+
+    <span class="kw">const</span> f = <span class="kw">this</span>.checkoutForm.value;
+    <span class="kw">const</span> deliveryAddress = `${f.firstName} ${f.lastName}, ${f.phone}, ${f.address}, ${f.city}, ${f.state} - ${f.pincode}`;
+
+    <span class="kw">const</span> orderPayload = {
+      items: <span class="kw">this</span>.cartService.getItems().map(i => ({
+        productId: i.product.id,
+        quantity: i.quantity
+      })),
+      deliveryAddress,
+      paymentMethod: f.paymentMethod
+    };
+
+    <span class="kw">try</span> {
+      <span class="cm">// 1. Create order in backend</span>
+      <span class="kw">const</span> order = <span class="kw">await this</span>.orderService.createOrder(orderPayload).toPromise();
+
+      <span class="kw">if</span> (f.paymentMethod === <span class="str">'COD'</span>) {
+        <span class="kw">this</span>.cartService.clearCart();
+        <span class="kw">this</span>.router.navigate([<span class="str">'/orders'</span>, order.id], { queryParams: { success: <span class="kw">true</span> }});
+        <span class="kw">return</span>;
+      }
+
+      <span class="cm">// 2. Initiate Paytm payment</span>
+      <span class="kw">const</span> paytmData = <span class="kw">await this</span>.paymentService.initiatePaytm(order.id).toPromise();
+
+      <span class="cm">// 3. Build form and redirect to Paytm</span>
+      <span class="kw">const</span> form = document.createElement(<span class="str">'form'</span>);
+      form.method = <span class="str">'POST'</span>;
+      form.action = paytmData.txnUrl;
+
+      [<span class="str">'MID'</span>, <span class="str">'WEBSITE'</span>, <span class="str">'CHANNEL_ID'</span>, <span class="str">'INDUSTRY_TYPE_ID'</span>,
+       <span class="str">'ORDER_ID'</span>, <span class="str">'CUST_ID'</span>, <span class="str">'TXN_AMOUNT'</span>, <span class="str">'CURRENCY'</span>,
+       <span class="str">'CALLBACK_URL'</span>, <span class="str">'CHECKSUMHASH'</span>].forEach(key => {
+        <span class="kw">const</span> input = document.createElement(<span class="str">'input'</span>);
+        input.type = <span class="str">'hidden'</span>;
+        input.name = key;
+        input.value = paytmData[key] || <span class="str">''</span>;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit(); <span class="cm">// Redirect to Paytm!</span>
+
+    } <span class="kw">catch</span> (err) {
+      console.error(<span class="str">'Order placement failed'</span>, err);
+      <span class="kw">this</span>.isLoading = <span class="kw">false</span>;
+    }
+  }
+}</pre>
+  </div>
+</section>
+
+<!-- S14: SEED DATA -->
+<section class="section" id="s14">
+  <div class="section-id">Section 14</div>
+  <h2>Complete Demo Seed Data (10 Products)</h2>
+  <div class="code-block">
+    <div class="code-header"><span class="code-lang">SQL</span><span class="code-file">seed-data.sql — Run after schema.sql</span></div>
+    <pre>
+<span class="kw">USE</span> agromart_db;
+
+<span class="cm">-- Demo Admin User (password: Admin@123)</span>
+<span class="kw">INSERT INTO</span> users (name, email, password, phone, is_active, is_verified)
+<span class="kw">VALUES</span>(<span class="str">'Admin User'</span>, <span class="str">'admin@agromart.com'</span>,
+    <span class="str">'$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'</span>,
+    <span class="str">'9000000001'</span>, <span class="kw">TRUE</span>, <span class="kw">TRUE</span>);
+<span class="kw">INSERT INTO</span> user_roles <span class="kw">VALUES</span> (LAST_INSERT_ID(), <span class="num">3</span>); <span class="cm">-- role_id 3 = ADMIN</span>
+
+<span class="cm">-- Demo Farmer 1</span>
+<span class="kw">INSERT INTO</span> users (name, email, password, phone, address, is_active, is_verified)
+<span class="kw">VALUES</span>(<span class="str">'Raju Reddy'</span>, <span class="str">'raju@farm.com'</span>,
+    <span class="str">'$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'</span>,
+    <span class="str">'9876543210'</span>, <span class="str">'Bhimavaram, West Godavari, Andhra Pradesh'</span>, <span class="kw">TRUE</span>, <span class="kw">TRUE</span>);
+<span class="kw">SET</span> @farmer1 = LAST_INSERT_ID();
+<span class="kw">INSERT INTO</span> user_roles <span class="kw">VALUES</span> (@farmer1, <span class="num">1</span>); <span class="cm">-- FARMER</span>
+
+<span class="cm">-- Demo Farmer 2</span>
+<span class="kw">INSERT INTO</span> users (name, email, password, phone, address, is_active, is_verified)
+<span class="kw">VALUES</span>(<span class="str">'Gurmail Singh'</span>, <span class="str">'gurmail@farm.com'</span>,
+    <span class="str">'$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'</span>,
+    <span class="str">'9876543211'</span>, <span class="str">'Amritsar, Punjab'</span>, <span class="kw">TRUE</span>, <span class="kw">TRUE</span>);
+<span class="kw">SET</span> @farmer2 = LAST_INSERT_ID();
+<span class="kw">INSERT INTO</span> user_roles <span class="kw">VALUES</span> (@farmer2, <span class="num">1</span>);
+
+<span class="cm">-- Demo Customer</span>
+<span class="kw">INSERT INTO</span> users (name, email, password, phone, is_active, is_verified)
+<span class="kw">VALUES</span>(<span class="str">'Priya Sharma'</span>, <span class="str">'priya@gmail.com'</span>,
+    <span class="str">'$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'</span>,
+    <span class="str">'9876500001'</span>, <span class="kw">TRUE</span>, <span class="kw">TRUE</span>);
+<span class="kw">INSERT INTO</span> user_roles <span class="kw">VALUES</span> (LAST_INSERT_ID(), <span class="num">2</span>); <span class="cm">-- CUSTOMER</span>
+
+<span class="cm">-- NOTE: All demo passwords = "Password@123"</span>
+<span class="cm">-- Hash above is BCrypt of "Password@123"</span>
+
+<span class="cm">-- PRODUCTS</span>
+<span class="kw">INSERT INTO</span> products (farmer_id, category_id, name, description, price, unit, stock_qty, image_url, is_organic, origin_state) <span class="kw">VALUES</span>
+
+(<span class="cm">-- Vegetables</span>
+  @farmer1, <span class="num">1</span>,
+  <span class="str">'Farm Fresh Tomatoes'</span>,
+  <span class="str">'Sun-ripened tomatoes directly from our farm. No pesticides used. Freshly harvested every morning.'</span>,
+  <span class="num">45.00</span>, <span class="str">'kg'</span>, <span class="num">200</span>,
+  <span class="str">'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=500&q=80'</span>,
+  <span class="kw">TRUE</span>, <span class="str">'Andhra Pradesh'</span>
+),
+(
+  @farmer1, <span class="num">1</span>,
+  <span class="str">'Organic Carrots (Gajar)'</span>,
+  <span class="str">'Sweet, crunchy carrots grown naturally. Rich in beta-carotene. Excellent for juices and sabzi.'</span>,
+  <span class="num">60.00</span>, <span class="str">'kg'</span>, <span class="num">150</span>,
+  <span class="str">'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=500&q=80'</span>,
+  <span class="kw">TRUE</span>, <span class="str">'Karnataka'</span>
+),
+(
+  @farmer1, <span class="num">1</span>,
+  <span class="str">'Red Onions (Pyaaz) — Nashik'</span>,
+  <span class="str">'Premium red onions from Nashik. Strong flavour, good shelf life. 1kg pack sealed for freshness.'</span>,
+  <span class="num">35.00</span>, <span class="str">'kg'</span>, <span class="num">500</span>,
+  <span class="str">'https://images.unsplash.com/photo-1618512496248-a07fe83aa8cb?w=500&q=80'</span>,
+  <span class="kw">FALSE</span>, <span class="str">'Maharashtra'</span>
+),
+(
+  @farmer1, <span class="num">1</span>,
+  <span class="str">'Baby Potatoes'</span>,
+  <span class="str">'Small potatoes perfect for roasting, dum aloo & curries. Freshly dug from Agra farms.'</span>,
+  <span class="num">28.00</span>, <span class="str">'kg'</span>, <span class="num">300</span>,
+  <span class="str">'https://images.unsplash.com/photo-1552318965-6e6be7484ada?w=500&q=80'</span>,
+  <span class="kw">FALSE</span>, <span class="str">'Uttar Pradesh'</span>
+),
+(<span class="cm">-- Grains</span>
+  @farmer2, <span class="num">2</span>,
+  <span class="str">'Premium Basmati Rice (5kg Bag)'</span>,
+  <span class="str">'Aged 2-year basmati from Punjab fields. Long grain, aromatic. Perfect for biryani and pulao. GI certified.'</span>,
+  <span class="num">280.00</span>, <span class="str">'bag'</span>, <span class="num">100</span>,
+  <span class="str">'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=500&q=80'</span>,
+  <span class="kw">FALSE</span>, <span class="str">'Punjab'</span>
+),
+(
+  @farmer2, <span class="num">2</span>,
+  <span class="str">'Sona Masoori Rice (10kg)'</span>,
+  <span class="str">'Medium-grain everyday rice from Telangana. Low starch, soft texture. Ideal for daily cooking.'</span>,
+  <span class="num">420.00</span>, <span class="str">'bag'</span>, <span class="num">80</span>,
+  <span class="str">'https://images.unsplash.com/photo-1536304993881-ff86e0c9ef50?w=500&q=80'</span>,
+  <span class="kw">FALSE</span>, <span class="str">'Telangana'</span>
+),
+(<span class="cm">-- Dairy</span>
+  @farmer1, <span class="num">4</span>,
+  <span class="str">'Pure A2 Gir Cow Ghee (500ml)'</span>,
+  <span class="str">'Traditional bilona-churned ghee from Gir cows. Golden colour, nutty aroma. 100% pure, no additives.'</span>,
+  <span class="num">650.00</span>, <span class="str">'jar'</span>, <span class="num">50</span>,
+  <span class="str">'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?w=500&q=80'</span>,
+  <span class="kw">TRUE</span>, <span class="str">'Gujarat'</span>
+),
+(<span class="cm">-- Spices</span>
+  @farmer1, <span class="num">6</span>,
+  <span class="str">'Guntur Red Chilli Powder (250g)'</span>,
+  <span class="str">'HOT & aromatic. Stone-ground Guntur 334 variety. Resealable pack. Colour: deep red. No additives.'</span>,
+  <span class="num">120.00</span>, <span class="str">'pack'</span>, <span class="num">200</span>,
+  <span class="str">'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=500&q=80'</span>,
+  <span class="kw">FALSE</span>, <span class="str">'Andhra Pradesh'</span>
+),
+(
+  @farmer1, <span class="num">6</span>,
+  <span class="str">'Organic Turmeric Powder (200g)'</span>,
+  <span class="str">'High-curcumin Erode turmeric. Deep golden colour. Freshly ground. 100% pure, no preservatives.'</span>,
+  <span class="num">90.00</span>, <span class="str">'pack'</span>, <span class="num">150</span>,
+  <span class="str">'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=500&q=80'</span>,
+  <span class="kw">TRUE</span>, <span class="str">'Tamil Nadu'</span>
+),
+(<span class="cm">-- Pulses</span>
+  @farmer2, <span class="num">5</span>,
+  <span class="str">'Toor Dal / Arhar Dal (1kg)'</span>,
+  <span class="str">'Machine-cleaned split pigeon peas from MP. Uniform size, minimum impurities. Makes creamy dal.'</span>,
+  <span class="num">140.00</span>, <span class="str">'kg'</span>, <span class="num">300</span>,
+  <span class="str">'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=500&q=80'</span>,
+  <span class="kw">FALSE</span>, <span class="str">'Madhya Pradesh'</span>
+),
+(<span class="cm">-- Fruits</span>
+  @farmer1, <span class="num">3</span>,
+  <span class="str">'Ratnagiri Alphonso Mangoes (1 dozen)'</span>,
+  <span class="str">'The King of Mangoes. Ratnagiri GI-tagged. Fibreless, sweet, aromatic. Pack of 12. Season: Apr-Jun.'</span>,
+  <span class="num">580.00</span>, <span class="str">'box'</span>, <span class="num">40</span>,
+  <span class="str">'https://images.unsplash.com/photo-1553279768-865429fa0078?w=500&q=80'</span>,
+  <span class="kw">FALSE</span>, <span class="str">'Maharashtra'</span>
+);</pre>
+  </div>
+</section>
+
+<!-- S15: API -->
+<section class="section" id="s15">
+  <div class="section-id">Section 15</div>
+  <h2>Complete API Reference</h2>
+  <h3>Auth Endpoints</h3>
+  <div class="endpoint"><span class="method post">POST</span><span class="ep-path">/api/v1/auth/register</span><span class="ep-note">No auth required · Body: {name, email, password, phone, role}</span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="ep-path">/api/v1/auth/login</span><span class="ep-note">No auth required · Body: {email, password}</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/auth/me</span><span class="ep-note">JWT required</span></div>
+  <h3>Product Endpoints</h3>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/products?page=0&size=12&sort=createdAt</span><span class="ep-note">Public</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/products/{id}</span><span class="ep-note">Public</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/products/search?q=tomato&page=0</span><span class="ep-note">Public</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/products/category/{categoryId}</span><span class="ep-note">Public</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/products/filter?minPrice=10&maxPrice=500</span><span class="ep-note">Public</span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="ep-path">/api/v1/products</span><span class="ep-note">FARMER role required</span></div>
+  <div class="endpoint"><span class="method put">PUT</span><span class="ep-path">/api/v1/products/{id}</span><span class="ep-note">FARMER role required</span></div>
+  <div class="endpoint"><span class="method del">DELETE</span><span class="ep-path">/api/v1/products/{id}</span><span class="ep-note">FARMER or ADMIN</span></div>
+  <h3>Order Endpoints</h3>
+  <div class="endpoint"><span class="method post">POST</span><span class="ep-path">/api/v1/orders</span><span class="ep-note">CUSTOMER required · Body: {items, deliveryAddress}</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/orders</span><span class="ep-note">Get current user orders</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/orders/{id}</span><span class="ep-note">Order details</span></div>
+  <div class="endpoint"><span class="method put">PUT</span><span class="ep-path">/api/v1/orders/{id}/status</span><span class="ep-note">FARMER/ADMIN · Body: {status}</span></div>
+  <div class="endpoint"><span class="method put">PUT</span><span class="ep-path">/api/v1/orders/{id}/cancel</span><span class="ep-note">CUSTOMER</span></div>
+  <h3>Payment Endpoints</h3>
+  <div class="endpoint"><span class="method post">POST</span><span class="ep-path">/api/v1/payments/paytm/initiate/{orderId}</span><span class="ep-note">Returns Paytm form params</span></div>
+  <div class="endpoint"><span class="method post">POST</span><span class="ep-path">/api/v1/payments/paytm/callback</span><span class="ep-note">Paytm POST callback — permitAll</span></div>
+  <div class="endpoint"><span class="method get">GET</span><span class="ep-path">/api/v1/payments/order/{orderId}</span><span class="ep-note">Get payment status</span></div>
+</section>
+
+<!-- S17: DEPLOYMENT -->
+<section class="section" id="s17">
+  <div class="section-id">Section 17</div>
+  <h2>Deployment — Step by Step</h2>
+
+  <div class="deploy-box">
+    <h4>🐳 Step 1 — Dockerize Backend</h4>
+    <div class="deploy-step">
+      <div class="deploy-num">1</div>
+      <div class="deploy-step-content">
+        <h5>Create Dockerfile in backend root</h5>
+        <code>FROM eclipse-temurin:17-jdk-alpine AS build\nWORKDIR /app\nCOPY pom.xml .\nCOPY src ./src\nRUN ./mvnw clean package -DskipTests\nFROM eclipse-temurin:17-jre-alpine\nCOPY --from=build /app/target/*.jar app.jar\nEXPOSE 8080\nENTRYPOINT ["java","-jar","app.jar"]</code>
+      </div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">2</div>
+      <div class="deploy-step-content">
+        <h5>Create docker-compose.yml in project root</h5>
+        <code>version: '3.8'\nservices:\n  mysql:\n    image: mysql:8.0\n    environment:\n      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}\n      MYSQL_DATABASE: agromart_db\n    volumes:\n      - mysql_data:/var/lib/mysql\n      - ./schema.sql:/docker-entrypoint-initdb.d/1-schema.sql\n      - ./seed-data.sql:/docker-entrypoint-initdb.d/2-seed.sql\n    ports: ["3306:3306"]\n  backend:\n    build: ./backend\n    ports: ["8080:8080"]\n    env_file: .env\n    depends_on: [mysql]</code>
+      </div>
+    </div>
+  </div>
+
+  <div class="deploy-box">
+    <h4>☁️ Step 2 — Deploy Backend on AWS EC2</h4>
+    <div class="deploy-step">
+      <div class="deploy-num">1</div>
+      <div class="deploy-step-content"><h5>Launch EC2 Instance</h5><p>AWS Console → EC2 → Launch Instance → Ubuntu 22.04 → t2.micro (free tier) → Security Group: open ports 8080, 22, 443</p></div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">2</div>
+      <div class="deploy-step-content"><h5>SSH and install Java + MySQL</h5><code>sudo apt update && sudo apt install -y openjdk-17-jdk mysql-server\nsudo mysql_secure_installation</code></div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">3</div>
+      <div class="deploy-step-content"><h5>Create DB and run schema</h5><code>sudo mysql -u root -p\nCREATE DATABASE agromart_db;\nEXIT;\nmysql -u root -p agromart_db < schema.sql\nmysql -u root -p agromart_db < seed-data.sql</code></div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">4</div>
+      <div class="deploy-step-content"><h5>Build and run JAR</h5><code>./mvnw clean package -DskipTests\njava -jar target/backend-1.0.0.jar \\\n  --spring.datasource.password=YOUR_PASS \\\n  --jwt.secret=YOUR_SECRET \\\n  --paytm.merchant.id=YOUR_MID \\\n  --paytm.merchant.key=YOUR_KEY</code></div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">5</div>
+      <div class="deploy-step-content"><h5>Run as background service (systemd)</h5><code>sudo nano /etc/systemd/system/agromart.service\n[Service]\nExecStart=java -jar /home/ubuntu/backend.jar\nRestart=always\nsudo systemctl enable agromart && sudo systemctl start agromart</code></div>
+    </div>
+  </div>
+
+  <div class="deploy-box">
+    <h4>🌐 Step 3 — Deploy Frontend on Netlify</h4>
+    <div class="deploy-step">
+      <div class="deploy-num">1</div>
+      <div class="deploy-step-content"><h5>Update API URL in environment.ts</h5><code>export const environment = { production: true, apiUrl: 'http://YOUR_EC2_IP:8080/api/v1' };</code></div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">2</div>
+      <div class="deploy-step-content"><h5>Build Angular for production</h5><code>ng build --configuration production</code></div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">3</div>
+      <div class="deploy-step-content"><h5>Deploy to Netlify</h5><p>netlify.com → New site from Git → connect GitHub → Build command: <code>ng build --prod</code> → Publish dir: <code>dist/agromart-frontend</code></p></div>
+    </div>
+    <div class="deploy-step">
+      <div class="deploy-num">4</div>
+      <div class="deploy-step-content"><h5>Add _redirects file for Angular routing</h5><code>echo "/* /index.html 200" > dist/agromart-frontend/_redirects</code></div>
+    </div>
+  </div>
+</section>
+
+<!-- S18: CREDENTIALS -->
+<section class="section" id="s18">
+  <div class="section-id">Section 18</div>
+  <h2>Credentials Setup Checklist</h2>
+
+  <div class="callout cred">
+    <strong>🔴 NEVER commit credentials to GitHub.</strong> Always use environment variables or a .env file that is listed in .gitignore.
+  </div>
+
+  <table>
+    <tr><th>Credential</th><th>Where to Get It</th><th>Property Key</th></tr>
+    <tr><td>MySQL Password</td><td>Set when installing MySQL: <code>mysql_secure_installation</code></td><td><code>spring.datasource.password</code></td></tr>
+    <tr><td>JWT Secret</td><td>Run: <code>openssl rand -base64 64</code></td><td><code>jwt.secret</code></td></tr>
+    <tr><td>Paytm MID</td><td>business.paytm.com → Dashboard → Developer → API Keys</td><td><code>paytm.merchant.id</code></td></tr>
+    <tr><td>Paytm Merchant Key</td><td>Same as above (keep SECRET — never expose on frontend)</td><td><code>paytm.merchant.key</code></td></tr>
+    <tr><td>AWS Access Key</td><td>AWS Console → IAM → Users → Security credentials → Create access key</td><td><code>aws.access.key</code></td></tr>
+    <tr><td>AWS Secret Key</td><td>Shown ONCE when creating access key — save immediately</td><td><code>aws.secret.key</code></td></tr>
+    <tr><td>Gmail App Password</td><td>Google Account → Security → 2-Step Verification → App Passwords → Generate</td><td><code>spring.mail.password</code></td></tr>
+  </table>
+
+  <div class="callout tip">
+    <strong>✅ For production: switch Paytm URLs</strong><br>
+    Staging: <code>https://securegw-stage.paytm.in/theia/processTransaction</code><br>
+    Production: <code>https://securegw.paytm.in/theia/processTransaction</code> (after Paytm approves your merchant account)
+  </div>
+
+  <div class="checklist">
+    <h4>Pre-launch Checklist</h4>
+    <div class="check-item"><span class="chk">☐</span> MySQL schema.sql executed successfully</div>
+    <div class="check-item"><span class="chk">☐</span> seed-data.sql executed (demo products loaded)</div>
+    <div class="check-item"><span class="chk">☐</span> application.properties has all credentials filled</div>
+    <div class="check-item"><span class="chk">☐</span> JWT secret is 256-bit (64 base64 chars minimum)</div>
+    <div class="check-item"><span class="chk">☐</span> Paytm STAGING credentials working (test payment ₹1)</div>
+    <div class="check-item"><span class="chk">☐</span> CORS configured for your Angular frontend URL</div>
+    <div class="check-item"><span class="chk">☐</span> Angular environment.ts pointing to correct backend URL</div>
+    <div class="check-item"><span class="chk">☐</span> Paytm callback URL points to your deployed backend</div>
+    <div class="check-item"><span class="chk">☐</span> _redirects file in Netlify for Angular SPA routing</div>
+    <div class="check-item"><span class="chk">☐</span> Test all 3 demo logins (admin/farmer/customer)</div>
+  </div>
+
+  <h3>Quick Test Credentials (after seed-data.sql)</h3>
+  <table>
+    <tr><th>Role</th><th>Email</th><th>Password</th></tr>
+    <tr><td>Admin</td><td><code>admin@agromart.com</code></td><td><code>Password@123</code></td></tr>
+    <tr><td>Farmer</td><td><code>raju@farm.com</code></td><td><code>Password@123</code></td></tr>
+    <tr><td>Customer</td><td><code>priya@gmail.com</code></td><td><code>Password@123</code></td></tr>
+  </table>
+</section>
+
+<!-- S19: ADVANCED -->
+<section class="section" id="s19">
+  <div class="section-id">Section 19</div>
+  <h2>Advanced Features</h2>
+  <div class="two-col">
+    <div class="info-card"><h4>📸 AWS S3 Image Upload</h4><p>Add <code>@PostMapping("/upload")</code> in ProductController. Use AWS SDK S3Client. Store S3 URL in product.imageUrl. Configure CORS on S3 bucket for Angular.</p></div>
+    <div class="info-card"><h4>📧 Email Notifications</h4><p>Spring Mail + Gmail SMTP. Send on order confirmation, shipped, delivered. Use HTML email templates with Thymeleaf.</p></div>
+    <div class="info-card"><h4>🔴 Real-time Order Updates</h4><p>Spring WebSocket + STOMP. Angular SockJS. Subscribe to <code>/topic/order/{id}</code>. Notify customer when farmer updates order status.</p></div>
+    <div class="info-card"><h4>📱 SMS via Twilio</h4><p>Add Twilio SDK. Send OTP for registration verification. SMS on order placement with Twilio SMS API. Store verified phone in users table.</p></div>
+  </div>
+</section>
+
+<div style="background:var(--surface);border-top:1px solid var(--border);padding:40px 60px;text-align:center">
+  <p style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;color:var(--green)">🌾 AgroMart — Complete Development Guide</p>
+  <p style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-dim);margin-top:8px">Spring Boot 3.2 · Angular 17 · MySQL 8 · JWT · Paytm Payment Gateway · AWS</p>
+</div>
+
+</main>
+<script>
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if(window.scrollY >= s.offsetTop - 120) current = s.id; });
+  navItems.forEach(i => i.classList.toggle('active', i.getAttribute('href')==='#'+current));
+});
+</script>
+</body>
+</html>
