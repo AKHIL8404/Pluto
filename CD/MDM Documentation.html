@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informatica MDM — Learning Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf7f2;
+    --surface: #ffffff;
+    --card: #f5f0e8;
+    --border: #e8e0d0;
+    --dark: #1a1410;
+    --ink: #2d2520;
+    --muted: #8a7d6e;
+    --accent: #d4500a;
+    --accent2: #1a6b4a;
+    --accent3: #1e4a8a;
+    --gold: #c9920a;
+    --rose: #a8294e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.75;
+    min-height: 100vh;
+  }
+
+  /* Texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  .container {
+    max-width: 1060px;
+    margin: 0 auto;
+    padding: 0 28px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 64px 0 48px;
+    border-bottom: 2px solid var(--dark);
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: end;
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(44px, 7vw, 88px);
+    line-height: 0.95;
+    letter-spacing: -2px;
+    color: var(--dark);
+    margin-bottom: 20px;
+  }
+
+  h1 span { color: var(--accent); font-style: italic; }
+
+  .header-meta {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 480px;
+  }
+
+  .phase-count {
+    text-align: right;
+  }
+
+  .big-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--border);
+    display: block;
+  }
+  .big-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* TABS */
+  .nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 48px;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+
+  .nav-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 14px 22px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--ink); }
+  .nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+  /* SECTIONS */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* PHASE CARDS */
+  .phase {
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    animation: rise 0.4s ease both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .phase:nth-child(1) { animation-delay: 0s; }
+  .phase:nth-child(2) { animation-delay: 0.06s; }
+  .phase:nth-child(3) { animation-delay: 0.12s; }
+  .phase:nth-child(4) { animation-delay: 0.18s; }
+  .phase:nth-child(5) { animation-delay: 0.24s; }
+  .phase:nth-child(6) { animation-delay: 0.30s; }
+  .phase:nth-child(7) { animation-delay: 0.36s; }
+
+  .phase-hd {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 28px;
+    cursor: pointer;
+    background: var(--surface);
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .phase-hd:hover { background: var(--card); }
+
+  .phase-index {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--border);
+    transition: color 0.2s;
+  }
+  .phase.open .phase-index { color: var(--accent); }
+
+  .phase-info {}
+  .phase-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .phase-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+
+  .phase-dur {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 5px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .phase-arr {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--muted);
+    transition: transform 0.3s, background 0.2s;
+  }
+  .phase.open .phase-arr { transform: rotate(180deg); background: var(--accent); color: white; border-color: var(--accent); }
+
+  .phase-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    background: var(--card);
+  }
+  .phase.open .phase-body { display: block; }
+
+  /* TOPIC GRID */
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .topic {
+    background: var(--surface);
+    padding: 20px 22px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .topic:hover { background: #fff8f0; }
+  .topic.active-topic { background: #fff3e6; }
+  .topic.active-topic::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .t-icon { font-size: 22px; margin-bottom: 8px; }
+  .t-name {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--dark);
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+  .t-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+  /* DETAIL */
+  .detail {
+    display: none;
+    padding: 32px 36px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    animation: rise 0.25s ease;
+  }
+  .detail.open { display: block; }
+
+  .detail h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .detail h4 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 24px 0 10px;
+  }
+  .detail h4:first-of-type { margin-top: 0; }
+
+  .detail p {
+    font-size: 14px;
+    color: #5a4e42;
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  .detail ul { list-style: none; padding: 0; margin-bottom: 16px; }
+  .detail ul li {
+    font-size: 14px;
+    color: #5a4e42;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .detail ul li::before {
+    content: '▸';
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 12px;
+  }
+  .detail ul li:last-child { border-bottom: none; }
+
+  .code-box {
+    background: var(--dark);
+    color: #d4a76a;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 20px 24px;
+    border-radius: 4px;
+    margin: 12px 0 20px;
+    overflow-x: auto;
+    line-height: 1.9;
+  }
+  .code-box .cm { color: #6a8a7a; }
+  .code-box .ck { color: #7ab8d4; }
+  .code-box .cv { color: #d4956a; }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: #fff8f2;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: #5a4e42;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout.green {
+    border-left-color: var(--accent2);
+    background: #f2faf6;
+  }
+
+  .callout.blue {
+    border-left-color: var(--accent3);
+    background: #f2f6fa;
+  }
+
+  /* NOTES PAGES */
+  .notes-wrap { animation: rise 0.4s ease; }
+
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    padding: 36px 40px;
+    margin-bottom: 28px;
+    animation: rise 0.4s ease both;
+  }
+  .note:nth-child(1) { animation-delay: 0.05s; }
+  .note:nth-child(2) { animation-delay: 0.1s; }
+  .note:nth-child(3) { animation-delay: 0.15s; }
+  .note:nth-child(4) { animation-delay: 0.2s; }
+
+  .note-hd {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .note-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--border);
+    flex-shrink: 0;
+  }
+
+  .note h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 6px;
+    line-height: 1.2;
+  }
+
+  .note-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: #fff0e6;
+    border: 1px solid #f0c8a0;
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
+  .note h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--dark);
+    margin: 24px 0 10px;
+  }
+
+  .note p { font-size: 14px; color: #5a4e42; margin-bottom: 12px; line-height: 1.75; }
+  .note ul { list-style: none; padding: 0; margin-bottom: 16px; }
+  .note ul li {
+    font-size: 14px;
+    color: #5a4e42;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 10px;
+    line-height: 1.5;
+  }
+  .note ul li::before { content: '→'; color: var(--accent2); flex-shrink: 0; }
+  .note ul li:last-child { border-bottom: none; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 16px 0;
+  }
+  th {
+    background: var(--dark);
+    color: #d4a76a;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 11px 16px;
+    text-align: left;
+  }
+  td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: #5a4e42;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: var(--card); }
+
+  footer {
+    text-align: center;
+    padding: 48px 0;
+    border-top: 1px solid var(--border);
+    margin-top: 64px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="header-inner">
+      <div>
+        <div class="eyebrow">Complete Learning Guide</div>
+        <h1>Informatica<br><span>MDM</span></h1>
+        <p class="header-meta">A structured, in-depth roadmap covering every layer of Informatica Master Data Management — from core concepts to advanced architecture, matching, and real-world implementation.</p>
+      </div>
+      <div class="phase-count">
+        <span class="big-num">7</span>
+        <span class="big-label">Phases</span>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <button class="nav-btn active" onclick="switchTab('roadmap', this)">📍 Roadmap</button>
+    <button class="nav-btn" onclick="switchTab('n-concepts', this)">📘 Core Concepts</button>
+    <button class="nav-btn" onclick="switchTab('n-arch', this)">⚙️ Architecture</button>
+    <button class="nav-btn" onclick="switchTab('n-match', this)">🎯 Match & Merge</button>
+    <button class="nav-btn" onclick="switchTab('n-integ', this)">🔌 Integrations</button>
+    <button class="nav-btn" onclick="switchTab('n-cert', this)">🎓 Certification</button>
+  </nav>
+
+  <!-- ═══════════════ ROADMAP ═══════════════ -->
+  <div id="roadmap" class="section active">
+
+    <!-- Phase 1 -->
+    <div class="phase" id="ph1">
+      <div class="phase-hd" onclick="togglePhase('ph1')">
+        <div class="phase-index">01</div>
+        <div class="phase-info">
+          <div class="phase-cat">Foundation</div>
+          <div class="phase-name">MDM Fundamentals & Informatica Overview</div>
+        </div>
+        <div class="phase-dur">2–3 weeks</div>
+        <div class="phase-arr">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topic-grid">
+          <div class="topic" onclick="showDetail('t1a', this)">
+            <div class="t-icon">🏛️</div>
+            <div class="t-name">What is MDM?</div>
+            <div class="t-desc">Concepts, business value, MDM styles and use cases.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t1b', this)">
+            <div class="t-icon">🌐</div>
+            <div class="t-name">Informatica MDM Hub</div>
+            <div class="t-desc">Platform overview, product family, and key capabilities.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t1c', this)">
+            <div class="t-icon">🗂️</div>
+            <div class="t-name">MDM Hub Components</div>
+            <div class="t-desc">Hub Server, Process Server, Hub Console, and IDD.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t1d', this)">
+            <div class="t-icon">📦</div>
+            <div class="t-name">Informatica Product Family</div>
+            <div class="t-desc">MDM Hub, Customer 360, Supplier 360, Product 360.</div>
+          </div>
+        </div>
+        <div class="detail" id="t1a">
+          <h3>🏛️ Master Data Management — Foundations</h3>
+          <h4>What is MDM?</h4>
+          <p>MDM is the practice of creating and maintaining a single, accurate, and trusted view of critical enterprise data — such as customers, products, suppliers, and locations — across all business systems.</p>
+          <h4>The Core Problem MDM Solves</h4>
+          <ul>
+            <li>Same customer exists in SAP, Salesforce, and Oracle with different names/addresses</li>
+            <li>Same product has 5 different descriptions across eCommerce, ERP, and WMS</li>
+            <li>Business analytics are inaccurate due to duplicate and inconsistent records</li>
+            <li>Regulatory compliance (GDPR, CCPA) is difficult without a single customer view</li>
+          </ul>
+          <h4>Four MDM Implementation Styles</h4>
+          <ul>
+            <li><strong>Registry:</strong> MDM holds only IDs + cross-references. No data stored. Low disruption.</li>
+            <li><strong>Consolidation:</strong> MDM reads from source systems, creates a read-only golden record for analytics.</li>
+            <li><strong>Coexistence:</strong> Golden record created AND published back to source systems (bidirectional).</li>
+            <li><strong>Centralized (Hub):</strong> MDM is the system of record. All systems write to and read from MDM.</li>
+          </ul>
+          <h4>Core MDM Data Domains</h4>
+          <ul>
+            <li>Customer MDM — B2C and B2B customer master, household and account hierarchies</li>
+            <li>Product MDM — Product catalog, specifications, classifications</li>
+            <li>Supplier MDM — Vendor master, compliance, onboarding</li>
+            <li>Employee MDM — HR master aligned with HCM systems</li>
+            <li>Location MDM — Stores, sites, geographic hierarchies</li>
+            <li>Financial MDM — Chart of accounts, cost centers, legal entities</li>
+          </ul>
+          <div class="callout">💡 Informatica MDM Hub specializes in Customer and Supplier MDM, while Informatica Product 360 focuses on Product MDM (PIM). Know which product covers which domain.</div>
+        </div>
+        <div class="detail" id="t1b">
+          <h3>🌐 Informatica MDM Hub Overview</h3>
+          <h4>What is Informatica MDM Hub?</h4>
+          <p>Informatica MDM Hub (formerly Siperian) is a multidomain MDM platform that provides master data consolidation, matching, merging, and governance capabilities. It is the industry-leading MDM platform per Gartner Magic Quadrant.</p>
+          <h4>Key Capabilities</h4>
+          <ul>
+            <li>Data ingestion from multiple source systems (ERP, CRM, legacy)</li>
+            <li>Configurable match-and-merge engine for deduplication</li>
+            <li>Golden record creation with survivorship rules</li>
+            <li>Hierarchy management for accounts, households, and org structures</li>
+            <li>Data stewardship UI (Informatica Data Director — IDD)</li>
+            <li>Workflow engine for approval and review processes</li>
+            <li>REST and SOAP APIs for real-time integration</li>
+            <li>Cleanse functions powered by Informatica Address Doctor / DQ</li>
+          </ul>
+          <h4>Deployment Options</h4>
+          <ul>
+            <li>On-Premise — Traditional server installation with Oracle/SQL Server DB</li>
+            <li>Cloud (IICS) — Informatica Intelligent Cloud Services hosted MDM</li>
+            <li>Hybrid — On-prem Hub with cloud integration services</li>
+          </ul>
+        </div>
+        <div class="detail" id="t1c">
+          <h3>🗂️ MDM Hub Core Components</h3>
+          <h4>Hub Server</h4>
+          <p>The central application server (deployed on JBoss/WebLogic/WebSphere). Hosts the core MDM business logic, ORS (Operational Reference Store), and all configuration metadata.</p>
+          <h4>Process Server</h4>
+          <p>Handles batch and real-time matching, merging, cleansing, and tokenization. A separate server for performance isolation. Runs match jobs and cleanse services.</p>
+          <h4>Hub Console</h4>
+          <p>Admin and configuration UI for MDM Hub. Used by developers and architects to configure base objects, match rules, mappings, workflows, and security. Java Swing desktop application.</p>
+          <h4>Informatica Data Director (IDD)</h4>
+          <p>Web-based data stewardship UI used by business users to review, edit, merge/unmerge records, manage hierarchies, and process workflow tasks.</p>
+          <h4>Operational Reference Store (ORS)</h4>
+          <p>The relational database schema (Oracle or SQL Server) that stores all MDM data — source records, cross-references (XREF), best version of record (BVR), and match tokens.</p>
+          <div class="callout blue">📌 The ORS is the heart of Informatica MDM. All source data lands in staging tables, gets cleansed and matched, and a golden record (Best Version of Record) is maintained alongside XREFs back to source systems.</div>
+        </div>
+        <div class="detail" id="t1d">
+          <h3>📦 Informatica MDM Product Family</h3>
+          <table>
+            <tr><th>Product</th><th>Domain</th><th>Use Case</th></tr>
+            <tr><td>MDM Hub</td><td>Customer, Supplier, Employee</td><td>Core deduplication, golden record, hierarchy</td></tr>
+            <tr><td>Customer 360</td><td>Customer</td><td>360° customer view across all touchpoints</td></tr>
+            <tr><td>Supplier 360</td><td>Supplier</td><td>Vendor onboarding, compliance, self-service portal</td></tr>
+            <tr><td>Product 360</td><td>Product</td><td>PIM — product content management, catalog enrichment</td></tr>
+            <tr><td>Business 360</td><td>Multi-domain</td><td>Connected view of customer, supplier, product in one UI</td></tr>
+            <tr><td>MDM SaaS (IDMC)</td><td>All</td><td>Cloud-native MDM on Informatica Intelligent Cloud</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase" id="ph2">
+      <div class="phase-hd" onclick="togglePhase('ph2')">
+        <div class="phase-index">02</div>
+        <div class="phase-info">
+          <div class="phase-cat">Core Configuration</div>
+          <div class="phase-name">Hub Configuration & Data Modeling</div>
+        </div>
+        <div class="phase-dur">3–4 weeks</div>
+        <div class="phase-arr">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topic-grid">
+          <div class="topic" onclick="showDetail('t2a', this)">
+            <div class="t-icon">📊</div>
+            <div class="t-name">Base Objects & Columns</div>
+            <div class="t-desc">Defining base objects, column types, data types, and constraints.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t2b', this)">
+            <div class="t-icon">🗃️</div>
+            <div class="t-name">Staging Tables & Landing</div>
+            <div class="t-desc">Source data landing, staging configuration, and trust settings.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t2c', this)">
+            <div class="t-icon">🔗</div>
+            <div class="t-name">Relationships & Hierarchies</div>
+            <div class="t-desc">One-to-many, many-to-many relationships and hierarchy management.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t2d', this)">
+            <div class="t-icon">🏷️</div>
+            <div class="t-name">Lookup Tables & Code Lists</div>
+            <div class="t-desc">Reference data management, code lists, and lookup configuration.</div>
+          </div>
+        </div>
+        <div class="detail" id="t2a">
+          <h3>📊 Base Objects & Columns</h3>
+          <h4>What is a Base Object?</h4>
+          <p>A Base Object (BO) is the core entity in Informatica MDM. It maps to a table in the ORS database and represents the master record (e.g., PARTY, ACCOUNT, PRODUCT). The golden record lives here.</p>
+          <h4>Key Base Object Tables</h4>
+          <div class="code-box">
+<span class="cm">-- For a base object "PARTY", MDM creates:</span>
+<span class="ck">C_PARTY</span>          <span class="cm">-- Base object table (golden/consolidated records)</span>
+<span class="ck">C_PARTY_XREF</span>     <span class="cm">-- Cross-reference: source records linked to BO</span>
+<span class="ck">C_PARTY_PND</span>      <span class="cm">-- Pending records (awaiting match/merge)</span>
+<span class="ck">C_PARTY_STRP</span>     <span class="cm">-- Stripped/tokenized data for matching</span>
+<span class="ck">C_PARTY_HIST</span>     <span class="cm">-- History of changes (audit trail)</span>
+<span class="ck">C_PARTY_MTCH</span>     <span class="cm">-- Match result set from match jobs</span>
+          </div>
+          <h4>Column Types</h4>
+          <ul>
+            <li>Standard Column — Regular data attribute (name, email, phone)</li>
+            <li>System Column — MDM-managed (ROWID_OBJECT, CREATE_DATE, UPDATED_BY)</li>
+            <li>Trust Column — Stores trust score per source per field</li>
+            <li>Period Column — Temporal data for effective dating</li>
+          </ul>
+          <h4>Trust & Survivorship</h4>
+          <p>Each column can have a trust configuration. When multiple source systems provide the same field, the source with the highest trust score wins for the consolidated (golden) record.</p>
+        </div>
+        <div class="detail" id="t2b">
+          <h3>🗃️ Staging Tables & Landing</h3>
+          <h4>Data Landing Flow</h4>
+          <div class="code-box">
+Source System → <span class="ck">Landing Table</span> → <span class="ck">Staging Table</span> → <span class="ck">Cleanse</span> → <span class="ck">Match</span> → <span class="ck">Merge</span> → <span class="ck">Base Object (Golden)</span>
+          </div>
+          <h4>Landing Tables (LT)</h4>
+          <ul>
+            <li>Raw staging area — exact copy of source data</li>
+            <li>Named: L_&lt;BO_NAME&gt;_&lt;SOURCE&gt; (e.g., L_PARTY_SAP)</li>
+            <li>Loaded via ETL (PowerCenter, IICS, or custom SQL)</li>
+            <li>Contains SOURCE_KEY (primary key from source system)</li>
+          </ul>
+          <h4>Staging Tables (ST)</h4>
+          <ul>
+            <li>Transformed and cleansed version of landing data</li>
+            <li>Named: S_&lt;BO_NAME&gt;_&lt;SOURCE&gt; (e.g., S_PARTY_SAP)</li>
+            <li>Cleanse functions applied here (address standardization, name parsing)</li>
+            <li>Source trust values assigned per column</li>
+          </ul>
+          <h4>Source System Configuration</h4>
+          <p>Each source system is registered in MDM Hub Console with a unique system name. Trust levels, delta detection method (date-based or full), and merge protocol are configured per source.</p>
+        </div>
+        <div class="detail" id="t2c">
+          <h3>🔗 Relationships & Hierarchies</h3>
+          <h4>Relationship Types</h4>
+          <ul>
+            <li>One-to-Many (1:N) — A PARTY has many ADDRESSes</li>
+            <li>Many-to-Many (M:N) — PARTY ↔ ORGANIZATION (via relationship table)</li>
+            <li>Self-Referencing — Household hierarchy (PARTY is parent of PARTY)</li>
+            <li>Foreign Key Relationship — ACCOUNT references PARTY</li>
+          </ul>
+          <h4>Hierarchy Management</h4>
+          <p>Informatica MDM includes a Hierarchy Manager (HM) module for managing complex organizational hierarchies — parent companies, subsidiaries, household members, org charts.</p>
+          <ul>
+            <li>Hierarchy Profiles — Define hierarchy types (Account, Household, Org)</li>
+            <li>Relationship Base Objects — Store hierarchy edges with effective dates</li>
+            <li>Hierarchy nodes can have relationship attributes (e.g., ownership percentage)</li>
+            <li>Time-aware hierarchies with effective start/end dates</li>
+          </ul>
+          <h4>Common Hierarchy Use Cases</h4>
+          <ul>
+            <li>Global Account Hierarchy: Global Corp → Regional HQ → Country → Site</li>
+            <li>Customer Household: Primary → Spouse, Children, Dependents</li>
+            <li>Supplier Network: Parent Supplier → Sub-vendors → Sub-contractors</li>
+          </ul>
+        </div>
+        <div class="detail" id="t2d">
+          <h3>🏷️ Lookup Tables & Code Lists</h3>
+          <h4>Lookup (Reference) Tables</h4>
+          <p>Lookup tables store controlled vocabulary and reference data used across MDM. Examples: Country codes, State codes, Industry classifications, Customer types.</p>
+          <div class="code-box">
+<span class="cm">-- Example lookup table</span>
+<span class="ck">C_REPOS_CO_TYPE</span>   <span class="cm">-- Company type lookup</span>
+  ROWID_OBJECT, CODE, NAME, DESCRIPTION
+<span class="cv">  'CORP'</span>, <span class="cv">'Corporation'</span>, <span class="cv">'Standard Corporation'</span>
+<span class="cv">  'LLC'</span>,  <span class="cv">'Limited Liability Company'</span>, <span class="cv">'LLC entity'</span>
+<span class="cv">  'PART'</span>, <span class="cv">'Partnership'</span>, <span class="cv">'Business Partnership'</span>
+          </div>
+          <h4>Code Lists in IDD</h4>
+          <ul>
+            <li>Lookup tables surface as dropdowns in the IDD stewardship UI</li>
+            <li>Can be loaded from source systems or maintained manually in IDD</li>
+            <li>Support hierarchical lookups (Category → Subcategory)</li>
+            <li>Multi-language support for code descriptions</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase" id="ph3">
+      <div class="phase-hd" onclick="togglePhase('ph3')">
+        <div class="phase-index">03</div>
+        <div class="phase-info">
+          <div class="phase-cat">The Core Engine</div>
+          <div class="phase-name">Match, Merge & Survivorship</div>
+        </div>
+        <div class="phase-dur">3–4 weeks</div>
+        <div class="phase-arr">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topic-grid">
+          <div class="topic" onclick="showDetail('t3a', this)">
+            <div class="t-icon">🎯</div>
+            <div class="t-name">Match Rules & Rulesets</div>
+            <div class="t-desc">Exact, fuzzy, and weighted match rules and rule sets.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t3b', this)">
+            <div class="t-icon">🔤</div>
+            <div class="t-name">Tokenization & Standardization</div>
+            <div class="t-desc">Match tokens, SSA-Name3, cleanse, and normalization.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t3c', this)">
+            <div class="t-icon">🏆</div>
+            <div class="t-name">Survivorship & Trust</div>
+            <div class="t-desc">Trust scores, source priority, and best value selection.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t3d', this)">
+            <div class="t-icon">🔀</div>
+            <div class="t-name">Merge & Unmerge</div>
+            <div class="t-desc">Auto-merge, manual merge, unmerge, and XREF management.</div>
+          </div>
+        </div>
+        <div class="detail" id="t3a">
+          <h3>🎯 Match Rules & Rulesets</h3>
+          <h4>Match Rule Concepts</h4>
+          <p>A match rule compares field values between records to determine if they represent the same real-world entity. Rules can be exact or fuzzy.</p>
+          <h4>Match Rule Components</h4>
+          <ul>
+            <li><strong>Match Column:</strong> The field being compared (e.g., FIRST_NAME, EMAIL)</li>
+            <li><strong>Match Strategy:</strong> Algorithm used (Exact, SSA fuzzy, Soundex, Edit distance)</li>
+            <li><strong>Weight:</strong> How much this column contributes to the overall score (0–100)</li>
+            <li><strong>Null Handling:</strong> How to score when one or both values are null</li>
+          </ul>
+          <h4>Match Rule Sets</h4>
+          <p>A Rule Set groups multiple match rules. A record pair must pass a Rule Set to be considered a match. You typically create multiple rule sets for different match scenarios:</p>
+          <div class="code-box">
+Rule Set 1 — Exact ID Match (highest confidence):
+  EMAIL = Exact → weight 100 → threshold 100
+  <span class="cm">→ Pass = Definite Match (auto-merge)</span>
+
+Rule Set 2 — Fuzzy Name + Address:
+  FIRST_NAME = SSA Fuzzy → weight 30
+  LAST_NAME  = SSA Fuzzy → weight 40
+  ZIP_CODE   = Exact     → weight 30
+  <span class="cm">→ Score ≥ 85 = Probable Match (manual review)</span>
+  <span class="cm">→ Score 70–84 = Possible Match (steward review)</span>
+          </div>
+          <h4>Match Thresholds</h4>
+          <ul>
+            <li>Auto-Merge Threshold — Score above this → records auto-merged (no human review)</li>
+            <li>Match Threshold — Score above this but below auto-merge → flagged for review</li>
+            <li>Below Match Threshold — Records are NOT duplicates</li>
+          </ul>
+        </div>
+        <div class="detail" id="t3b">
+          <h3>🔤 Tokenization & Standardization</h3>
+          <h4>What is Tokenization?</h4>
+          <p>Before matching, MDM generates match tokens — normalized representations of field values that enable fast comparison at scale. Without tokens, matching millions of records would require N² comparisons.</p>
+          <h4>Tokenization Strategies</h4>
+          <ul>
+            <li>SSA-Name3 — Informatica's proprietary phonetic/linguistic name matching engine</li>
+            <li>Soundex — Classic phonetic algorithm (Smith = Smyth)</li>
+            <li>Double Metaphone — Improved phonetic for multilingual names</li>
+            <li>Edit Distance (Levenshtein) — Handles typos and transpositions</li>
+            <li>Exact Token — For numeric IDs, emails (no normalization needed)</li>
+          </ul>
+          <h4>Cleanse Functions</h4>
+          <p>Informatica MDM integrates with Informatica Data Quality (IDQ) or Address Doctor for cleansing before staging:</p>
+          <ul>
+            <li>Address standardization and USPS/postal validation</li>
+            <li>Name parsing (First, Middle, Last, Suffix, Title)</li>
+            <li>Phone number normalization (E.164 format)</li>
+            <li>Email syntax validation</li>
+            <li>Gender and title inference from name</li>
+          </ul>
+        </div>
+        <div class="detail" id="t3c">
+          <h3>🏆 Survivorship & Trust</h3>
+          <h4>What is Survivorship?</h4>
+          <p>When multiple source records are merged into one golden record, survivorship rules determine WHICH source value wins for each column.</p>
+          <h4>Survivorship Strategies</h4>
+          <ul>
+            <li><strong>Trust-based:</strong> Column value with highest trust score wins</li>
+            <li><strong>Source Priority:</strong> ERP data > CRM data > Portal data (ranked)</li>
+            <li><strong>Most Recent:</strong> Most recently updated value wins</li>
+            <li><strong>Most Reliable (Non-null):</strong> First non-null value in priority order</li>
+            <li><strong>Oldest:</strong> Original creation data preserved</li>
+            <li><strong>Custom Function:</strong> Business logic (e.g., longest string, max value)</li>
+          </ul>
+          <h4>Trust Configuration</h4>
+          <div class="code-box">
+Source System Trust Config for FIRST_NAME column:
+  <span class="ck">SAP_ERP</span>      → Max Trust: 90, Decay: 30 days
+  <span class="ck">SALESFORCE</span>   → Max Trust: 75, Decay: 7 days
+  <span class="ck">WEB_PORTAL</span>   → Max Trust: 50, Decay: 1 day
+
+<span class="cm">→ Trust decays over time if not refreshed</span>
+<span class="cm">→ SAP_ERP wins for FIRST_NAME unless Salesforce</span>
+<span class="cm">  updated recently (recency boost)</span>
+          </div>
+          <h4>Best Version of Record (BVR)</h4>
+          <p>The BVR is Informatica's term for the golden record — the consolidated view combining the best value from each source for each column, per the survivorship rules.</p>
+        </div>
+        <div class="detail" id="t3d">
+          <h3>🔀 Merge & Unmerge</h3>
+          <h4>Auto-Merge</h4>
+          <p>When match score exceeds the auto-merge threshold, records are automatically merged without human intervention. The merged records share a single ROWID_OBJECT in C_&lt;BO&gt;.</p>
+          <h4>Manual Merge (in IDD)</h4>
+          <ul>
+            <li>Data steward reviews potential match pairs in IDD</li>
+            <li>Can see side-by-side comparison of field values</li>
+            <li>Can select which source value to use for each field</li>
+            <li>Confirm or reject the merge</li>
+          </ul>
+          <h4>XREF Table (Cross-Reference)</h4>
+          <p>After merge, the C_&lt;BO&gt;_XREF table maps source records back to the golden record:</p>
+          <div class="code-box">
+C_PARTY_XREF:
+  ROWID_OBJECT = <span class="cv">'GLD001'</span>  <span class="cm">← Golden record</span>
+  SYSTEM_NAME  = <span class="cv">'SAP'</span>
+  SOURCE_KEY   = <span class="cv">'SAP_CUST_4421'</span>  <span class="cm">← Source ID</span>
+
+  ROWID_OBJECT = <span class="cv">'GLD001'</span>  <span class="cm">← Same golden record</span>
+  SYSTEM_NAME  = <span class="cv">'SFDC'</span>
+  SOURCE_KEY   = <span class="cv">'0034000000ABC'</span>  <span class="cm">← SFDC ID</span>
+          </div>
+          <h4>Unmerge</h4>
+          <p>Data stewards can unmerge incorrectly merged records. Unmerge restores source records to independent golden records and updates XREFs accordingly. Full audit trail maintained.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase" id="ph4">
+      <div class="phase-hd" onclick="togglePhase('ph4')">
+        <div class="phase-index">04</div>
+        <div class="phase-info">
+          <div class="phase-cat">Stewardship</div>
+          <div class="phase-name">IDD, Workflows & Data Governance</div>
+        </div>
+        <div class="phase-dur">2–3 weeks</div>
+        <div class="phase-arr">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topic-grid">
+          <div class="topic" onclick="showDetail('t4a', this)">
+            <div class="t-icon">🖥️</div>
+            <div class="t-name">Informatica Data Director</div>
+            <div class="t-desc">IDD configuration, subject areas, and stewardship screens.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t4b', this)">
+            <div class="t-icon">🔄</div>
+            <div class="t-name">Workflow & Task Management</div>
+            <div class="t-desc">ActiveVOS workflows, BPM tasks, approval flows.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t4c', this)">
+            <div class="t-icon">👥</div>
+            <div class="t-name">Security & Roles</div>
+            <div class="t-desc">User roles, resource groups, column-level security.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t4d', this)">
+            <div class="t-icon">📋</div>
+            <div class="t-name">Audit Trail & History</div>
+            <div class="t-desc">Change tracking, history tables, and compliance logging.</div>
+          </div>
+        </div>
+        <div class="detail" id="t4a">
+          <h3>🖥️ Informatica Data Director (IDD)</h3>
+          <h4>What is IDD?</h4>
+          <p>IDD is the web-based UI for business data stewards. It provides a business-friendly interface to search, view, edit, merge, unmerge, and manage master records — without needing to know SQL or the Hub Console.</p>
+          <h4>Subject Areas</h4>
+          <p>Subject Areas are IDD views configured to show related data together. Example: "Customer 360" Subject Area shows Party + Addresses + Phone + Email + Relationships on one screen.</p>
+          <ul>
+            <li>Primary Object — The main base object (e.g., PARTY)</li>
+            <li>Children — Related objects displayed as sections (ADDRESS, PHONE)</li>
+            <li>Related Objects — Cross-referenced entities (ACCOUNT, ORDER)</li>
+            <li>Hierarchy View — Org/household hierarchy visualization</li>
+          </ul>
+          <h4>IDD Features</h4>
+          <ul>
+            <li>Search with faceted filters and saved searches</li>
+            <li>Side-by-side merge comparison screen</li>
+            <li>Timeline view of data changes</li>
+            <li>Task inbox for workflow assignments</li>
+            <li>Hierarchy drag-and-drop editor</li>
+            <li>Bulk edit and bulk merge/unmerge operations</li>
+          </ul>
+        </div>
+        <div class="detail" id="t4b">
+          <h3>🔄 Workflow & Task Management</h3>
+          <h4>ActiveVOS (Workflow Engine)</h4>
+          <p>Informatica MDM uses ActiveVOS as its embedded BPM (Business Process Management) engine. Workflows are defined as BPEL processes and deployed to the ActiveVOS server.</p>
+          <h4>Common MDM Workflows</h4>
+          <ul>
+            <li>Create Party Workflow — New record review before becoming master</li>
+            <li>Update Review — Significant field changes require approval</li>
+            <li>Match Review — Probable match pairs sent to steward for review</li>
+            <li>Merge Approval — Manual merge requires business sign-off</li>
+            <li>Data Exception — DQ rule violations routed to responsible steward</li>
+          </ul>
+          <h4>Workflow Task Types</h4>
+          <ul>
+            <li>Review and Approve — Steward reviews new/changed record</li>
+            <li>Merge and Unmerge — Confirm or reject match pair</li>
+            <li>Reject — Record returned to source with comments</li>
+            <li>Escalate — Route to supervisor/senior steward</li>
+            <li>Auto-Approve — Based on source trust or data completeness</li>
+          </ul>
+          <div class="callout green">📌 Workflows are configured in Hub Console under Process Manager, then deployed to ActiveVOS. IDD automatically shows workflow tasks in the steward's task inbox.</div>
+        </div>
+        <div class="detail" id="t4c">
+          <h3>👥 Security & Roles</h3>
+          <h4>MDM Security Model</h4>
+          <ul>
+            <li>Users — Individual accounts managed in MDM or LDAP-synced</li>
+            <li>Roles — Collections of privileges assigned to user groups</li>
+            <li>Resource Roles — Permissions on specific base objects and operations</li>
+            <li>Column Security — Restrict read/write access per column per role</li>
+          </ul>
+          <h4>Key Built-in Roles</h4>
+          <ul>
+            <li>MDM Administrator — Full system access, Hub Console config</li>
+            <li>Data Steward — IDD access for record management and workflow</li>
+            <li>Data Manager — Can merge, unmerge, and override survivorship</li>
+            <li>Business User — Read-only view of golden records</li>
+            <li>Integration User — API access for source system integration</li>
+          </ul>
+          <h4>Sensitive Data Masking</h4>
+          <p>Configure column-level security to mask SSN, credit card, or PII fields for roles that don't need full access. Masked columns show as ****** in IDD and API responses.</p>
+        </div>
+        <div class="detail" id="t4d">
+          <h3>📋 Audit Trail & History</h3>
+          <h4>History Tables</h4>
+          <p>For every base object, MDM maintains a C_&lt;BO&gt;_HIST table that records every change — who changed what, when, and from which source system.</p>
+          <ul>
+            <li>CREATE_DATE, UPDATED_DATE, UPDATED_BY on every record</li>
+            <li>Full field-level change history with before/after values</li>
+            <li>Source system attribution for every field value</li>
+            <li>Merge/unmerge event audit in separate audit tables</li>
+          </ul>
+          <h4>Audit Configuration</h4>
+          <ul>
+            <li>Enable/disable history at the base object level</li>
+            <li>Configure history retention period (purge old history)</li>
+            <li>Selective column auditing — only audit sensitive or key fields</li>
+          </ul>
+          <div class="callout">🔒 Audit trails are critical for GDPR/CCPA compliance — MDM must be able to show the full lineage of any data point and support "right to erasure" requests.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase" id="ph5">
+      <div class="phase-hd" onclick="togglePhase('ph5')">
+        <div class="phase-index">05</div>
+        <div class="phase-info">
+          <div class="phase-cat">Integration</div>
+          <div class="phase-name">APIs, ETL & System Integration</div>
+        </div>
+        <div class="phase-dur">3–4 weeks</div>
+        <div class="phase-arr">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topic-grid">
+          <div class="topic" onclick="showDetail('t5a', this)">
+            <div class="t-icon">🔌</div>
+            <div class="t-name">MDM REST & SOAP APIs</div>
+            <div class="t-desc">SIF (Services Integration Framework) REST and SOAP APIs.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t5b', this)">
+            <div class="t-icon">⚙️</div>
+            <div class="t-name">PowerCenter & IICS Integration</div>
+            <div class="t-desc">ETL mappings for landing table load and outbound sync.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t5c', this)">
+            <div class="t-icon">🔁</div>
+            <div class="t-name">Real-time & Batch Processing</div>
+            <div class="t-desc">Real-time API calls vs. batch job load processing.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t5d', this)">
+            <div class="t-icon">📡</div>
+            <div class="t-name">Events & Outbound Sync</div>
+            <div class="t-desc">MDM events, message queues, and downstream publishing.</div>
+          </div>
+        </div>
+        <div class="detail" id="t5a">
+          <h3>🔌 MDM REST & SOAP APIs (SIF)</h3>
+          <h4>Services Integration Framework (SIF)</h4>
+          <p>SIF is Informatica MDM's API layer. It exposes operations for searching, creating, updating, merging, and managing records programmatically.</p>
+          <h4>SIF REST API (MDM 10.x+)</h4>
+          <div class="code-box">
+<span class="cm">-- Base URL</span>
+https://&lt;host&gt;:&lt;port&gt;/cmx/cs/&lt;ors-db&gt;/
+
+<span class="cm">-- Key Endpoints</span>
+<span class="ck">GET</span>  /PARTY/&lt;rowid&gt;              <span class="cm">→ Get record by ID</span>
+<span class="ck">GET</span>  /PARTY?searchToken=john     <span class="cm">→ Search records</span>
+<span class="ck">POST</span> /PARTY                      <span class="cm">→ Create new record</span>
+<span class="ck">PUT</span>  /PARTY/&lt;rowid&gt;              <span class="cm">→ Update record</span>
+<span class="ck">POST</span> /PARTY/&lt;rowid&gt;/XREF        <span class="cm">→ Add cross-ref</span>
+<span class="ck">POST</span> /merge?rowidObject1=&lt;id1&gt;&amp;rowidObject2=&lt;id2&gt; <span class="cm">→ Merge</span>
+<span class="ck">POST</span> /unmerge/&lt;xref-rowid&gt;      <span class="cm">→ Unmerge</span>
+
+<span class="cm">-- Authentication: Basic Auth or SAML</span>
+          </div>
+          <h4>SIF SOAP API</h4>
+          <ul>
+            <li>Legacy API, still widely used in older integrations</li>
+            <li>WSDL at: /cmx/services/SiperianClient?wsdl</li>
+            <li>Key operations: searchBOs, putBOs, getBOs, matchMerge</li>
+          </ul>
+        </div>
+        <div class="detail" id="t5b">
+          <h3>⚙️ PowerCenter & IICS Integration</h3>
+          <h4>Informatica PowerCenter (Traditional ETL)</h4>
+          <ul>
+            <li>Use PowerCenter mappings to extract from source systems</li>
+            <li>Transform and map to MDM Landing table format</li>
+            <li>Load into L_&lt;BO&gt;_&lt;SOURCE&gt; landing tables via JDBC</li>
+            <li>Trigger Hub batch jobs after load (Stage, Match, Merge, Promote)</li>
+          </ul>
+          <h4>IICS (Informatica Intelligent Cloud Services)</h4>
+          <p>Cloud-native integration platform. Use IICS Mappings and Application Integration tasks to load MDM landing tables and call SIF APIs in real time.</p>
+          <h4>MDM Hub Batch Jobs Sequence</h4>
+          <div class="code-box">
+1. <span class="ck">Stage Job</span>     → Land → Stage (apply cleanse + trust)
+2. <span class="ck">Match Job</span>     → Generate match tokens + run match rules
+3. <span class="ck">Merge Job</span>     → Auto-merge above threshold
+4. <span class="ck">Promote Job</span>   → Promote consolidated data to base object
+5. <span class="ck">Notify Job</span>    → Fire outbound events/messages
+          </div>
+        </div>
+        <div class="detail" id="t5c">
+          <h3>🔁 Real-time & Batch Processing</h3>
+          <h4>Batch Processing</h4>
+          <ul>
+            <li>Scheduled via Hub Console Batch Viewer or external scheduler (Control-M, Autosys)</li>
+            <li>Best for: large volume initial loads, nightly delta loads</li>
+            <li>Full job sequences: Stage → Match → Merge → Promote → Publish</li>
+            <li>Can be triggered via JMX, SIF API, or external scheduler</li>
+          </ul>
+          <h4>Real-time Processing (SIF)</h4>
+          <ul>
+            <li>Source systems call SIF REST/SOAP API for single-record create/update</li>
+            <li>MDM Hub processes synchronously and returns golden record ID</li>
+            <li>Match is performed in real time for the new/updated record</li>
+            <li>Used for: web form submissions, CRM real-time sync, point-of-sale</li>
+          </ul>
+          <h4>Hybrid Pattern</h4>
+          <p>Most enterprise MDM implementations use both: nightly batch for bulk loads from ERP/legacy systems AND real-time SIF API for customer-facing applications that need immediate golden record lookup.</p>
+        </div>
+        <div class="detail" id="t5d">
+          <h3>📡 Events & Outbound Sync</h3>
+          <h4>MDM Event Framework</h4>
+          <p>MDM Hub can publish events when data changes — record created, merged, promoted, or updated. Downstream systems subscribe to these events for real-time sync.</p>
+          <ul>
+            <li>JMS Message Queue (ActiveMQ, WebLogic JMS) for async events</li>
+            <li>Event types: CREATED, UPDATED, MERGED, UNMERGED, PROMOTED</li>
+            <li>Event payload contains ROWID_OBJECT and changed field names</li>
+            <li>Consumer reads event and calls SIF API to fetch full golden record</li>
+          </ul>
+          <h4>Outbound Integration Patterns</h4>
+          <ul>
+            <li>Push to SAP ERP via IDoc or BAPI (PowerCenter or IICS)</li>
+            <li>Push to Salesforce via REST API or Salesforce connector</li>
+            <li>Publish to data lake / DWH via JDBC or file export</li>
+            <li>Real-time notification via Kafka topics (modern architecture)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="phase" id="ph6">
+      <div class="phase-hd" onclick="togglePhase('ph6')">
+        <div class="phase-index">06</div>
+        <div class="phase-info">
+          <div class="phase-cat">Advanced Topics</div>
+          <div class="phase-name">Advanced MDM, Cloud & AI</div>
+        </div>
+        <div class="phase-dur">3–4 weeks</div>
+        <div class="phase-arr">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topic-grid">
+          <div class="topic" onclick="showDetail('t6a', this)">
+            <div class="t-icon">☁️</div>
+            <div class="t-name">Informatica MDM SaaS / IDMC</div>
+            <div class="t-desc">Cloud-native MDM on Intelligent Data Management Cloud.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t6b', this)">
+            <div class="t-icon">🤖</div>
+            <div class="t-name">AI & CLAIRE Engine</div>
+            <div class="t-desc">Informatica's AI/ML engine for smart matching and enrichment.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t6c', this)">
+            <div class="t-icon">📐</div>
+            <div class="t-name">Multi-Domain MDM</div>
+            <div class="t-desc">Customer 360, Supplier 360, and cross-domain relationships.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t6d', this)">
+            <div class="t-icon">⚡</div>
+            <div class="t-name">Performance Tuning</div>
+            <div class="t-desc">Match job optimization, indexing, and partition strategies.</div>
+          </div>
+        </div>
+        <div class="detail" id="t6a">
+          <h3>☁️ Informatica MDM on IDMC (Cloud)</h3>
+          <h4>What is IDMC?</h4>
+          <p>Informatica Intelligent Data Management Cloud (IDMC) is Informatica's cloud-native platform. MDM SaaS on IDMC delivers the same MDM capabilities as on-premise Hub, but fully managed by Informatica.</p>
+          <h4>IDMC MDM Advantages</h4>
+          <ul>
+            <li>No infrastructure management — Informatica handles upgrades</li>
+            <li>Elastic scaling for matching and processing jobs</li>
+            <li>Built-in integration with IICS ETL and data quality</li>
+            <li>Modern REST-first API architecture</li>
+            <li>CLAIRE AI engine natively integrated</li>
+            <li>Unified portal for MDM + DQ + Catalog + Governance</li>
+          </ul>
+          <h4>Migration Path</h4>
+          <p>On-premise MDM Hub customers can migrate to IDMC MDM. Informatica provides migration tooling but it requires re-mapping data models, re-testing match rules, and re-building integrations.</p>
+        </div>
+        <div class="detail" id="t6b">
+          <h3>🤖 CLAIRE AI Engine</h3>
+          <h4>What is CLAIRE?</h4>
+          <p>CLAIRE (Cloud-scale, Learning, AI-driven, Recommendations, Execution) is Informatica's AI/ML engine embedded across the IDMC platform, including MDM.</p>
+          <h4>CLAIRE Capabilities in MDM</h4>
+          <ul>
+            <li>ML-based match scoring — learns from steward accept/reject decisions</li>
+            <li>Automated match threshold recommendations</li>
+            <li>Data quality anomaly detection on incoming records</li>
+            <li>Survivorship suggestions based on historical patterns</li>
+            <li>Auto-classification of parties (B2B vs B2C, company type)</li>
+            <li>Duplicate detection confidence scoring with explainability</li>
+          </ul>
+          <h4>Training CLAIRE</h4>
+          <p>The more stewards review and act on match pairs in IDD, the more CLAIRE learns. Steward decisions (accept/reject) feed back into the ML model, continuously improving match quality over time.</p>
+        </div>
+        <div class="detail" id="t6c">
+          <h3>📐 Multi-Domain MDM Architecture</h3>
+          <h4>Single ORS vs Multiple ORS</h4>
+          <ul>
+            <li>Single ORS — All domains in one database schema (simpler, risk of contention)</li>
+            <li>Multiple ORS — Separate ORS per domain (Customer ORS, Supplier ORS) for isolation</li>
+            <li>Best practice: Separate ORS per major domain for enterprise implementations</li>
+          </ul>
+          <h4>Cross-Domain Relationships</h4>
+          <p>Real power comes from linking domains. A Customer 360 links PARTY (Customer ORS) + PRODUCT (Product ORS) + SUPPLIER (Supplier ORS) to give a complete picture.</p>
+          <ul>
+            <li>Customer purchased which Products (Customer ↔ Product)</li>
+            <li>Product manufactured by which Supplier (Product ↔ Supplier)</li>
+            <li>Customer is also a Supplier (B2B scenario)</li>
+          </ul>
+          <h4>Business 360 / Customer 360 SaaS</h4>
+          <p>Informatica's Customer 360 SaaS is a pre-built multi-domain MDM solution (built on IDMC MDM) that provides ready-to-use data models, match rules, and IDD configurations for Customer, Account, and Household management.</p>
+        </div>
+        <div class="detail" id="t6d">
+          <h3>⚡ Performance Tuning</h3>
+          <h4>Match Job Optimization</h4>
+          <ul>
+            <li>Ensure match index tables (C_&lt;BO&gt;_STRP) are properly indexed in DB</li>
+            <li>Tune match batch size — larger batches for high memory servers</li>
+            <li>Use parallel match processing across multiple Process Server threads</li>
+            <li>Implement match key segmentation to reduce match search space</li>
+            <li>Archive resolved match pairs to prevent match table bloat</li>
+          </ul>
+          <h4>Database Tuning</h4>
+          <ul>
+            <li>Partition large base object tables by ROWID range or date</li>
+            <li>Create composite indexes on frequently searched columns</li>
+            <li>Regular XREF table cleanup (remove orphaned XREFs)</li>
+            <li>Use Oracle RAC or SQL Server AlwaysOn for HA + read scaling</li>
+          </ul>
+          <h4>Load Balancing</h4>
+          <ul>
+            <li>Deploy multiple Process Servers for parallel cleanse/match jobs</li>
+            <li>Separate Hub Server (API) from Process Server (batch jobs)</li>
+            <li>Use connection pooling for SIF API high-concurrency scenarios</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 7 -->
+    <div class="phase" id="ph7">
+      <div class="phase-hd" onclick="togglePhase('ph7')">
+        <div class="phase-index">07</div>
+        <div class="phase-info">
+          <div class="phase-cat">Expert & Career</div>
+          <div class="phase-name">Certification, Projects & Career</div>
+        </div>
+        <div class="phase-dur">Ongoing</div>
+        <div class="phase-arr">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topic-grid">
+          <div class="topic" onclick="showDetail('t7a', this)">
+            <div class="t-icon">🎓</div>
+            <div class="t-name">Informatica Certifications</div>
+            <div class="t-desc">MDM certification paths, exam topics, and prep strategy.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t7b', this)">
+            <div class="t-icon">🛠️</div>
+            <div class="t-name">Hands-On Lab Guide</div>
+            <div class="t-desc">What to practice in a sandbox environment to build real skills.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t7c', this)">
+            <div class="t-icon">📚</div>
+            <div class="t-name">Resources & Community</div>
+            <div class="t-desc">Official docs, Informatica Network, training courses.</div>
+          </div>
+          <div class="topic" onclick="showDetail('t7d', this)">
+            <div class="t-icon">💼</div>
+            <div class="t-name">Career Paths</div>
+            <div class="t-desc">MDM Developer, Architect, Consultant roles and salaries.</div>
+          </div>
+        </div>
+        <div class="detail" id="t7a">
+          <h3>🎓 Informatica Certifications</h3>
+          <h4>MDM Certification Tracks</h4>
+          <ul>
+            <li>Informatica MDM 10.x: Hub Configuration Specialist</li>
+            <li>Informatica MDM 10.x: Implementation Specialist</li>
+            <li>Informatica Customer 360 Specialist</li>
+            <li>Informatica MDM SaaS / IDMC Specialist (newer)</li>
+          </ul>
+          <h4>Exam Focus Areas</h4>
+          <ul>
+            <li>Base Object configuration and data model design</li>
+            <li>Staging table setup and trust configuration</li>
+            <li>Match rules, tokenization, and threshold tuning</li>
+            <li>Survivorship and trust-based merge</li>
+            <li>IDD Subject Area configuration</li>
+            <li>SIF API operations and integration patterns</li>
+            <li>Batch job sequence and troubleshooting</li>
+            <li>Security model and role configuration</li>
+          </ul>
+          <h4>8-Week Prep Plan</h4>
+          <ul>
+            <li>Weeks 1–2: Complete Informatica University MDM Foundation course</li>
+            <li>Weeks 3–4: Hands-on Hub Console — build a data model from scratch</li>
+            <li>Week 5: Match/merge deep dive + real data testing</li>
+            <li>Week 6: IDD + workflows + SIF API practice</li>
+            <li>Week 7: Practice exam questions + review weak areas</li>
+            <li>Week 8: Final review + schedule and sit the exam</li>
+          </ul>
+        </div>
+        <div class="detail" id="t7b">
+          <h3>🛠️ Hands-On Lab Guide</h3>
+          <h4>What to Build in Your Sandbox</h4>
+          <ul>
+            <li>Install MDM Hub locally (or use Informatica trial cloud)</li>
+            <li>Create a PARTY base object with 10+ columns</li>
+            <li>Configure ADDRESS as a child base object linked to PARTY</li>
+            <li>Set up 2 source systems (e.g., "CRM" and "ERP")</li>
+            <li>Create landing and staging tables for both sources</li>
+            <li>Configure cleanse functions (address, phone, name)</li>
+            <li>Build 3 match rule sets (exact email, fuzzy name+zip, phone)</li>
+            <li>Configure survivorship: CRM wins for NAME, ERP wins for TAX_ID</li>
+            <li>Load sample data and run Stage → Match → Merge → Promote jobs</li>
+            <li>Review merge results in IDD and practice manual merge/unmerge</li>
+            <li>Call SIF REST API from Postman to search and retrieve golden records</li>
+          </ul>
+          <div class="callout green">✅ Building this end-to-end lab scenario is more valuable than any amount of reading. The exam and real projects both test practical knowledge.</div>
+        </div>
+        <div class="detail" id="t7c">
+          <h3>📚 Resources & Community</h3>
+          <h4>Official Learning</h4>
+          <ul>
+            <li>Informatica University: university.informatica.com</li>
+            <li>Informatica Docs: docs.informatica.com (MDM Hub Installation, Admin, Config guides)</li>
+            <li>Informatica Network (community): network.informatica.com</li>
+            <li>Informatica YouTube: tutorial videos, product demos, release walkthroughs</li>
+          </ul>
+          <h4>Key Documentation to Read</h4>
+          <ul>
+            <li>MDM Hub Configuration Guide (most important — covers all Hub Console config)</li>
+            <li>MDM Hub Services Integration Framework Developer Guide (SIF API reference)</li>
+            <li>MDM Hub Upgrade Guide (understanding migration paths)</li>
+            <li>Informatica Data Director User Guide (IDD features for stewards)</li>
+          </ul>
+          <h4>Community & Jobs</h4>
+          <ul>
+            <li>LinkedIn: "Informatica MDM Users" group</li>
+            <li>Informatica World conference — hands-on sessions annually</li>
+            <li>StackOverflow tag: informatica-mdm</li>
+            <li>Reddit: r/dataengineering — MDM discussions</li>
+          </ul>
+        </div>
+        <div class="detail" id="t7d">
+          <h3>💼 Career Paths in Informatica MDM</h3>
+          <table>
+            <tr><th>Role</th><th>Key Skills</th><th>Salary (India)</th><th>Salary (US)</th></tr>
+            <tr><td>MDM Analyst</td><td>Data stewardship, IDD, data quality</td><td>₹6–12 LPA</td><td>$70–95K</td></tr>
+            <tr><td>MDM Developer</td><td>Hub config, match rules, SIF API, ETL</td><td>₹10–20 LPA</td><td>$85–120K</td></tr>
+            <tr><td>MDM Consultant</td><td>Full implementation, client delivery</td><td>₹18–35 LPA</td><td>$100–140K</td></tr>
+            <tr><td>MDM Architect</td><td>Multi-domain design, enterprise governance</td><td>₹30–55 LPA</td><td>$130–175K</td></tr>
+            <tr><td>MDM Product Owner</td><td>Business roadmap, governance, stakeholders</td><td>₹25–45 LPA</td><td>$110–160K</td></tr>
+          </table>
+          <div class="callout">💡 Hyderabad has a strong Informatica MDM job market — Informatica's India Engineering Center is in Bangalore, and major IT services firms (TCS, Infosys, Wipro, Capgemini) have large MDM practices hiring in Hyderabad.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end roadmap -->
+
+  <!-- ═══════════════ NOTES: CORE CONCEPTS ═══════════════ -->
+  <div id="n-concepts" class="section">
+    <div class="notes-wrap">
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">01</div>
+          <div>
+            <div class="note-tag">Foundation</div>
+            <h2>MDM Core Concepts — The Complete Picture</h2>
+          </div>
+        </div>
+        <h3>The MDM Golden Record</h3>
+        <p>The golden record (also called Best Version of Record or BVR in Informatica) is the single, trusted, consolidated master record created by merging data from multiple source systems. It is NOT a copy of any one source — it picks the best value for each field.</p>
+        <h3>XREF — The Magic Link</h3>
+        <p>When two source records are merged into one golden record, the C_&lt;BO&gt;_XREF table maps source IDs back to the ROWID_OBJECT of the golden record. This is how MDM maintains referential integrity and allows source systems to be updated when master data changes.</p>
+        <h3>Trust Score Decay</h3>
+        <p>Informatica MDM implements temporal trust — a trust score decays over time if a source system doesn't refresh the value. A CRM that updates a phone number today has high trust; if it doesn't update for 6 months, its trust decays, and a fresher source can win survivorship.</p>
+        <h3>Key ORS Table Summary</h3>
+        <table>
+          <tr><th>Table Pattern</th><th>Purpose</th></tr>
+          <tr><td>L_&lt;BO&gt;_&lt;SRC&gt;</td><td>Landing — raw source data as-loaded</td></tr>
+          <tr><td>S_&lt;BO&gt;_&lt;SRC&gt;</td><td>Staging — cleansed and trust-assigned</td></tr>
+          <tr><td>C_&lt;BO&gt;</td><td>Base Object — golden records</td></tr>
+          <tr><td>C_&lt;BO&gt;_XREF</td><td>Cross-reference — source-to-golden mapping</td></tr>
+          <tr><td>C_&lt;BO&gt;_STRP</td><td>Match tokens (stripped/tokenized)</td></tr>
+          <tr><td>C_&lt;BO&gt;_MTCH</td><td>Match candidate pairs</td></tr>
+          <tr><td>C_&lt;BO&gt;_HIST</td><td>Change history / audit trail</td></tr>
+          <tr><td>C_&lt;BO&gt;_PND</td><td>Pending records (pre-approval)</td></tr>
+        </table>
+      </div>
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">02</div>
+          <div>
+            <div class="note-tag">Must Know</div>
+            <h2>Hub Console vs IDD — Know the Difference</h2>
+          </div>
+        </div>
+        <h3>Hub Console (Developer/Admin Tool)</h3>
+        <ul>
+          <li>Java Swing desktop application (not web-based)</li>
+          <li>Used by MDM developers and architects</li>
+          <li>Configure base objects, columns, relationships</li>
+          <li>Define match rules, cleanse functions, trust settings</li>
+          <li>Manage batch jobs, security, ORS configuration</li>
+          <li>Not used by business users in production</li>
+        </ul>
+        <h3>Informatica Data Director — IDD (Business User Tool)</h3>
+        <ul>
+          <li>Web-based application (browser-accessible)</li>
+          <li>Used by data stewards and business users</li>
+          <li>Search, view, edit, and manage golden records</li>
+          <li>Review and act on workflow tasks (merge/approve/reject)</li>
+          <li>Manage hierarchies (drag-and-drop)</li>
+          <li>No configuration access — business data only</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ NOTES: ARCHITECTURE ═══════════════ -->
+  <div id="n-arch" class="section">
+    <div class="notes-wrap">
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">01</div>
+          <div>
+            <div class="note-tag">Architecture</div>
+            <h2>MDM Hub Technical Architecture</h2>
+          </div>
+        </div>
+        <h3>Architecture Layers</h3>
+        <ul>
+          <li>Database Layer — Oracle or SQL Server ORS schema (C_, S_, L_ tables)</li>
+          <li>Application Layer — Java EE Hub Server (JBoss/WebLogic) with SIF APIs</li>
+          <li>Process Layer — Process Server for cleanse, match, tokenization jobs</li>
+          <li>Workflow Layer — ActiveVOS BPM engine for approval workflows</li>
+          <li>Presentation Layer — IDD (Web UI) and Hub Console (Swing admin)</li>
+          <li>Integration Layer — SIF REST/SOAP, JMS events, PowerCenter/IICS</li>
+        </ul>
+        <h3>Data Flow Architecture</h3>
+        <div class="callout blue">Source System → ETL (PowerCenter/IICS) → Landing Tables → Staging Tables → [Cleanse] → [Match Tokens] → [Match Job] → [Merge Job] → Base Object (Golden) → [Events/API] → Downstream Systems</div>
+        <h3>High Availability Setup</h3>
+        <ul>
+          <li>Hub Server cluster (multiple nodes behind load balancer)</li>
+          <li>Process Server cluster (parallel match jobs)</li>
+          <li>Oracle RAC or SQL Server AlwaysOn for DB HA</li>
+          <li>Shared NFS for configuration artifacts</li>
+          <li>ActiveVOS in cluster mode for workflow HA</li>
+        </ul>
+      </div>
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">02</div>
+          <div>
+            <div class="note-tag">Technical</div>
+            <h2>ORS Schema — What's in the Database</h2>
+          </div>
+        </div>
+        <h3>System Tables (C_REPOS_*)</h3>
+        <p>MDM stores all configuration metadata in C_REPOS_* tables within the ORS. This includes base object definitions, column metadata, match rule configurations, and source system registrations.</p>
+        <div class="callout">⚠️ Never directly modify C_REPOS_* tables. All configuration must be done through Hub Console. Direct DB changes can break the MDM configuration.</div>
+        <h3>Database Requirements</h3>
+        <ul>
+          <li>Oracle 19c/21c — Recommended, full feature support</li>
+          <li>Microsoft SQL Server 2019+ — Supported, some limitations</li>
+          <li>Minimum 200GB+ for ORS on production (depends on record volume)</li>
+          <li>Separate tablespaces for data, indexes, LOB, and temp</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ NOTES: MATCH & MERGE ═══════════════ -->
+  <div id="n-match" class="section">
+    <div class="notes-wrap">
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">01</div>
+          <div>
+            <div class="note-tag">Critical Skill</div>
+            <h2>Match & Merge — Complete Reference</h2>
+          </div>
+        </div>
+        <h3>Why Match & Merge is the Hardest Part</h3>
+        <p>Getting match rules right is the most difficult and most important skill in MDM. Match too aggressively → false merges (two different people merged into one). Match too conservatively → duplicates remain. The right balance requires domain knowledge and testing with real data.</p>
+        <h3>Match Strategy Comparison</h3>
+        <table>
+          <tr><th>Strategy</th><th>Best For</th><th>False Positive Risk</th></tr>
+          <tr><td>Exact</td><td>IDs, emails, phone numbers</td><td>Very Low</td></tr>
+          <tr><td>SSA-Name3 Fuzzy</td><td>Person names (phonetic)</td><td>Medium</td></tr>
+          <tr><td>Soundex</td><td>Simple name phonetics</td><td>Medium-High</td></tr>
+          <tr><td>Edit Distance</td><td>Typos, abbreviations</td><td>High</td></tr>
+          <tr><td>Address Fuzzy</td><td>Address line matching</td><td>Medium</td></tr>
+          <tr><td>Custom Function</td><td>Business-specific logic</td><td>Configurable</td></tr>
+        </table>
+        <h3>Match Rule Design Best Practices</h3>
+        <ul>
+          <li>Always start with the highest-confidence rule set (exact ID match)</li>
+          <li>Layer fuzzy rules with multiple corroborating fields (name + DOB + ZIP)</li>
+          <li>Never auto-merge on name alone — always combine with address or ID</li>
+          <li>Test rules with a sample of known duplicates before production</li>
+          <li>Set a "possible match" band for steward review (not just auto-merge vs no-match)</li>
+          <li>Review and tune thresholds every 3–6 months based on match quality metrics</li>
+        </ul>
+        <h3>Null Handling in Match Rules</h3>
+        <ul>
+          <li>Null-Null → typically score as 0 (unknown match)</li>
+          <li>Value-Null → typically penalize score by 50% (one side unknown)</li>
+          <li>Configure per-column based on data completeness expectations</li>
+        </ul>
+      </div>
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">02</div>
+          <div>
+            <div class="note-tag">Survivorship</div>
+            <h2>Survivorship Design Patterns</h2>
+          </div>
+        </div>
+        <h3>Designing Survivorship Rules</h3>
+        <p>Survivorship should be a business decision, not a technical one. Sit with business stakeholders and ask: "If CRM and ERP have different values for this field, which do you trust more?"</p>
+        <h3>Common Survivorship Patterns</h3>
+        <ul>
+          <li>Legal Name: ERP (official records) > CRM (sales-entered)</li>
+          <li>Email Address: CRM > ERP (CRM is customer-facing, more accurate)</li>
+          <li>Tax ID / Reg Number: ERP only (single authoritative source)</li>
+          <li>Address: Address Doctor standardized value > raw source</li>
+          <li>Phone: Most recently updated source wins (recency-based)</li>
+          <li>Customer Since Date: Oldest value wins (preserve original relationship)</li>
+        </ul>
+        <h3>Trust Decay Formula</h3>
+        <p>Trust at time T = Max Trust × e^(-decay_rate × days_since_update). Configure decay rates per source per column to reflect how quickly the source's data becomes stale.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ NOTES: INTEGRATIONS ═══════════════ -->
+  <div id="n-integ" class="section">
+    <div class="notes-wrap">
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">01</div>
+          <div>
+            <div class="note-tag">Integration</div>
+            <h2>MDM Integration Patterns</h2>
+          </div>
+        </div>
+        <h3>Typical Enterprise Integration Landscape</h3>
+        <ul>
+          <li>SAP ERP (Customer/Vendor master) → MDM Hub (inbound, batch)</li>
+          <li>Salesforce CRM (Account/Contact) → MDM Hub (inbound, real-time API)</li>
+          <li>Oracle EBS → MDM Hub (inbound, batch via PowerCenter)</li>
+          <li>MDM Hub → SAP ERP (outbound golden record sync)</li>
+          <li>MDM Hub → Salesforce (outbound, golden record as single account)</li>
+          <li>MDM Hub → Data Warehouse (outbound, via JDBC/flat file)</li>
+          <li>MDM Hub → CDP (Customer Data Platform) (outbound real-time API)</li>
+        </ul>
+        <h3>SIF API Postman Quick Reference</h3>
+        <table>
+          <tr><th>Operation</th><th>Method</th><th>Endpoint</th></tr>
+          <tr><td>Get Record</td><td>GET</td><td>/cmx/cs/&lt;ors&gt;/PARTY/&lt;rowid&gt;</td></tr>
+          <tr><td>Search</td><td>GET</td><td>/cmx/cs/&lt;ors&gt;/PARTY?searchToken=value</td></tr>
+          <tr><td>Create</td><td>POST</td><td>/cmx/cs/&lt;ors&gt;/PARTY</td></tr>
+          <tr><td>Update</td><td>PUT</td><td>/cmx/cs/&lt;ors&gt;/PARTY/&lt;rowid&gt;</td></tr>
+          <tr><td>Merge</td><td>POST</td><td>/cmx/cs/&lt;ors&gt;/merge?rowidObject1=x&rowidObject2=y</td></tr>
+          <tr><td>Unmerge</td><td>POST</td><td>/cmx/cs/&lt;ors&gt;/unmerge/&lt;xref-rowid&gt;</td></tr>
+          <tr><td>Get XREFs</td><td>GET</td><td>/cmx/cs/&lt;ors&gt;/PARTY/&lt;rowid&gt;/xrefs</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ NOTES: CERTIFICATION ═══════════════ -->
+  <div id="n-cert" class="section">
+    <div class="notes-wrap">
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">01</div>
+          <div>
+            <div class="note-tag">Exam Prep</div>
+            <h2>Certification Cheat Sheet</h2>
+          </div>
+        </div>
+        <h3>Top 20 Things to Know Cold</h3>
+        <ul>
+          <li>Landing (L_) → Staging (S_) → Base Object (C_) → XREF (C_XREF) — the flow</li>
+          <li>Process Server handles match + cleanse; Hub Server handles API + config</li>
+          <li>Trust decay: trust score reduces over time if source doesn't refresh</li>
+          <li>Survivorship: column-level, source-level trust determines golden value</li>
+          <li>Auto-merge threshold vs match threshold — know the difference</li>
+          <li>SSA-Name3 is Informatica's proprietary fuzzy name matching engine</li>
+          <li>XREF table: maps N source records to 1 golden ROWID_OBJECT</li>
+          <li>ActiveVOS is the workflow/BPM engine embedded in MDM Hub</li>
+          <li>IDD = business stewardship UI; Hub Console = developer config UI</li>
+          <li>ORS = Operational Reference Store = the MDM database schema</li>
+          <li>Hierarchy Manager handles parent-child org and household structures</li>
+          <li>SIF = Services Integration Framework = the MDM API layer</li>
+          <li>CLAIRE = Informatica's AI/ML engine for smart matching (IDMC)</li>
+          <li>Batch job sequence: Stage → Match → Merge → Promote → Notify</li>
+          <li>Subject Areas in IDD group related base objects for steward views</li>
+          <li>C_REPOS_* tables store MDM configuration metadata — never edit directly</li>
+          <li>Match key segmentation improves performance by reducing search space</li>
+          <li>History table (C_&lt;BO&gt;_HIST) provides full audit trail of changes</li>
+          <li>Multiple ORS recommended for multi-domain enterprise implementations</li>
+          <li>Real-time integration: SIF API; Bulk integration: PowerCenter/IICS + batch jobs</li>
+        </ul>
+        <div class="callout green">✅ Informatica University provides official practice exams. Complete all hands-on labs before attempting the exam — scenario-based questions dominate the MDM certification exams.</div>
+      </div>
+      <div class="note">
+        <div class="note-hd">
+          <div class="note-num">02</div>
+          <div>
+            <div class="note-tag">Quick Reference</div>
+            <h2>MDM vs STIBO — Side by Side</h2>
+          </div>
+        </div>
+        <table>
+          <tr><th>Aspect</th><th>Informatica MDM</th><th>STIBO STEP</th></tr>
+          <tr><td>Primary Strength</td><td>Customer/Supplier dedup & golden record</td><td>Product data & PIM</td></tr>
+          <tr><td>Match Engine</td><td>SSA-Name3, probabilistic scoring</td><td>Simpler match rules</td></tr>
+          <tr><td>UI (Business)</td><td>Informatica Data Director (IDD)</td><td>STEP Web UI / Workbench</td></tr>
+          <tr><td>Config Tool</td><td>Hub Console (Java Swing)</td><td>STEP Workbench (Swing/Web)</td></tr>
+          <tr><td>Database</td><td>Oracle or SQL Server (ORS)</td><td>Oracle or SQL Server</td></tr>
+          <tr><td>Cloud</td><td>IDMC (cloud-native)</td><td>STEP SaaS (cloud)</td></tr>
+          <tr><td>AI Engine</td><td>CLAIRE AI</td><td>STEP AI Connect</td></tr>
+          <tr><td>Market Focus</td><td>Customer 360, financial services, telecom</td><td>Retail, CPG, manufacturing (product data)</td></tr>
+        </table>
+        <div class="callout">💡 Learning Informatica MDM first is the right choice — it gives you deep expertise in match/merge and deduplication concepts that apply universally across all MDM platforms, including STIBO STEP.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>Informatica MDM Complete Learning Roadmap · Phase by phase, concept by concept · Start from Phase 01</footer>
+
+<script>
+  function switchTab(id, btn) {
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function togglePhase(id) {
+    const ph = document.getElementById(id);
+    const isOpen = ph.classList.contains('open');
+    document.querySelectorAll('.phase').forEach(p => p.classList.remove('open'));
+    document.querySelectorAll('.detail').forEach(d => d.classList.remove('open'));
+    document.querySelectorAll('.topic').forEach(t => t.classList.remove('active-topic'));
+    if (!isOpen) ph.classList.add('open');
+  }
+
+  let activeDetail = null;
+  function showDetail(id, topicEl) {
+    const det = document.getElementById(id);
+    // Close all details in this phase first
+    const phaseBody = topicEl.closest('.phase-body');
+    phaseBody.querySelectorAll('.detail').forEach(d => d.classList.remove('open'));
+    phaseBody.querySelectorAll('.topic').forEach(t => t.classList.remove('active-topic'));
+
+    if (activeDetail === id) {
+      activeDetail = null;
+      return;
+    }
+    det.classList.add('open');
+    topicEl.classList.add('active-topic');
+    activeDetail = id;
+    setTimeout(() => det.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+</script>
+</body>
+</html>
