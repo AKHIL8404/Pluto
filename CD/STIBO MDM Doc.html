@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STIBO MDM Learning Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --card: #162032;
+    --border: #1e3a5f;
+    --accent: #00d4ff;
+    --accent2: #ff6b35;
+    --accent3: #7c3aed;
+    --green: #00ff9d;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --highlight: #fbbf24;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* HEADER */
+  header {
+    padding: 60px 0 40px;
+    text-align: center;
+    position: relative;
+  }
+
+  .badge {
+    display: inline-block;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 72px);
+    line-height: 1.05;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #fff 30%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 16px;
+    font-weight: 400;
+    max-width: 560px;
+    margin: 0 auto 40px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tab {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 8px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .tab.active { background: var(--accent); color: #0a0e1a; font-weight: 500; }
+
+  /* ROADMAP TIMELINE */
+  .roadmap { display: none; }
+  .roadmap.active { display: block; }
+
+  .phase {
+    position: relative;
+    margin-bottom: 40px;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .phase:nth-child(1) { animation-delay: 0.05s; }
+  .phase:nth-child(2) { animation-delay: 0.1s; }
+  .phase:nth-child(3) { animation-delay: 0.15s; }
+  .phase:nth-child(4) { animation-delay: 0.2s; }
+  .phase:nth-child(5) { animation-delay: 0.25s; }
+  .phase:nth-child(6) { animation-delay: 0.3s; }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .phase-num {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .phase-num::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    opacity: 0.3;
+  }
+
+  .p1 .phase-num { background: rgba(0,212,255,0.15); color: var(--accent); }
+  .p2 .phase-num { background: rgba(0,255,157,0.15); color: var(--green); }
+  .p3 .phase-num { background: rgba(255,107,53,0.15); color: var(--accent2); }
+  .p4 .phase-num { background: rgba(124,58,237,0.15); color: var(--accent3); }
+  .p5 .phase-num { background: rgba(251,191,36,0.15); color: var(--highlight); }
+  .p6 .phase-num { background: rgba(236,72,153,0.15); color: #ec4899; }
+
+  .phase-title-wrap { flex: 1; }
+  .phase-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.5;
+    margin-bottom: 2px;
+  }
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    letter-spacing: -0.5px;
+  }
+  .phase-duration {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .phase-toggle {
+    font-size: 20px;
+    color: var(--muted);
+    transition: transform 0.3s;
+  }
+  .phase-header.open .phase-toggle { transform: rotate(180deg); }
+
+  .phase-body {
+    display: none;
+    padding-left: 64px;
+  }
+  .phase-body.open { display: block; }
+
+  /* TOPIC CARDS */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .topic-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .topic-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .p1 .topic-card::before { background: var(--accent); }
+  .p2 .topic-card::before { background: var(--green); }
+  .p3 .topic-card::before { background: var(--accent2); }
+  .p4 .topic-card::before { background: var(--accent3); }
+  .p5 .topic-card::before { background: var(--highlight); }
+  .p6 .topic-card::before { background: #ec4899; }
+
+  .topic-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
+
+  .topic-icon { font-size: 24px; margin-bottom: 10px; }
+  .topic-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 6px;
+  }
+  .topic-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* DETAIL PANEL */
+  .detail-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-top: 16px;
+    display: none;
+  }
+  .detail-panel.open { display: block; animation: fadeUp 0.3s ease; }
+  .detail-panel h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .detail-panel h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 20px 0 10px;
+  }
+  .detail-panel p { font-size: 14px; color: #94a3b8; margin-bottom: 12px; }
+  .detail-panel ul { padding-left: 0; list-style: none; }
+  .detail-panel ul li {
+    font-size: 14px;
+    color: #94a3b8;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .detail-panel ul li::before { content: '▸'; color: var(--accent); flex-shrink: 0; margin-top: 1px; }
+
+  .code-block {
+    background: #0d1117;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: #7dd3fc;
+    overflow-x: auto;
+    margin: 12px 0;
+    line-height: 1.8;
+  }
+
+  /* NOTES PAGE */
+  .notes-section { display: none; }
+  .notes-section.active { display: block; }
+
+  .note-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .note-card:nth-child(1) { animation-delay: 0.05s; }
+  .note-card:nth-child(2) { animation-delay: 0.1s; }
+  .note-card:nth-child(3) { animation-delay: 0.15s; }
+  .note-card:nth-child(4) { animation-delay: 0.2s; }
+  .note-card:nth-child(5) { animation-delay: 0.25s; }
+
+  .note-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .note-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: rgba(0,212,255,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(0,212,255,0.2);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .note-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin: 20px 0 8px;
+    color: var(--accent);
+  }
+  .note-card p { font-size: 14px; color: #94a3b8; margin-bottom: 10px; }
+  .note-card ul { padding-left: 0; list-style: none; margin-bottom: 12px; }
+  .note-card ul li {
+    font-size: 14px;
+    color: #94a3b8;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    display: flex;
+    gap: 8px;
+  }
+  .note-card ul li::before { content: '→'; color: var(--green); flex-shrink: 0; }
+
+  .info-box {
+    background: rgba(0,212,255,0.05);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  .warn-box {
+    background: rgba(251,191,36,0.05);
+    border-left: 3px solid var(--highlight);
+    padding: 14px 18px;
+    border-radius: 0 6px 6px 0;
+    margin: 16px 0;
+    font-size: 13px;
+    color: #94a3b8;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 13px;
+  }
+  th {
+    background: rgba(0,212,255,0.08);
+    color: var(--accent);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #94a3b8;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* Progress tracker */
+  .progress-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    margin-bottom: 48px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 4px;
+    width: 0%;
+    transition: width 1s ease;
+  }
+
+  footer {
+    text-align: center;
+    padding: 40px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    margin-top: 60px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="badge">Master Learning Guide</div>
+    <h1>STIBO MDM<br>Roadmap</h1>
+    <p class="subtitle">A structured path from zero to expert in STIBO STEP Master Data Management — covering architecture, data modeling, integrations, and certifications.</p>
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('roadmap')">📍 Roadmap</button>
+      <button class="tab" onclick="switchTab('notes1')">📘 Core Concepts</button>
+      <button class="tab" onclick="switchTab('notes2')">⚙️ Architecture</button>
+      <button class="tab" onclick="switchTab('notes3')">🔗 Integrations</button>
+      <button class="tab" onclick="switchTab('notes4')">🛠 Data Modeling</button>
+      <button class="tab" onclick="switchTab('notes5')">🎓 Certification</button>
+    </div>
+  </header>
+
+  <!-- ROADMAP -->
+  <div id="roadmap" class="roadmap active">
+    <div class="progress-bar"><div class="progress-fill" id="pbar"></div></div>
+
+    <!-- PHASE 1 -->
+    <div class="phase p1">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">1</div>
+        <div class="phase-title-wrap">
+          <div class="phase-label">Phase 1 · Foundation</div>
+          <div class="phase-title">MDM & STIBO Fundamentals</div>
+        </div>
+        <div class="phase-duration">2–3 weeks</div>
+        <div class="phase-toggle">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-grid">
+          <div class="topic-card" onclick="showDetail('d1a')">
+            <div class="topic-icon">🏗️</div>
+            <div class="topic-name">What is MDM?</div>
+            <div class="topic-desc">Master Data Management concepts, use cases, and business value.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d1b')">
+            <div class="topic-icon">🌐</div>
+            <div class="topic-name">STIBO STEP Overview</div>
+            <div class="topic-desc">Platform introduction, STEP architecture, and product capabilities.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d1c')">
+            <div class="topic-icon">🗄️</div>
+            <div class="topic-name">Data Domains</div>
+            <div class="topic-desc">Product, customer, supplier, location, and employee data domains.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d1d')">
+            <div class="topic-icon">🔑</div>
+            <div class="topic-name">Key Terminology</div>
+            <div class="topic-desc">STEP-specific terms: nodes, objects, attributes, references, and more.</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="d1a">
+          <h3>🏗️ What is MDM?</h3>
+          <h4>Definition</h4>
+          <p>Master Data Management (MDM) is a technology-enabled discipline in which business and IT work together to ensure the uniformity, accuracy, stewardship, semantic consistency, and accountability of the enterprise's shared master data assets.</p>
+          <h4>Core MDM Types</h4>
+          <ul>
+            <li>Product MDM – Manage product hierarchies, attributes, relationships</li>
+            <li>Customer MDM – Single view of customer across systems</li>
+            <li>Supplier MDM – Vendor onboarding, compliance, and data quality</li>
+            <li>Location MDM – Store/site hierarchies and geographic data</li>
+            <li>Employee MDM – HR master data aligned with ERP/HCM</li>
+          </ul>
+          <h4>MDM Implementation Styles</h4>
+          <ul>
+            <li>Registry Style – Central index, data stays in source systems</li>
+            <li>Consolidation Style – Read-only golden record created from sources</li>
+            <li>Coexistence Style – Golden record published back to source systems</li>
+            <li>Centralized Style – MDM is the system of record (STIBO STEP)</li>
+          </ul>
+          <h4>Business Benefits</h4>
+          <ul>
+            <li>Single source of truth for critical data</li>
+            <li>Reduced data inconsistency across systems (ERP, CRM, PIM)</li>
+            <li>Faster time-to-market for products</li>
+            <li>Better regulatory compliance and data governance</li>
+            <li>Improved analytics and reporting accuracy</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d1b">
+          <h3>🌐 STIBO STEP Overview</h3>
+          <h4>What is STIBO STEP?</h4>
+          <p>STIBO STEP is a multidomain MDM and PIM (Product Information Management) platform by STIBO Systems. It provides a single environment to manage all enterprise master data across Product, Customer, Supplier, Location, and more.</p>
+          <h4>Key Platform Capabilities</h4>
+          <ul>
+            <li>Multidomain data management in a unified platform</li>
+            <li>Configurable data model (no-code / low-code)</li>
+            <li>Built-in workflow engine for data stewardship</li>
+            <li>Web UI (STEP Workbench + Web UI framework)</li>
+            <li>REST & SOAP API layer for integrations</li>
+            <li>Business Rules engine for validation</li>
+            <li>Reporting and analytics dashboard</li>
+            <li>Cloud-native and on-premise deployment options</li>
+          </ul>
+          <h4>STEP Editions</h4>
+          <ul>
+            <li>STEP SaaS (Cloud) – Managed cloud with automatic upgrades</li>
+            <li>STEP On-Premise – Enterprise self-hosted deployment</li>
+            <li>STEP Trailblazer – SME-focused cloud offering</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d1c">
+          <h3>🗄️ Data Domains in STEP</h3>
+          <h4>Product Domain (PIM)</h4>
+          <p>Most common use case. Manages product hierarchies, attributes, digital assets (DAM), and channel-specific content for eCommerce, print, and ERP.</p>
+          <h4>Customer Domain (CDM)</h4>
+          <p>Creates a unified customer golden record from CRM, ERP, and eCommerce sources. Handles deduplication, survivorship, and consent management.</p>
+          <h4>Supplier Domain</h4>
+          <p>Supplier onboarding portals, compliance scoring, certificate management, and supplier-facing data collaboration.</p>
+          <h4>Location Domain</h4>
+          <p>Store hierarchies, geospatial attributes, opening hours, regional assignments – often linked to Product and Customer domains.</p>
+        </div>
+        <div class="detail-panel" id="d1d">
+          <h3>🔑 STEP Key Terminology</h3>
+          <table>
+            <tr><th>Term</th><th>Description</th></tr>
+            <tr><td>Node</td><td>Any object in STEP (product, category, customer, etc.)</td></tr>
+            <tr><td>Object Type</td><td>The "class" definition of a node (e.g., Product, Supplier)</td></tr>
+            <tr><td>Attribute</td><td>A piece of data associated with an object (e.g., Color, Weight)</td></tr>
+            <tr><td>Attribute Group</td><td>Logical grouping of attributes for UI organization</td></tr>
+            <tr><td>Classification</td><td>Taxonomy/hierarchy used to group objects by category</td></tr>
+            <tr><td>Reference</td><td>Relationship between two objects (e.g., Product → Supplier)</td></tr>
+            <tr><td>Reference Type</td><td>Defines the nature of a reference (e.g., "Manufactured By")</td></tr>
+            <tr><td>Workspace</td><td>Version control layer — Main, Approved, etc.</td></tr>
+            <tr><td>Context</td><td>Language + channel combination (e.g., EN-US Webshop)</td></tr>
+            <tr><td>LOV</td><td>List of Values — predefined dropdown values for attributes</td></tr>
+            <tr><td>Business Rule</td><td>Validation, transformation, or calculation logic on data</td></tr>
+            <tr><td>Workflow</td><td>Approval or stewardship process for data changes</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase p2">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">2</div>
+        <div class="phase-title-wrap">
+          <div class="phase-label">Phase 2 · Core Skills</div>
+          <div class="phase-title">Data Modeling & Configuration</div>
+        </div>
+        <div class="phase-duration">3–4 weeks</div>
+        <div class="phase-toggle">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-grid">
+          <div class="topic-card" onclick="showDetail('d2a')">
+            <div class="topic-icon">🧱</div>
+            <div class="topic-name">Object Types & Hierarchies</div>
+            <div class="topic-desc">Define object types, configure hierarchies and classification trees.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d2b')">
+            <div class="topic-icon">📋</div>
+            <div class="topic-name">Attributes & Attribute Groups</div>
+            <div class="topic-desc">Creating attributes, data types, validations, and grouping strategies.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d2c')">
+            <div class="topic-icon">🔗</div>
+            <div class="topic-name">References & Relationships</div>
+            <div class="topic-desc">Reference types, cardinality, and cross-domain data linking.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d2d')">
+            <div class="topic-icon">🌍</div>
+            <div class="topic-name">Contexts & Workspaces</div>
+            <div class="topic-desc">Multilingual setup, channel contexts, workspace versioning.</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="d2a">
+          <h3>🧱 Object Types & Hierarchies</h3>
+          <h4>Object Types</h4>
+          <p>Object types define the schema for your data entities. Each object type specifies which attributes, references, and validations apply.</p>
+          <ul>
+            <li>Product Object Types: Base Product, SKU, Bundle, Kit</li>
+            <li>Classification Object Types: Category, Subcategory nodes</li>
+            <li>Entity Object Types: Customer, Supplier, Location, Asset</li>
+          </ul>
+          <h4>Hierarchy Types in STEP</h4>
+          <ul>
+            <li>Product Hierarchy – Physical parent-child product relationships</li>
+            <li>Classification Hierarchy – Logical taxonomy for grouping (eCl@ss, UNSPSC, GS1)</li>
+            <li>Specification Hierarchy – Defines attribute inheritance paths</li>
+            <li>Global Specification – Attributes visible across all contexts</li>
+          </ul>
+          <h4>Inheritance</h4>
+          <p>STEP supports attribute inheritance from parent nodes to children. Configure inheritance rules to avoid redundant data entry.</p>
+          <div class="code-block">
+Parent: Electronics<br>
+  ├── Voltage: 220V (inherited by all children)<br>
+  └── Child: Laptops<br>
+       └── Child: Gaming Laptops<br>
+            └── GPU Type: RTX 4090 (specific attribute)
+          </div>
+        </div>
+        <div class="detail-panel" id="d2b">
+          <h3>📋 Attributes & Attribute Groups</h3>
+          <h4>Attribute Data Types</h4>
+          <ul>
+            <li>Text – Single-line or multi-line free text</li>
+            <li>Number – Integer or decimal with unit of measure</li>
+            <li>Boolean – Yes/No flag</li>
+            <li>Date/DateTime – Date picker with timezone support</li>
+            <li>LOV (List of Values) – Single or multi-select dropdown</li>
+            <li>External Source LOV – Dynamic LOV from external system</li>
+            <li>Asset Cross Reference – Link to digital asset</li>
+          </ul>
+          <h4>Attribute Validations</h4>
+          <ul>
+            <li>Mandatory / Optional / Conditionally Required</li>
+            <li>Regular Expression pattern matching</li>
+            <li>Min/Max value constraints</li>
+            <li>Length constraints for text fields</li>
+            <li>Custom Business Rule validations (JavaScript/Groovy)</li>
+          </ul>
+          <h4>Context-Specific Attributes</h4>
+          <p>Attributes can be global (same across all contexts) or context-specific (different values for EN-US vs DE-DE vs FR-FR). This is critical for multilingual PIM implementations.</p>
+        </div>
+        <div class="detail-panel" id="d2c">
+          <h3>🔗 References & Relationships</h3>
+          <h4>Reference Types</h4>
+          <ul>
+            <li>Product-to-Product: Cross-sell, upsell, spare parts, accessories</li>
+            <li>Product-to-Asset: Main image, additional images, documents</li>
+            <li>Product-to-Classification: Category assignment</li>
+            <li>Product-to-Supplier: Manufactured by, supplied by</li>
+            <li>Customer-to-Customer: Parent company, subsidiary</li>
+          </ul>
+          <h4>Reference Cardinality</h4>
+          <ul>
+            <li>One-to-One (1:1) – A product has one primary supplier</li>
+            <li>One-to-Many (1:N) – A product has many images</li>
+            <li>Many-to-Many (M:N) – Products can belong to multiple categories</li>
+          </ul>
+          <h4>Reference Attributes</h4>
+          <p>References themselves can carry attributes! e.g., a "Supplied By" reference can have attributes like "Lead Time", "Contract Start Date", "Preferred Supplier: Yes/No".</p>
+        </div>
+        <div class="detail-panel" id="d2d">
+          <h3>🌍 Contexts & Workspaces</h3>
+          <h4>Contexts</h4>
+          <p>A Context = Language + Channel. STEP allows you to maintain different attribute values per context, enabling true multichannel, multilingual data management.</p>
+          <div class="code-block">
+Context Examples:<br>
+  EN-US-WEB    → English, US, Web Channel<br>
+  DE-DE-PRINT  → German, Germany, Print Catalog<br>
+  FR-FR-APP    → French, France, Mobile App<br>
+  GLOBAL       → Language-independent master data
+          </div>
+          <h4>Workspaces</h4>
+          <ul>
+            <li>Main Workspace – Working / draft version of data</li>
+            <li>Approved Workspace – Published, approved data</li>
+            <li>Custom Workspaces – Staging, Review, QA environments</li>
+          </ul>
+          <h4>Workspace Approval Flow</h4>
+          <p>Data changes in Main workspace go through workflow approval before promotion to Approved workspace. The Approved workspace feeds downstream systems via exports.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase p3">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">3</div>
+        <div class="phase-title-wrap">
+          <div class="phase-label">Phase 3 · Workflow & Governance</div>
+          <div class="phase-title">Business Rules & Workflows</div>
+        </div>
+        <div class="phase-duration">2–3 weeks</div>
+        <div class="phase-toggle">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-grid">
+          <div class="topic-card" onclick="showDetail('d3a')">
+            <div class="topic-icon">⚖️</div>
+            <div class="topic-name">Business Rules Engine</div>
+            <div class="topic-desc">Validation rules, calculated attributes, and conditional logic.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d3b')">
+            <div class="topic-icon">🔄</div>
+            <div class="topic-name">Workflow Engine</div>
+            <div class="topic-desc">Approval workflows, task assignment, and state machine design.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d3c')">
+            <div class="topic-icon">👥</div>
+            <div class="topic-name">Users, Roles & Privileges</div>
+            <div class="topic-desc">STEP security model, role-based access, and data stewardship.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d3d')">
+            <div class="topic-icon">📊</div>
+            <div class="topic-name">Data Quality & Completeness</div>
+            <div class="topic-desc">DQ rules, completeness scoring, and data quality dashboards.</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="d3a">
+          <h3>⚖️ Business Rules Engine</h3>
+          <h4>Types of Business Rules</h4>
+          <ul>
+            <li>Validation Rules – Check if data meets criteria before save</li>
+            <li>Calculated Attributes – Auto-compute values from other fields</li>
+            <li>Transformation Rules – Normalize or transform incoming data</li>
+            <li>Event Rules – Trigger actions on create, update, delete</li>
+            <li>Completeness Rules – Measure how complete a record is</li>
+          </ul>
+          <h4>Implementation Languages</h4>
+          <ul>
+            <li>JavaScript (STEP Business Function) – Most common</li>
+            <li>Groovy – For complex server-side logic</li>
+            <li>STEP Expression Language – For simple conditional rules</li>
+          </ul>
+          <h4>Example Business Rule</h4>
+          <div class="code-block">
+// Validation: Product weight must be positive<br>
+function validate(node) {<br>
+  var weight = node.getValue('ProductWeight');<br>
+  if (weight !== null && weight <= 0) {<br>
+    throw new Error('Weight must be greater than 0');<br>
+  }<br>
+}
+          </div>
+        </div>
+        <div class="detail-panel" id="d3b">
+          <h3>🔄 Workflow Engine</h3>
+          <h4>Workflow Concepts</h4>
+          <ul>
+            <li>State – A stage in the data lifecycle (Draft, Review, Approved)</li>
+            <li>Transition – Movement between states with conditions</li>
+            <li>Task – Action assigned to a user or group</li>
+            <li>Action – Automated operation triggered on state change</li>
+          </ul>
+          <h4>Common Workflow Patterns</h4>
+          <ul>
+            <li>New Product Introduction (NPI) – Product enrichment and approval</li>
+            <li>Data Change Request – Change management for existing records</li>
+            <li>Supplier Onboarding – Self-service portal with review steps</li>
+            <li>Translation Workflow – Localization with regional team tasks</li>
+          </ul>
+          <h4>Workflow Actions</h4>
+          <ul>
+            <li>Email notifications to stakeholders</li>
+            <li>Auto-promotion of workspace data</li>
+            <li>Trigger outbound integrations/exports</li>
+            <li>Set attribute values automatically</li>
+            <li>Call external REST/SOAP services</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d3c">
+          <h3>👥 Users, Roles & Privileges</h3>
+          <h4>STEP Security Model</h4>
+          <ul>
+            <li>Users – Individual accounts with role assignments</li>
+            <li>Groups – User groups mapped to roles</li>
+            <li>Roles – Collections of privileges (read, write, admin)</li>
+            <li>Privileges – Granular permissions on objects, attributes, workflows</li>
+          </ul>
+          <h4>Privilege Types</h4>
+          <ul>
+            <li>Object Type Privileges – Can create/read/update/delete object types</li>
+            <li>Attribute Privileges – Read-only vs editable per attribute group</li>
+            <li>Workflow Privileges – Can initiate or complete workflow tasks</li>
+            <li>Export/Import Privileges – Access to data integration features</li>
+            <li>Admin Privileges – System configuration access</li>
+          </ul>
+          <h4>Data Stewardship</h4>
+          <p>STEP supports defining data stewards per domain, object type, or classification. Stewards own data quality and approve changes in their domain.</p>
+        </div>
+        <div class="detail-panel" id="d3d">
+          <h3>📊 Data Quality & Completeness</h3>
+          <h4>Completeness Scoring</h4>
+          <p>STEP calculates a completeness score for each object based on mandatory and optional attribute population. Scores can be context-specific.</p>
+          <ul>
+            <li>Define completeness groups per object type</li>
+            <li>Assign weights to attributes (e.g., Title = 20%, Description = 30%)</li>
+            <li>Set thresholds for "ready for export" (e.g., Score ≥ 80%)</li>
+          </ul>
+          <h4>Data Quality Rules</h4>
+          <ul>
+            <li>Uniqueness checks – No duplicate product codes</li>
+            <li>Format validations – EAN-13 barcode format, email format</li>
+            <li>Referential integrity – Referenced objects must exist</li>
+            <li>Cross-field validation – If Type=Hazardous, then SafetyCode must be set</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase p4">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">4</div>
+        <div class="phase-title-wrap">
+          <div class="phase-label">Phase 4 · Integration</div>
+          <div class="phase-title">Imports, Exports & APIs</div>
+        </div>
+        <div class="phase-duration">3–4 weeks</div>
+        <div class="phase-toggle">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-grid">
+          <div class="topic-card" onclick="showDetail('d4a')">
+            <div class="topic-icon">📥</div>
+            <div class="topic-name">STEP Inbound Integration</div>
+            <div class="topic-desc">STEPXML, spreadsheet, and API-based data imports.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d4b')">
+            <div class="topic-icon">📤</div>
+            <div class="topic-name">STEP Outbound Integration</div>
+            <div class="topic-desc">Export configurations, channel publishing, and syndication.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d4c')">
+            <div class="topic-icon">🔌</div>
+            <div class="topic-name">REST & SOAP APIs</div>
+            <div class="topic-desc">STEP REST API, OData, and Web Service integrations.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d4d')">
+            <div class="topic-icon">🔄</div>
+            <div class="topic-name">Smart Data Pool (GDSN)</div>
+            <div class="topic-desc">GS1 data syndication, trading partner collaboration.</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="d4a">
+          <h3>📥 STEP Inbound Integration</h3>
+          <h4>Import Methods</h4>
+          <ul>
+            <li>STEPXML Import – Native XML format, full-fidelity data load</li>
+            <li>Spreadsheet Import – Excel/CSV with column mapping</li>
+            <li>REST API Import – POST requests to create/update objects</li>
+            <li>SOAP Web Service – Legacy system integrations</li>
+            <li>Hotfolder / FTP Drop – File-based automated imports</li>
+          </ul>
+          <h4>STEPXML Structure</h4>
+          <div class="code-block">
+&lt;STEP-ProductInformation&gt;<br>
+  &lt;Products&gt;<br>
+    &lt;Product ID="PROD-001" ParentID="Electronics"&gt;<br>
+      &lt;Name&gt;Gaming Laptop X1&lt;/Name&gt;<br>
+      &lt;Values&gt;<br>
+        &lt;Value AttributeID="Color"&gt;Black&lt;/Value&gt;<br>
+        &lt;Value AttributeID="Weight"&gt;2.5&lt;/Value&gt;<br>
+      &lt;/Values&gt;<br>
+    &lt;/Product&gt;<br>
+  &lt;/Products&gt;<br>
+&lt;/STEP-ProductInformation&gt;
+          </div>
+          <h4>Import Configurations</h4>
+          <ul>
+            <li>Delta vs Full imports – Only changed records vs complete reload</li>
+            <li>Error handling – Skip on error vs halt on error</li>
+            <li>Transformation mapping – Source field → STEP attribute</li>
+            <li>Pre/Post import business rules</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d4b">
+          <h3>📤 STEP Outbound Integration</h3>
+          <h4>Export Types</h4>
+          <ul>
+            <li>STEPXML Export – Full or delta export in native format</li>
+            <li>Channel Export (Smartsheet) – Custom channel-specific templates</li>
+            <li>Print/PDF Export – InDesign or XSLT-based catalog generation</li>
+            <li>eCommerce Feed – Magento, Shopify, SAP Commerce connectors</li>
+            <li>ERP Feed – SAP, Oracle with field mapping</li>
+          </ul>
+          <h4>Export Configurations</h4>
+          <ul>
+            <li>Selection criteria – Object types, classification, workspace, context</li>
+            <li>Attribute selection – Which attributes to include</li>
+            <li>Delta exports – Only changed data since last export timestamp</li>
+            <li>Scheduled exports – Automated via STEP Scheduler</li>
+          </ul>
+          <h4>Outbound Channels</h4>
+          <ul>
+            <li>SFTP / FTP file delivery</li>
+            <li>REST webhook push</li>
+            <li>Email delivery</li>
+            <li>Direct database write via JDBC</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d4c">
+          <h3>🔌 REST & SOAP APIs</h3>
+          <h4>STEP REST API</h4>
+          <ul>
+            <li>Base URL: https://your-step.domain.com/rest-api/</li>
+            <li>Authentication: Basic Auth or OAuth 2.0</li>
+            <li>CRUD operations on all STEP objects</li>
+            <li>Supports JSON and XML payloads</li>
+            <li>OData protocol support for querying</li>
+          </ul>
+          <h4>Key REST Endpoints</h4>
+          <div class="code-block">
+GET  /rest-api/objects/{id}           → Get object by ID<br>
+POST /rest-api/objects                → Create new object<br>
+PUT  /rest-api/objects/{id}           → Update object<br>
+DELETE /rest-api/objects/{id}         → Delete object<br>
+GET  /rest-api/objects?query=...      → Search objects<br>
+POST /rest-api/workflows/{id}/execute → Trigger workflow
+          </div>
+          <h4>SOAP Web Services</h4>
+          <ul>
+            <li>Legacy API still supported for older integrations</li>
+            <li>WSDL available at /services/ProductService?wsdl</li>
+            <li>Key operations: getProduct, setProduct, searchProducts</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d4d">
+          <h3>🔄 Smart Data Pool & GDSN</h3>
+          <h4>What is GDSN?</h4>
+          <p>Global Data Synchronization Network (GDSN) is a GS1 standard for sharing product data between suppliers and retailers in a standardized format. STIBO's Smart Data Pool is a GS1-certified GDSN data pool.</p>
+          <ul>
+            <li>Suppliers publish product data to the data pool</li>
+            <li>Retailers subscribe and receive standardized product records</li>
+            <li>Supports GPC (Global Product Classification)</li>
+            <li>CIC (Confirmation of Item Change) and CIN notifications</li>
+          </ul>
+          <h4>STEP GDSN Integration</h4>
+          <ul>
+            <li>STEP can act as publisher (outbound GDSN) or subscriber (inbound GDSN)</li>
+            <li>Automatic mapping from STEP attributes to GDSN data segments</li>
+            <li>GS1 validation rules enforced on publish</li>
+            <li>Smart Data Pool connector in STEP marketplace</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase p5">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">5</div>
+        <div class="phase-title-wrap">
+          <div class="phase-label">Phase 5 · Advanced</div>
+          <div class="phase-title">Advanced Configurations & AI</div>
+        </div>
+        <div class="phase-duration">3–4 weeks</div>
+        <div class="phase-toggle">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-grid">
+          <div class="topic-card" onclick="showDetail('d5a')">
+            <div class="topic-icon">🤖</div>
+            <div class="topic-name">STEP AI & Enrichment</div>
+            <div class="topic-desc">AI-powered attribute enrichment, image tagging, and content generation.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d5b')">
+            <div class="topic-icon">🖥️</div>
+            <div class="topic-name">Web UI Customization</div>
+            <div class="topic-desc">Custom screens, components, and supplier portals in STEP Web UI.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d5c')">
+            <div class="topic-icon">📐</div>
+            <div class="topic-name">Matching & Deduplication</div>
+            <div class="topic-desc">Match rules, survivorship policies, and golden record management.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d5d')">
+            <div class="topic-icon">⚡</div>
+            <div class="topic-name">Performance & Scalability</div>
+            <div class="topic-desc">Large dataset handling, indexing strategies, and cache configuration.</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="d5a">
+          <h3>🤖 STEP AI & Enrichment</h3>
+          <h4>AI Capabilities in STIBO STEP</h4>
+          <ul>
+            <li>AI-powered auto-classification of products into taxonomies</li>
+            <li>Automated attribute extraction from product descriptions</li>
+            <li>Image recognition for auto-tagging digital assets</li>
+            <li>Content generation via LLM integration (GPT, Claude)</li>
+            <li>Data quality anomaly detection</li>
+          </ul>
+          <h4>STEP AI Connect</h4>
+          <p>STIBO's AI Connect module allows connecting external AI/ML services to enrich master data. Configure AI-powered enrichment pipelines that run on import or on-demand.</p>
+          <h4>Practical Use Cases</h4>
+          <ul>
+            <li>Auto-generate SEO-optimized product descriptions</li>
+            <li>Classify supplier invoices into spend categories</li>
+            <li>Extract hazmat information from safety data sheets (PDFs)</li>
+            <li>Suggest missing attribute values from existing data patterns</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d5b">
+          <h3>🖥️ Web UI Customization</h3>
+          <h4>STEP Web UI Framework</h4>
+          <ul>
+            <li>Built on React/Angular component library</li>
+            <li>No-code configuration via STEP Workbench admin</li>
+            <li>Custom Screen Components (CSC) via JavaScript/TypeScript SDK</li>
+            <li>Responsive design for tablet and mobile use</li>
+          </ul>
+          <h4>Customization Options</h4>
+          <ul>
+            <li>Custom product detail screens per object type</li>
+            <li>Configurable table views with sortable/filterable columns</li>
+            <li>Embedded iframe widgets for external tools</li>
+            <li>Role-based UI visibility (hide fields based on user role)</li>
+            <li>White-labeled supplier/customer portals</li>
+          </ul>
+          <h4>Supplier Portal</h4>
+          <p>STEP provides a self-service supplier onboarding portal. Suppliers log in, fill in their product/company data, and submit for internal review — all without needing STEP Workbench access.</p>
+        </div>
+        <div class="detail-panel" id="d5c">
+          <h3>📐 Matching & Deduplication</h3>
+          <h4>Match Rules</h4>
+          <ul>
+            <li>Exact match on identifier (GTIN, EAN, SKU)</li>
+            <li>Fuzzy match on name + category + brand</li>
+            <li>Phonetic match for customer name matching</li>
+            <li>Address standardization and matching</li>
+            <li>Machine learning match scoring (probabilistic matching)</li>
+          </ul>
+          <h4>Survivorship Rules</h4>
+          <p>When multiple records match, survivorship rules determine which source wins for each attribute:</p>
+          <ul>
+            <li>Most recent wins – Use latest updated value</li>
+            <li>Source priority – ERP > CRM > Portal (ranked trust)</li>
+            <li>Most complete wins – Non-null value preferred</li>
+            <li>Manual review – Flag for human decision</li>
+          </ul>
+          <h4>Golden Record</h4>
+          <p>The golden record is the merged, authoritative master record. In STEP, linked source records are maintained alongside the golden record for lineage tracking and audit.</p>
+        </div>
+        <div class="detail-panel" id="d5d">
+          <h3>⚡ Performance & Scalability</h3>
+          <h4>Large Dataset Best Practices</h4>
+          <ul>
+            <li>Use delta imports instead of full reloads</li>
+            <li>Index frequently searched attributes</li>
+            <li>Partition large classification trees</li>
+            <li>Use lazy loading for large reference lists</li>
+            <li>Schedule heavy exports during off-peak hours</li>
+          </ul>
+          <h4>STEP Cache Configuration</h4>
+          <ul>
+            <li>Object cache: In-memory cache for frequently accessed nodes</li>
+            <li>Search index: Solr/Elasticsearch for fast attribute search</li>
+            <li>Export cache: Pre-generated export snapshots for large channels</li>
+          </ul>
+          <h4>Scaling STEP</h4>
+          <ul>
+            <li>Horizontal scaling via clustering (multiple STEP nodes)</li>
+            <li>Read replicas for reporting/export workloads</li>
+            <li>CDN for DAM (digital asset) delivery</li>
+            <li>Microservices architecture for integration layer</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase p6">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">6</div>
+        <div class="phase-title-wrap">
+          <div class="phase-label">Phase 6 · Expert</div>
+          <div class="phase-title">Certification & Real Projects</div>
+        </div>
+        <div class="phase-duration">Ongoing</div>
+        <div class="phase-toggle">⌄</div>
+      </div>
+      <div class="phase-body">
+        <div class="topics-grid">
+          <div class="topic-card" onclick="showDetail('d6a')">
+            <div class="topic-icon">🎓</div>
+            <div class="topic-name">STIBO Certifications</div>
+            <div class="topic-desc">Available certifications, exam prep, and learning paths.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d6b')">
+            <div class="topic-icon">💼</div>
+            <div class="topic-name">Project Delivery</div>
+            <div class="topic-desc">Implementation methodology, project phases, and stakeholder management.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d6c')">
+            <div class="topic-icon">🌐</div>
+            <div class="topic-name">Learning Resources</div>
+            <div class="topic-desc">Official docs, community, training courses, and sandbox environments.</div>
+          </div>
+          <div class="topic-card" onclick="showDetail('d6d')">
+            <div class="topic-icon">🗺️</div>
+            <div class="topic-name">Career Paths</div>
+            <div class="topic-desc">MDM Analyst, STEP Developer, Solution Architect, MDM Consultant roles.</div>
+          </div>
+        </div>
+        <div class="detail-panel" id="d6a">
+          <h3>🎓 STIBO Certifications</h3>
+          <h4>Available Certifications</h4>
+          <ul>
+            <li>STEP Certified Administrator – Core platform configuration</li>
+            <li>STEP Certified Developer – Business rules, API integrations, custom UI</li>
+            <li>STEP Certified Architect – Solution design, scalability, governance</li>
+            <li>STEP Certified Data Steward – Data governance and quality management</li>
+          </ul>
+          <h4>Exam Preparation Tips</h4>
+          <ul>
+            <li>Complete all STIBO University online courses before attempting exam</li>
+            <li>Hands-on practice in STEP sandbox environment is essential</li>
+            <li>Focus heavily on data model design questions</li>
+            <li>Know the difference between all integration methods</li>
+            <li>Understand workspace and context interactions deeply</li>
+          </ul>
+          <h4>STIBO University</h4>
+          <p>Access STIBO's official learning portal at university.stibosystems.com. Includes instructor-led and self-paced courses, practice environments, and certification vouchers.</p>
+        </div>
+        <div class="detail-panel" id="d6b">
+          <h3>💼 STEP Project Delivery</h3>
+          <h4>Implementation Phases</h4>
+          <ul>
+            <li>Phase 1: Discovery – Current state analysis, data audit, stakeholder mapping</li>
+            <li>Phase 2: Design – Data model design, process design, technical architecture</li>
+            <li>Phase 3: Build – Configuration, development, integration build</li>
+            <li>Phase 4: Test – SIT, UAT, data migration testing</li>
+            <li>Phase 5: Deploy – Go-live, cutover, hypercare</li>
+            <li>Phase 6: Operate – Ongoing support, enhancements, governance</li>
+          </ul>
+          <h4>Key Project Roles</h4>
+          <ul>
+            <li>STEP Solution Architect – Owns technical design decisions</li>
+            <li>STEP Developer – Builds rules, integrations, and configurations</li>
+            <li>Data Modeler – Designs object types, attributes, and hierarchies</li>
+            <li>Data Steward – Business owner of data quality and governance</li>
+            <li>Integration Specialist – Owns ERP/CRM/eCommerce connections</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d6c">
+          <h3>🌐 Learning Resources</h3>
+          <h4>Official Resources</h4>
+          <ul>
+            <li>STIBO University: university.stibosystems.com</li>
+            <li>STIBO Documentation: docs.stibosystems.com</li>
+            <li>STIBO Community Forum: community.stibosystems.com</li>
+            <li>STIBO YouTube Channel – Tutorial videos and webinars</li>
+          </ul>
+          <h4>Hands-On Practice</h4>
+          <ul>
+            <li>Request a STIBO sandbox via your company's STIBO contract</li>
+            <li>STIBO offers trial environments through partner program</li>
+            <li>Practice importing STEPXML files with sample product data</li>
+            <li>Build a mini data model from scratch: Products → Classifications → Assets</li>
+          </ul>
+          <h4>Community & Network</h4>
+          <ul>
+            <li>LinkedIn: Join "STIBO STEP MDM Users" group</li>
+            <li>Annual STIBO Summit conference – hands-on labs</li>
+            <li>STIBO Partner Network for consultants and ISVs</li>
+          </ul>
+        </div>
+        <div class="detail-panel" id="d6d">
+          <h3>🗺️ Career Paths in STIBO MDM</h3>
+          <table>
+            <tr><th>Role</th><th>Focus</th><th>Salary Range</th></tr>
+            <tr><td>MDM Analyst</td><td>Data quality, stewardship, business rules</td><td>$70K–$95K</td></tr>
+            <tr><td>STEP Developer</td><td>Business rules, APIs, custom UI</td><td>$85K–$120K</td></tr>
+            <tr><td>MDM Consultant</td><td>Client delivery, all-round STEP skills</td><td>$100K–$140K</td></tr>
+            <tr><td>Solution Architect</td><td>Enterprise architecture, governance design</td><td>$130K–$180K</td></tr>
+            <tr><td>MDM Product Owner</td><td>Business leadership, roadmap, governance</td><td>$110K–$160K</td></tr>
+          </table>
+          <div class="warn-box">💡 Tip: STEP skills combined with ERP knowledge (SAP/Oracle) significantly increase market value. Many STEP projects sit at the intersection of MDM + ERP modernization.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES: CORE CONCEPTS -->
+  <div id="notes1" class="notes-section">
+    <div class="note-card">
+      <h2>🏗️ MDM Core Concepts <span class="note-tag">Fundamentals</span></h2>
+      <h3>The MDM Problem</h3>
+      <p>In enterprises, the same data lives in many systems: a product exists in SAP (ERP), Salesforce (CRM), Magento (eCommerce), and warehouse systems — often with different names, formats, and values. MDM solves this by creating ONE trusted version.</p>
+      <h3>The Four MDM Styles</h3>
+      <ul>
+        <li><strong>Registry:</strong> MDM holds only identifiers and links to source systems. Low disruption but less control.</li>
+        <li><strong>Consolidation:</strong> MDM creates a read-only golden record from source data. Good for analytics.</li>
+        <li><strong>Coexistence:</strong> Golden record created AND published back to source systems. Bidirectional sync.</li>
+        <li><strong>Centralized (Hub):</strong> MDM IS the system of record. All changes go through MDM. STIBO STEP uses this.</li>
+      </ul>
+      <h3>Why STIBO STEP?</h3>
+      <ul>
+        <li>Multidomain: Product + Customer + Supplier + Location in ONE platform</li>
+        <li>Configurable: Business users can define data model without coding</li>
+        <li>Enterprise-grade: Used by Walmart, Carlsberg, LEGO, Kmart, and 1000+ global brands</li>
+        <li>GS1 Certified: GDSN data pool certification for retail/CPG industries</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h2>🔑 Essential STEP Concepts <span class="note-tag">Must Know</span></h2>
+      <h3>The STEP Object Model</h3>
+      <p>Everything in STEP is a "node" in a tree. Nodes have: an Object Type (what kind of thing it is), Attributes (data fields), and References (relationships to other nodes).</p>
+      <div class="info-box">Think of it like a database: Object Types = Tables, Attributes = Columns, References = Foreign Keys — but with hierarchy and versioning built in.</div>
+      <h3>Workspace Versioning</h3>
+      <p>STEP uses workspaces like Git branches. You edit data in "Main" workspace, it gets reviewed and promoted to "Approved" workspace. Only Approved data gets exported to downstream systems.</p>
+      <h3>Context = Language × Channel</h3>
+      <p>A single product can have different descriptions per context. "EN-US-WEB" might have a marketing description. "DE-DE-PRINT" has a catalog description in German. Both live in the same product record.</p>
+    </div>
+  </div>
+
+  <!-- NOTES: ARCHITECTURE -->
+  <div id="notes2" class="notes-section">
+    <div class="note-card">
+      <h2>⚙️ STEP Technical Architecture <span class="note-tag">Architecture</span></h2>
+      <h3>Core Architecture Layers</h3>
+      <ul>
+        <li>Persistence Layer – Oracle or PostgreSQL database stores all STEP data</li>
+        <li>Application Layer – Java-based STEP server (Tomcat/JBoss)</li>
+        <li>Search Layer – Apache Solr or Elasticsearch for attribute search</li>
+        <li>DAM Layer – File storage for digital assets (S3, NFS, or Azure Blob)</li>
+        <li>Presentation Layer – STEP Workbench (Swing) and Web UI (React)</li>
+        <li>Integration Layer – REST API, SOAP, Hotfolder, Event Bus</li>
+      </ul>
+      <h3>Deployment Options</h3>
+      <ul>
+        <li>Cloud SaaS – STIBO managed, auto-scaled, on AWS/Azure</li>
+        <li>Cloud IaaS – Customer-managed VMs on AWS/Azure/GCP</li>
+        <li>On-Premise – Physical or virtual servers in customer data center</li>
+        <li>Hybrid – STEP core on-prem, integrations in cloud</li>
+      </ul>
+      <h3>STEP Server Components</h3>
+      <ul>
+        <li>STEP Application Server – Core business logic</li>
+        <li>STEP Web Server – Web UI serving</li>
+        <li>STEP Integration Server – Handles imports/exports</li>
+        <li>STEP Scheduler – Cron-based job scheduling</li>
+        <li>STEP Event Framework – Pub/Sub for real-time integrations</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h2>🗂️ Database & Storage Architecture <span class="note-tag">Technical</span></h2>
+      <h3>STEP Database Schema</h3>
+      <p>STEP uses a proprietary tree-based data model stored in RDBMS. Key tables include Nodes (all objects), Attributes (attribute definitions), Values (attribute values), and References (object relationships).</p>
+      <div class="warn-box">⚠️ Never directly query or modify the STEP database. Always use STEP APIs, exports, or the Workbench. Direct DB manipulation can corrupt the STEP data model.</div>
+      <h3>Digital Asset Management (DAM)</h3>
+      <ul>
+        <li>Assets (images, videos, PDFs) stored in external file storage</li>
+        <li>STEP stores metadata + file path reference</li>
+        <li>Rendition generation for thumbnails, web-optimized versions</li>
+        <li>Asset usage tracking — which products use which assets</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- NOTES: INTEGRATIONS -->
+  <div id="notes3" class="notes-section">
+    <div class="note-card">
+      <h2>🔗 Integration Architecture <span class="note-tag">Integrations</span></h2>
+      <h3>Typical STEP Integration Landscape</h3>
+      <ul>
+        <li>SAP ERP → STEP: Product masters, materials, vendors inbound</li>
+        <li>STEP → SAP ERP: Enriched product data outbound</li>
+        <li>STEP → eCommerce (Magento/Shopify): Product catalog export</li>
+        <li>STEP → Print (InDesign): Catalog generation pipeline</li>
+        <li>Supplier Portal → STEP: Self-service supplier data onboarding</li>
+        <li>STEP → BI/Analytics: Data lake or DWH feed for reporting</li>
+      </ul>
+      <h3>Integration Patterns</h3>
+      <ul>
+        <li>Batch File (ETL) – Scheduled STEPXML or CSV file exchange via SFTP</li>
+        <li>Real-time API – REST calls on-demand for single record sync</li>
+        <li>Event-Driven – STEP Event Bus triggers on data changes</li>
+        <li>Message Queue – Kafka/RabbitMQ for high-volume async integrations</li>
+        <li>iPaaS Middleware – MuleSoft, Dell Boomi, Azure Integration Services</li>
+      </ul>
+      <h3>STEP Event Framework</h3>
+      <p>STEP can publish events when objects are created, updated, deleted, or workflow state changes. External systems subscribe to these events for real-time data sync.</p>
+      <div class="code-block">
+Event Types:<br>
+  OBJECT_CREATED    → New product added to STEP<br>
+  OBJECT_UPDATED    → Product attribute changed<br>
+  WORKFLOW_COMPLETE → Product approved in workflow<br>
+  EXPORT_COMPLETE   → Export file ready for pickup
+      </div>
+    </div>
+    <div class="note-card">
+      <h2>🔌 STEP REST API Deep Dive <span class="note-tag">API</span></h2>
+      <h3>Authentication</h3>
+      <ul>
+        <li>Basic Authentication: Base64(username:password) in Authorization header</li>
+        <li>OAuth 2.0: Recommended for production — client credentials or auth code flow</li>
+        <li>API Keys: Available in some STEP versions for service accounts</li>
+      </ul>
+      <h3>Query Language (OData)</h3>
+      <div class="code-block">
+GET /rest-api/objects<br>
+  ?$filter=ObjectType eq 'Product'<br>
+  &amp;$filter=Attribute/Color eq 'Blue'<br>
+  &amp;$select=ID,Name,Color,Weight<br>
+  &amp;$top=100<br>
+  &amp;$skip=200<br>
+  &amp;$orderby=Name asc
+      </div>
+      <h3>Pagination & Rate Limits</h3>
+      <ul>
+        <li>Default page size: 50 records. Max: 500 records per request</li>
+        <li>Use $top and $skip for pagination</li>
+        <li>Rate limits vary by deployment (typically 100 req/min)</li>
+        <li>Use bulk import endpoints for large data loads instead of per-record API calls</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- NOTES: DATA MODELING -->
+  <div id="notes4" class="notes-section">
+    <div class="note-card">
+      <h2>🛠 Data Modeling Best Practices <span class="note-tag">Best Practices</span></h2>
+      <h3>Golden Rules of STEP Data Modeling</h3>
+      <ul>
+        <li>Design the classification hierarchy FIRST — it drives everything else</li>
+        <li>Use inheritance to avoid repeating attribute assignments</li>
+        <li>Keep attribute names business-friendly, not IT-friendly (use business terms)</li>
+        <li>Plan contexts upfront — adding contexts later is painful</li>
+        <li>Always use LOVs for controlled vocabularies — never free text for standardized fields</li>
+        <li>Separate "global" (language-independent) from "contextual" attributes carefully</li>
+      </ul>
+      <h3>Hierarchy Design Patterns</h3>
+      <ul>
+        <li>Product Hierarchy: Family → Category → Subcategory → Product → SKU</li>
+        <li>Geographic: Region → Country → City → Location</li>
+        <li>Customer: Enterprise → Division → Department → Contact</li>
+        <li>Supplier: Parent Company → Subsidiary → Site → Contact</li>
+      </ul>
+      <h3>Common Modeling Mistakes</h3>
+      <ul>
+        <li>❌ Creating too many object types (keep it simple)</li>
+        <li>❌ Mixing classification and specification hierarchies</li>
+        <li>❌ Using free text for fields that should be LOVs</li>
+        <li>❌ Not planning for future domains (adding later requires redesign)</li>
+        <li>❌ Ignoring workspace strategy until go-live</li>
+      </ul>
+    </div>
+    <div class="note-card">
+      <h2>📐 Real-World Data Model Example <span class="note-tag">Example</span></h2>
+      <h3>Retail Product Data Model</h3>
+      <div class="code-block">
+Object Types:<br>
+  Product Family    (e.g., Furniture)<br>
+  Product Category  (e.g., Sofas)<br>
+  Base Product      (e.g., 3-Seat Sofa Model X)<br>
+  SKU               (e.g., Model X, Blue, Large)<br>
+  Digital Asset     (e.g., Product Image JPG)<br>
+<br>
+Classification:<br>
+  Taxonomy → Department → Category → Subcategory<br>
+  GPC Classification (GS1 standard)<br>
+<br>
+Reference Types:<br>
+  SKU "is variant of" Base Product<br>
+  Base Product "has asset" Digital Asset<br>
+  Base Product "cross-sells" Base Product<br>
+  SKU "supplied by" Supplier<br>
+<br>
+Contexts:<br>
+  GLOBAL (attributes: GTIN, Weight, Dimensions)<br>
+  EN-US-WEB (Title, Short Desc, Long Desc)<br>
+  DE-DE-WEB (Titel, Kurzbeschreibung)<br>
+  EN-US-PRINT (Catalog Description, Print Title)
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTES: CERTIFICATION -->
+  <div id="notes5" class="notes-section">
+    <div class="note-card">
+      <h2>🎓 Certification Prep Guide <span class="note-tag">Certification</span></h2>
+      <h3>STEP Certified Administrator — Exam Topics</h3>
+      <ul>
+        <li>Data model creation: object types, attributes, reference types, LOVs</li>
+        <li>Classification and hierarchy management</li>
+        <li>Workspace and context configuration</li>
+        <li>Business rules: validation, calculated attributes</li>
+        <li>Workflow design and task management</li>
+        <li>User management and role/privilege assignment</li>
+        <li>Import/Export configuration (STEPXML, spreadsheet)</li>
+        <li>Data completeness and quality rules</li>
+      </ul>
+      <h3>STEP Certified Developer — Additional Topics</h3>
+      <ul>
+        <li>JavaScript business rules and custom functions</li>
+        <li>REST API integration patterns</li>
+        <li>Custom Screen Components (Web UI SDK)</li>
+        <li>Advanced export configurations and XSLT</li>
+        <li>Event framework and real-time integrations</li>
+        <li>Performance tuning and index management</li>
+      </ul>
+      <h3>Study Plan (8 Weeks)</h3>
+      <ul>
+        <li>Week 1–2: Complete all STIBO University foundational courses</li>
+        <li>Week 3–4: Hands-on data model building in sandbox</li>
+        <li>Week 5: Integrations — build import/export pipelines</li>
+        <li>Week 6: Workflows + business rules practice</li>
+        <li>Week 7: Review weak areas, practice exam questions</li>
+        <li>Week 8: Final review + schedule and sit the exam</li>
+      </ul>
+      <div class="info-box">📌 STIBO University provides official practice exams and study materials. Always complete the hands-on labs — STEP exams include scenario-based questions that require practical experience.</div>
+    </div>
+    <div class="note-card">
+      <h2>🌟 Quick Reference Cheat Sheet <span class="note-tag">Reference</span></h2>
+      <h3>Most Important STEP Concepts to Know Cold</h3>
+      <table>
+        <tr><th>Concept</th><th>Key Point</th></tr>
+        <tr><td>Object Type</td><td>Schema definition for any node (like a database table)</td></tr>
+        <tr><td>Attribute</td><td>Data field on an object, has a type (text, number, LOV, etc.)</td></tr>
+        <tr><td>LOV</td><td>List of Values — always use for controlled vocabularies</td></tr>
+        <tr><td>Reference Type</td><td>Named relationship between two object types</td></tr>
+        <tr><td>Workspace</td><td>Version layer — edit in Main, approve into Approved</td></tr>
+        <tr><td>Context</td><td>Language + Channel — enables multilingual/multichannel</td></tr>
+        <tr><td>Business Rule</td><td>Logic attached to attributes/objects — JS or Groovy</td></tr>
+        <tr><td>Workflow</td><td>State machine for data stewardship and approvals</td></tr>
+        <tr><td>STEPXML</td><td>Native import/export format — learn its structure!</td></tr>
+        <tr><td>Golden Record</td><td>Deduplicated, authoritative master record</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  STIBO MDM Learning Roadmap · Built for learners worldwide · Start at Phase 1 and work through systematically
+</footer>
+
+<script>
+  // Animate progress bar
+  setTimeout(() => {
+    document.getElementById('pbar').style.width = '0%';
+  }, 100);
+
+  function switchTab(id) {
+    // Hide all
+    document.querySelectorAll('.roadmap, .notes-section').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+
+    // Show selected
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function togglePhase(header) {
+    const body = header.nextElementSibling;
+    const isOpen = body.classList.contains('open');
+
+    // Close all
+    document.querySelectorAll('.phase-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.phase-header').forEach(h => h.classList.remove('open'));
+
+    if (!isOpen) {
+      body.classList.add('open');
+      header.classList.add('open');
+      // Update progress
+      updateProgress();
+    }
+  }
+
+  let opened = new Set();
+  function updateProgress() {
+    document.querySelectorAll('.phase-header.open').forEach(h => {
+      opened.add(h.parentElement.className.split(' ').find(c => c.startsWith('p')));
+    });
+    const pct = Math.min((opened.size / 6) * 100, 100);
+    document.getElementById('pbar').style.width = pct + '%';
+  }
+
+  let openDetail = null;
+  function showDetail(id) {
+    if (openDetail === id) {
+      document.getElementById(id).classList.remove('open');
+      openDetail = null;
+      return;
+    }
+    document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('open'));
+    document.getElementById(id).classList.add('open');
+    openDetail = id;
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
+</body>
+</html>
