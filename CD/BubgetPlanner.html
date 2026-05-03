@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0E1414">
+<meta name="description" content="Ledger — A quiet, disciplined personal wealth planner built on a hundred years of financial wisdom.">
+<title>Ledger — Personal Wealth Planner</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230E1414'/%3E%3Ccircle cx='50' cy='50' r='22' fill='%23C9A961'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Manrope:wght@200..800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1414;
+  --ink-2:#1A2020;
+  --ink-3:#252B2B;
+  --paper:#F4EFE6;
+  --paper-2:#EAE3D5;
+  --paper-3:#DDD4C3;
+  --gold:#C9A961;
+  --gold-light:#DFC089;
+  --gold-deep:#A88947;
+  --forest:#1F3D2A;
+  --forest-mid:#2D5F3F;
+  --sage:#7DBA92;
+  --clay:#B85042;
+  --rule:rgba(14,20,20,0.12);
+  --rule-light:rgba(14,20,20,0.06);
+  --muted:rgba(14,20,20,0.55);
+  --muted-soft:rgba(14,20,20,0.4);
+  --pad-x:clamp(20px, 5vw, 64px);
+  --pad-y:clamp(80px, 12vh, 160px);
+  --max-w:1440px;
+  --radius:8px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{
+  font-family:'Manrope', -apple-system, sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  font-weight:400;
+  line-height:1.55;
+  font-feature-settings:"ss01","cv11","kern","liga";
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+  position:relative;
+}
+body.menu-open{overflow:hidden;}
+
+/* Subtle paper grain */
+body::before{
+  content:'';position:fixed;inset:0;
+  pointer-events:none;z-index:1;
+  opacity:.32;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.05  0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+img{max-width:100%;display:block;}
+button{font-family:inherit;}
+.serif{font-family:'Fraunces', serif;font-feature-settings:"ss01";}
+.mono{font-family:'JetBrains Mono', monospace;font-variant-numeric:tabular-nums;}
+.italic{font-style:italic;}
+
+/* ========== SCROLL PROGRESS ========== */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:2px;
+  background:linear-gradient(90deg, var(--gold-deep), var(--gold));
+  z-index:200;width:0%;transition:width .1s linear;
+  pointer-events:none;
+}
+
+/* ========== LOADING ========== */
+.loader{
+  position:fixed;inset:0;
+  background:var(--ink);
+  z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .8s cubic-bezier(.4,0,.2,1), visibility .8s;
+}
+.loader.done{opacity:0;visibility:hidden;}
+.loader-mark{
+  width:48px;height:48px;
+  border-radius:50%;
+  background:var(--paper);
+  position:relative;
+  animation:pulse 1.4s ease-in-out infinite;
+}
+.loader-mark::after{
+  content:'';position:absolute;inset:12px;
+  background:var(--gold);border-radius:50%;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.2);}
+}
+
+/* ========== NAV ========== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:clamp(14px, 2vw, 22px) var(--pad-x);
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(244,239,230,0.85);
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  border-bottom:1px solid var(--rule);
+  transition:padding .3s, background .3s;
+}
+nav.scrolled{
+  padding:10px var(--pad-x);
+  background:rgba(244,239,230,0.95);
+}
+.logo{
+  font-family:'Fraunces', serif;
+  font-weight:600;
+  font-size:clamp(20px, 2.5vw, 24px);
+  letter-spacing:-0.02em;
+  display:flex;align-items:center;gap:10px;
+  color:var(--ink);
+  text-decoration:none;
+}
+.logo-mark{
+  width:28px;height:28px;
+  background:var(--ink);
+  border-radius:50%;
+  position:relative;display:inline-block;
+  flex-shrink:0;
+}
+.logo-mark::after{
+  content:'';position:absolute;inset:6px;
+  border-radius:50%;background:var(--gold);
+  animation:dotPulse 3s ease-in-out infinite;
+}
+@keyframes dotPulse{
+  0%,100%{transform:scale(1);opacity:1;}
+  50%{transform:scale(0.85);opacity:0.8;}
+}
+.nav-links{display:flex;gap:36px;align-items:center;}
+.nav-links a{
+  color:var(--ink);text-decoration:none;
+  font-size:13px;letter-spacing:0.04em;
+  text-transform:uppercase;font-weight:500;
+  position:relative;transition:color .3s;
+}
+.nav-links a::after{
+  content:'';position:absolute;
+  left:0;bottom:-4px;width:0;height:1px;
+  background:var(--gold);transition:width .35s ease;
+}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+  background:var(--ink);color:var(--paper);
+  padding:10px 22px;border-radius:50px;
+  font-size:13px;letter-spacing:0.04em;
+  text-transform:uppercase;font-weight:500;
+  cursor:pointer;border:none;
+  transition:all .3s;
+}
+.nav-cta:hover{background:var(--gold-deep);transform:translateY(-1px);}
+
+/* Hamburger */
+.menu-toggle{
+  display:none;
+  width:40px;height:40px;
+  background:transparent;border:none;
+  cursor:pointer;position:relative;
+  padding:0;
+}
+.menu-toggle span{
+  position:absolute;left:8px;right:8px;height:1.5px;
+  background:var(--ink);
+  transition:transform .35s ease, opacity .25s ease;
+}
+.menu-toggle span:nth-child(1){top:14px;}
+.menu-toggle span:nth-child(2){top:20px;}
+.menu-toggle span:nth-child(3){top:26px;}
+body.menu-open .menu-toggle span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+body.menu-open .menu-toggle span:nth-child(2){opacity:0;}
+body.menu-open .menu-toggle span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+
+/* Mobile menu overlay */
+.mobile-menu{
+  position:fixed;inset:0;z-index:90;
+  background:var(--ink);color:var(--paper);
+  display:flex;flex-direction:column;
+  padding:120px var(--pad-x) 60px;
+  opacity:0;visibility:hidden;
+  transform:translateY(-20px);
+  transition:opacity .5s ease, transform .5s ease, visibility .5s;
+}
+body.menu-open .mobile-menu{
+  opacity:1;visibility:visible;transform:translateY(0);
+}
+.mobile-menu a{
+  font-family:'Fraunces', serif;
+  font-size:clamp(36px, 8vw, 56px);
+  font-weight:300;
+  letter-spacing:-0.02em;
+  color:var(--paper);
+  text-decoration:none;
+  padding:14px 0;
+  border-bottom:1px solid rgba(244,239,230,0.1);
+  display:flex;justify-content:space-between;
+  align-items:center;
+  transition:color .3s, padding-left .3s;
+  font-variation-settings:"opsz" 144;
+}
+.mobile-menu a:hover, .mobile-menu a:focus{
+  color:var(--gold);padding-left:12px;
+}
+.mobile-menu a .num{
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;
+  letter-spacing:0.2em;
+  color:var(--gold-deep);
+  font-weight:400;
+}
+.mobile-menu .menu-foot{
+  margin-top:auto;
+  font-size:11px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(244,239,230,0.4);
+  font-family:'JetBrains Mono',monospace;
+  display:flex;justify-content:space-between;
+}
+
+/* ========== HERO ========== */
+.hero{
+  min-height:100vh;
+  min-height:100dvh;
+  padding:clamp(120px, 16vh, 160px) var(--pad-x) clamp(60px, 10vh, 100px);
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:clamp(40px, 6vw, 80px);
+  align-items:center;
+  position:relative;z-index:2;
+  max-width:var(--max-w);margin:0 auto;
+}
+.eyebrow{
+  font-size:clamp(10px, 1.2vw, 12px);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:var(--gold-deep);font-weight:600;
+  margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.eyebrow::before{
+  content:'';display:inline-block;
+  width:32px;height:1px;background:var(--gold-deep);
+  flex-shrink:0;
+}
+.hero h1{
+  font-family:'Fraunces', serif;
+  font-size:clamp(48px, 9vw, 132px);
+  line-height:0.95;
+  font-weight:400;
+  letter-spacing:-0.035em;
+  margin-bottom:clamp(20px, 3vw, 32px);
+  font-variation-settings:"opsz" 144;
+}
+.hero h1 .italic-word{font-style:italic;font-weight:300;color:var(--forest-mid);}
+.hero h1 .gold-word{color:var(--gold-deep);font-style:italic;font-weight:300;}
+.hero p.lede{
+  font-size:clamp(16px, 1.4vw, 19px);
+  line-height:1.6;
+  max-width:520px;
+  color:rgba(14,20,20,0.72);
+  margin-bottom:clamp(28px, 4vw, 40px);
+}
+.hero-actions{
+  display:flex;gap:16px;
+  align-items:center;flex-wrap:wrap;
+}
+.btn-primary{
+  background:var(--ink);color:var(--paper);
+  padding:clamp(14px, 1.5vw, 18px) clamp(24px, 3vw, 36px);
+  border-radius:50px;
+  font-size:clamp(12px, 1.1vw, 14px);
+  letter-spacing:0.06em;text-transform:uppercase;
+  font-weight:600;cursor:pointer;border:none;
+  transition:all .3s;text-decoration:none;
+  display:inline-block;
+  min-height:44px;line-height:1;
+  display:inline-flex;align-items:center;
+}
+.btn-primary:hover{background:var(--forest);transform:translateY(-2px);box-shadow:0 12px 28px rgba(14,20,20,0.15);}
+.btn-ghost{
+  background:transparent;color:var(--ink);
+  padding:clamp(14px, 1.5vw, 18px) clamp(20px, 2.5vw, 32px);
+  font-size:clamp(12px, 1.1vw, 14px);
+  letter-spacing:0.06em;text-transform:uppercase;
+  font-weight:600;cursor:pointer;border:none;
+  text-decoration:none;
+  display:inline-flex;align-items:center;gap:10px;
+  transition:gap .3s;min-height:44px;
+}
+.btn-ghost:hover{gap:18px;}
+.btn-ghost::after{content:'→';font-size:16px;}
+
+/* HERO CARD */
+.hero-card{
+  background:var(--ink);color:var(--paper);
+  padding:clamp(32px, 4vw, 56px) clamp(28px, 3.5vw, 48px);
+  border-radius:var(--radius);
+  position:relative;overflow:hidden;
+  box-shadow:0 30px 80px rgba(14,20,20,0.18), 0 4px 12px rgba(14,20,20,0.06);
+  transform:rotate(0.5deg);
+  transition:transform .6s cubic-bezier(.4,0,.2,1);
+}
+.hero-card:hover{transform:rotate(0deg) translateY(-6px);}
+.hero-card::before{
+  content:'';position:absolute;
+  top:-100px;right:-100px;
+  width:300px;height:300px;
+  background:radial-gradient(circle, rgba(201,169,97,0.25), transparent 60%);
+  border-radius:50%;
+  animation:floatGlow 8s ease-in-out infinite;
+}
+@keyframes floatGlow{
+  0%,100%{transform:translate(0,0);}
+  50%{transform:translate(-20px, 20px);}
+}
+.card-label{
+  font-size:11px;letter-spacing:0.3em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:8px;font-weight:600;
+}
+.card-title{
+  font-family:'Fraunces', serif;
+  font-size:clamp(15px, 1.4vw, 18px);
+  font-style:italic;font-weight:300;
+  color:rgba(244,239,230,0.7);
+  margin-bottom:clamp(24px, 3vw, 32px);
+}
+.big-number{
+  font-family:'Fraunces', serif;
+  font-size:clamp(56px, 8vw, 88px);
+  font-weight:300;letter-spacing:-0.04em;
+  line-height:1;margin-bottom:8px;
+  font-variation-settings:"opsz" 144;
+}
+.big-number .currency{
+  font-size:clamp(24px, 3vw, 32px);
+  vertical-align:top;margin-right:6px;
+  color:var(--gold);font-weight:400;
+}
+.big-number .decimal{
+  font-size:clamp(24px, 3vw, 32px);
+  color:rgba(244,239,230,0.5);
+}
+.card-rule{
+  height:1px;background:rgba(244,239,230,0.15);
+  margin:clamp(24px, 3vw, 32px) 0;
+}
+.allocation-row{
+  display:flex;justify-content:space-between;
+  align-items:baseline;padding:10px 0;
+  position:relative;z-index:2;gap:12px;
+}
+.allocation-row .label{
+  font-size:clamp(12px, 1.2vw, 13px);
+  letter-spacing:0.05em;
+  color:rgba(244,239,230,0.7);
+}
+.allocation-row .label .pct{
+  display:inline-block;margin-right:14px;
+  color:var(--gold);font-weight:500;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;
+}
+.allocation-row .value{
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(13px, 1.3vw, 15px);
+  color:var(--paper);font-weight:500;
+}
+
+/* ========== SECTIONS ========== */
+.section-grid{
+  max-width:var(--max-w);margin:0 auto;
+  display:grid;grid-template-columns:1fr 2fr;
+  gap:clamp(32px, 6vw, 80px);
+}
+.section-label{
+  font-size:11px;letter-spacing:0.3em;
+  text-transform:uppercase;
+  color:var(--gold-deep);font-weight:600;
+  position:relative;padding-top:8px;
+  border-top:1px solid var(--ink);
+  align-self:start;
+}
+.section-label::after{
+  content:attr(data-num);
+  position:absolute;right:0;top:8px;
+  font-family:'Fraunces', serif;
+  font-style:italic;color:var(--muted);
+}
+.section-content h2{
+  font-family:'Fraunces', serif;
+  font-size:clamp(36px, 5.5vw, 84px);
+  line-height:1.02;letter-spacing:-0.025em;
+  font-weight:400;
+  margin-bottom:clamp(24px, 3vw, 48px);
+  font-variation-settings:"opsz" 144;
+}
+.section-content h2 em{
+  font-style:italic;font-weight:300;color:var(--forest-mid);
+}
+.section-content p.section-lede{
+  font-size:clamp(16px, 1.4vw, 18px);
+  color:var(--muted);max-width:620px;line-height:1.65;
+}
+
+/* ========== METHOD ========== */
+.method{
+  padding:var(--pad-y) var(--pad-x);
+  background:var(--paper);
+  position:relative;z-index:2;
+  border-top:1px solid var(--rule);
+}
+.method-grid{
+  display:grid;grid-template-columns:repeat(3, 1fr);
+  gap:1px;background:var(--rule);
+  margin:clamp(48px, 6vw, 80px) auto 0;
+  max-width:var(--max-w);
+}
+.method-card{
+  background:var(--paper);
+  padding:clamp(32px, 4vw, 48px) clamp(24px, 3vw, 36px);
+  position:relative;transition:background .4s;
+  cursor:default;
+}
+.method-card:hover{background:var(--paper-2);}
+.method-card .num{
+  font-family:'Fraunces', serif;
+  font-size:14px;font-style:italic;
+  color:var(--gold-deep);margin-bottom:24px;
+}
+.method-card .pct{
+  font-family:'Fraunces', serif;
+  font-size:clamp(64px, 8vw, 104px);
+  font-weight:300;line-height:1;
+  letter-spacing:-0.04em;margin-bottom:20px;
+  font-variation-settings:"opsz" 144;
+}
+.method-card:nth-child(1) .pct{color:var(--ink);}
+.method-card:nth-child(2) .pct{color:var(--gold-deep);}
+.method-card:nth-child(3) .pct{color:var(--forest-mid);}
+.method-card .pct sup{font-size:clamp(28px, 3vw, 36px);color:var(--muted);}
+.method-card h3{
+  font-family:'Fraunces', serif;
+  font-size:clamp(22px, 2vw, 26px);
+  font-weight:500;margin-bottom:12px;
+  letter-spacing:-0.01em;
+}
+.method-card p{
+  font-size:14px;color:var(--muted);line-height:1.65;
+}
+.method-card .examples{
+  margin-top:20px;padding-top:20px;
+  border-top:1px solid var(--rule);
+  font-size:11px;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  letter-spacing:0.04em;line-height:1.7;
+}
+
+/* ========== PLANNER ========== */
+.planner{
+  padding:var(--pad-y) var(--pad-x);
+  background:var(--ink);color:var(--paper);
+  position:relative;z-index:2;overflow:hidden;
+}
+.planner::before{
+  content:'';position:absolute;
+  top:-200px;right:-200px;
+  width:600px;height:600px;
+  background:radial-gradient(circle, rgba(201,169,97,0.12), transparent 60%);
+  border-radius:50%;pointer-events:none;
+}
+.planner::after{
+  content:'';position:absolute;
+  bottom:-300px;left:-100px;
+  width:500px;height:500px;
+  background:radial-gradient(circle, rgba(45,95,63,0.18), transparent 60%);
+  border-radius:50%;pointer-events:none;
+}
+.planner .section-label{border-color:var(--paper);color:var(--gold);}
+.planner .section-content h2 em{color:var(--gold);}
+.planner .section-lede{color:rgba(244,239,230,0.6);}
+
+.planner-tool{
+  margin:clamp(48px, 6vw, 80px) auto 0;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);
+  gap:clamp(32px, 4vw, 60px);
+  align-items:start;
+  max-width:var(--max-w);
+  position:relative;z-index:2;
+}
+
+.input-panel{
+  background:rgba(244,239,230,0.04);
+  border:1px solid rgba(244,239,230,0.12);
+  border-radius:var(--radius);
+  padding:clamp(28px, 3.5vw, 48px);
+  position:sticky;top:100px;
+}
+.panel-eyebrow{
+  font-size:11px;letter-spacing:0.3em;
+  text-transform:uppercase;color:var(--gold);
+  margin-bottom:12px;font-weight:600;
+}
+.panel-title{
+  font-family:'Fraunces', serif;
+  font-size:clamp(24px, 2.5vw, 32px);
+  font-weight:400;letter-spacing:-0.02em;
+  margin-bottom:clamp(28px, 3.5vw, 36px);
+  line-height:1.1;
+}
+.input-group{margin-bottom:clamp(20px, 2.5vw, 28px);}
+.input-group label{
+  display:block;font-size:12px;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:rgba(244,239,230,0.6);
+  margin-bottom:10px;font-weight:500;
+}
+.input-wrap{
+  position:relative;
+  border-bottom:1px solid rgba(244,239,230,0.2);
+  transition:border-color .3s;
+}
+.input-wrap:focus-within{border-color:var(--gold);}
+.input-wrap .prefix{
+  position:absolute;left:0;top:50%;
+  transform:translateY(-50%);
+  color:var(--gold);
+  font-family:'Fraunces',serif;
+  font-size:clamp(20px, 2.4vw, 26px);font-weight:300;
+}
+.input-wrap input{
+  width:100%;background:transparent;
+  border:none;color:var(--paper);
+  font-family:'Fraunces', serif;
+  font-size:clamp(28px, 3.5vw, 40px);
+  font-weight:300;letter-spacing:-0.02em;
+  padding:14px 0 14px clamp(24px, 3vw, 32px);
+  outline:none;-moz-appearance:textfield;
+}
+.input-wrap input::-webkit-outer-spin-button,
+.input-wrap input::-webkit-inner-spin-button{
+  -webkit-appearance:none;margin:0;
+}
+.input-wrap input::placeholder{color:rgba(244,239,230,0.25);}
+.preset-buttons{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;
+}
+.preset-btn{
+  background:transparent;
+  border:1px solid rgba(244,239,230,0.2);
+  color:rgba(244,239,230,0.7);
+  padding:8px 14px;border-radius:50px;
+  font-size:12px;
+  font-family:'JetBrains Mono',monospace;
+  cursor:pointer;transition:all .25s;
+  min-height:34px;
+}
+.preset-btn:hover, .preset-btn:focus-visible{
+  border-color:var(--gold);color:var(--gold);
+}
+.preset-btn.active{
+  border-color:var(--gold);
+  background:rgba(201,169,97,0.1);
+  color:var(--gold);
+}
+.toggle-row{
+  display:flex;gap:8px;
+  background:rgba(244,239,230,0.06);
+  padding:4px;border-radius:50px;margin-top:12px;
+}
+.toggle-row button{
+  flex:1;background:transparent;border:none;
+  color:rgba(244,239,230,0.6);
+  padding:11px 8px;border-radius:50px;
+  font-size:11px;letter-spacing:0.08em;
+  text-transform:uppercase;font-weight:600;
+  cursor:pointer;transition:all .3s;
+  min-height:38px;
+}
+.toggle-row button.active{background:var(--gold);color:var(--ink);}
+
+/* RESULTS PANEL */
+.results-panel{position:relative;min-width:0;}
+.results-summary{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:rgba(244,239,230,0.12);
+  margin-bottom:clamp(32px, 4vw, 48px);
+  border-radius:6px;overflow:hidden;
+}
+.summary-cell{
+  background:var(--ink);
+  padding:clamp(20px, 2.5vw, 32px) clamp(16px, 2vw, 24px);
+}
+.summary-cell .lbl{
+  font-size:10px;letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:rgba(244,239,230,0.5);
+  margin-bottom:12px;font-weight:500;
+}
+.summary-cell .val{
+  font-family:'Fraunces', serif;
+  font-size:clamp(20px, 2.6vw, 36px);
+  font-weight:400;letter-spacing:-0.02em;
+  white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;
+}
+.summary-cell .val .currency{
+  font-size:clamp(12px, 1.4vw, 18px);
+  color:var(--gold);vertical-align:top;margin-right:4px;
+}
+.summary-cell.gold .val{color:var(--gold);}
+.summary-cell.green .val{color:var(--sage);}
+
+/* DONUT CHART */
+.donut-section{
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:clamp(24px, 4vw, 48px);
+  align-items:center;
+  margin-bottom:clamp(32px, 4vw, 48px);
+  padding:clamp(20px, 3vw, 36px);
+  background:rgba(244,239,230,0.03);
+  border:1px solid rgba(244,239,230,0.08);
+  border-radius:var(--radius);
+}
+.donut-wrap{
+  position:relative;
+  width:clamp(180px, 18vw, 240px);
+  height:clamp(180px, 18vw, 240px);
+  flex-shrink:0;
+}
+.donut-svg{transform:rotate(-90deg);width:100%;height:100%;}
+.donut-svg circle{
+  fill:transparent;
+  stroke-width:18;
+  transition:stroke-dasharray 1s cubic-bezier(.4,0,.2,1);
+}
+.donut-center{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;pointer-events:none;
+}
+.donut-center .lbl{
+  font-size:10px;letter-spacing:0.25em;
+  text-transform:uppercase;
+  color:rgba(244,239,230,0.5);font-weight:600;
+  margin-bottom:6px;
+}
+.donut-center .val{
+  font-family:'Fraunces', serif;
+  font-size:clamp(22px, 2.5vw, 32px);
+  font-weight:400;letter-spacing:-0.02em;
+  color:var(--paper);
+}
+.donut-center .val .currency{
+  color:var(--gold);font-size:0.6em;
+  vertical-align:top;margin-right:2px;
+}
+.donut-legend{
+  display:flex;flex-direction:column;
+  gap:14px;min-width:0;
+}
+.donut-legend-row{
+  display:flex;align-items:center;gap:14px;
+  padding:12px 0;
+  border-bottom:1px dotted rgba(244,239,230,0.1);
+}
+.donut-legend-row:last-child{border-bottom:none;}
+.legend-swatch{
+  width:14px;height:14px;border-radius:3px;flex-shrink:0;
+}
+.legend-swatch.needs{background:var(--paper);}
+.legend-swatch.wants{background:var(--gold);}
+.legend-swatch.savings{background:var(--forest-mid);}
+.legend-name{
+  flex:1;
+  font-size:clamp(13px, 1.3vw, 14px);
+  color:rgba(244,239,230,0.85);
+  min-width:0;
+}
+.legend-name strong{
+  color:var(--paper);font-weight:600;
+  display:block;font-size:clamp(13px, 1.3vw, 15px);
+  margin-bottom:2px;
+}
+.legend-name span{
+  font-size:11px;color:rgba(244,239,230,0.5);
+  letter-spacing:0.04em;
+}
+.legend-amt{
+  font-family:'JetBrains Mono', monospace;
+  font-size:clamp(13px, 1.3vw, 14px);
+  font-weight:500;color:var(--paper);
+  white-space:nowrap;
+}
+
+/* CATEGORY BREAKDOWN */
+.cat-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:clamp(24px, 3vw, 36px);
+}
+.cat-block{min-width:0;}
+.cat-block.full-width{grid-column:1 / -1;}
+.cat-block h4{
+  font-family:'Fraunces', serif;
+  font-size:14px;font-style:italic;
+  color:var(--gold);margin-bottom:18px;
+  padding-bottom:10px;
+  border-bottom:1px solid rgba(244,239,230,0.12);
+  letter-spacing:0.02em;
+}
+.cat-row{
+  display:flex;justify-content:space-between;
+  align-items:center;padding:11px 0;
+  font-size:14px;gap:12px;
+  border-bottom:1px dotted rgba(244,239,230,0.08);
+}
+.cat-row .name{
+  color:rgba(244,239,230,0.85);
+  flex:1;min-width:0;
+  overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.cat-row .amt{
+  font-family:'JetBrains Mono', monospace;
+  font-size:13px;font-weight:500;
+  color:var(--paper);white-space:nowrap;
+}
+.full-width-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0 clamp(24px, 3vw, 36px);
+}
+
+/* ========== PROJECTION ========== */
+.projection{
+  padding:var(--pad-y) var(--pad-x);
+  background:var(--paper);
+  border-top:1px solid var(--rule);
+  position:relative;z-index:2;
+}
+.projection-tool{
+  max-width:var(--max-w);
+  margin:clamp(48px, 6vw, 80px) auto 0;
+  display:grid;
+  grid-template-columns:1fr 1.5fr;
+  gap:clamp(32px, 5vw, 60px);
+  align-items:start;
+}
+.projection-input{
+  display:flex;flex-direction:column;gap:24px;
+}
+.proj-stat{
+  padding:24px 0;
+  border-bottom:1px solid var(--rule);
+}
+.proj-stat:last-child{border-bottom:none;}
+.proj-stat .lbl{
+  font-size:11px;letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--muted);font-weight:600;
+  margin-bottom:8px;
+}
+.proj-stat .val{
+  font-family:'Fraunces', serif;
+  font-size:clamp(36px, 5vw, 56px);
+  font-weight:300;line-height:1;
+  letter-spacing:-0.03em;color:var(--ink);
+  font-variation-settings:"opsz" 144;
+}
+.proj-stat .val.gold{color:var(--gold-deep);}
+.proj-stat .val.forest{color:var(--forest-mid);}
+.proj-stat .val .currency{
+  font-size:0.55em;color:var(--gold);
+  vertical-align:top;margin-right:4px;
+}
+.proj-stat .sub{
+  font-size:12px;color:var(--muted);
+  margin-top:8px;font-family:'Fraunces',serif;
+  font-style:italic;
+}
+.proj-controls{margin-top:16px;}
+.range-wrap{
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:8px;
+}
+.range-wrap input[type="range"]{
+  flex:1;-webkit-appearance:none;appearance:none;
+  height:2px;background:var(--paper-3);
+  border-radius:2px;outline:none;
+}
+.range-wrap input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--ink);cursor:pointer;
+  border:3px solid var(--gold);
+  transition:transform .2s;
+}
+.range-wrap input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.15);}
+.range-wrap input[type="range"]::-moz-range-thumb{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--ink);cursor:pointer;
+  border:3px solid var(--gold);
+}
+.range-val{
+  font-family:'JetBrains Mono', monospace;
+  font-size:14px;font-weight:600;
+  color:var(--ink);min-width:60px;text-align:right;
+}
+.range-label{
+  font-size:11px;letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--muted);font-weight:600;
+  margin-bottom:12px;display:block;
+}
+
+/* CHART */
+.proj-chart{
+  background:linear-gradient(180deg, transparent, rgba(14,20,20,0.02));
+  border:1px solid var(--rule);
+  border-radius:var(--radius);
+  padding:clamp(24px, 3vw, 36px);
+  position:relative;
+}
+.proj-chart-header{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;margin-bottom:24px;flex-wrap:wrap;gap:12px;
+}
+.proj-chart-title{
+  font-family:'Fraunces', serif;
+  font-size:clamp(18px, 2vw, 22px);
+  font-weight:500;letter-spacing:-0.01em;
+}
+.proj-chart-meta{
+  font-size:11px;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+}
+#projChart{
+  width:100%;height:280px;
+}
+.proj-chart-legend{
+  display:flex;gap:24px;margin-top:16px;
+  font-size:12px;flex-wrap:wrap;
+}
+.proj-chart-legend span{
+  display:flex;align-items:center;gap:8px;
+  color:var(--muted);
+}
+.proj-chart-legend span::before{
+  content:'';width:12px;height:2px;
+  background:var(--ink);
+}
+.proj-chart-legend .principal::before{background:var(--ink);}
+.proj-chart-legend .interest::before{background:var(--gold);}
+.proj-chart-legend .total::before{background:var(--forest-mid);}
+
+/* ========== GOALS ========== */
+.goals-section{
+  padding:var(--pad-y) var(--pad-x);
+  background:var(--paper);
+  border-top:1px solid var(--rule);
+  position:relative;z-index:2;
+}
+.goals-grid{
+  max-width:var(--max-w);margin:clamp(48px, 6vw, 80px) auto 0;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(16px, 2vw, 24px);
+}
+.goal-card{
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:var(--radius);
+  padding:clamp(28px, 3vw, 36px) clamp(24px, 3vw, 32px);
+  position:relative;overflow:hidden;
+  transition:all .4s cubic-bezier(.4,0,.2,1);
+}
+.goal-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:0;
+  background:var(--gold);
+  transition:height .35s ease;
+}
+.goal-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 30px 60px rgba(14,20,20,0.08);
+  border-color:var(--gold);
+}
+.goal-card:hover::before{height:3px;}
+.goal-card .goal-icon{
+  font-family:'Fraunces',serif;
+  font-style:italic;font-size:14px;
+  color:var(--gold-deep);margin-bottom:24px;
+  display:flex;justify-content:space-between;align-items:baseline;
+}
+.goal-card .goal-icon .num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.2em;color:var(--muted);
+}
+.goal-card h4{
+  font-family:'Fraunces', serif;
+  font-size:clamp(22px, 2.2vw, 28px);
+  font-weight:500;letter-spacing:-0.01em;
+  margin-bottom:8px;line-height:1.15;
+}
+.goal-card .goal-desc{
+  font-size:13px;color:var(--muted);
+  margin-bottom:32px;line-height:1.6;
+}
+.progress-bar-wrap{
+  height:6px;background:var(--paper-3);
+  border-radius:3px;overflow:hidden;margin-bottom:14px;
+}
+.progress-bar-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--gold-deep), var(--gold));
+  border-radius:3px;
+  transition:width 1.4s cubic-bezier(.4,0,.2,1);
+  width:0;
+}
+.progress-meta{
+  display:flex;justify-content:space-between;
+  font-family:'JetBrains Mono', monospace;
+  font-size:11px;color:var(--muted);
+  letter-spacing:0.04em;flex-wrap:wrap;gap:4px;
+}
+.progress-meta .saved{color:var(--ink);font-weight:600;}
+
+/* ========== PRESS STRIP ========== */
+.press{
+  padding:clamp(40px, 6vh, 80px) var(--pad-x);
+  background:var(--paper);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+  position:relative;z-index:2;
+}
+.press-inner{
+  max-width:var(--max-w);margin:0 auto;
+  display:grid;grid-template-columns:auto 1fr;
+  gap:clamp(24px, 4vw, 48px);align-items:center;
+}
+.press-label{
+  font-size:11px;letter-spacing:0.25em;
+  text-transform:uppercase;color:var(--muted);
+  font-weight:600;font-family:'Fraunces',serif;
+  font-style:italic;line-height:1.5;
+}
+.press-logos{
+  display:flex;justify-content:space-between;
+  align-items:center;gap:clamp(16px, 3vw, 40px);
+  flex-wrap:wrap;
+}
+.press-logos span{
+  font-family:'Fraunces', serif;
+  font-size:clamp(14px, 1.5vw, 18px);
+  font-weight:500;color:var(--ink);
+  letter-spacing:-0.02em;opacity:0.5;
+  transition:opacity .3s;
+}
+.press-logos span:hover{opacity:1;}
+.press-logos span.italic{font-style:italic;}
+.press-logos span.condensed{
+  font-family:'Manrope',sans-serif;
+  font-weight:700;letter-spacing:0.15em;
+  text-transform:uppercase;font-size:13px;
+}
+
+/* ========== QUOTE ========== */
+.quote-section{
+  padding:clamp(100px, 14vh, 160px) var(--pad-x);
+  background:var(--paper);
+  position:relative;z-index:2;
+}
+.quote-wrap{
+  max-width:1100px;margin:0 auto;text-align:center;
+}
+.quote-mark{
+  font-family:'Fraunces', serif;
+  font-size:clamp(80px, 12vw, 140px);
+  color:var(--gold-deep);line-height:0.5;
+  margin-bottom:8px;font-style:italic;
+}
+.quote{
+  font-family:'Fraunces', serif;
+  font-size:clamp(24px, 4vw, 52px);
+  font-weight:300;font-style:italic;
+  line-height:1.25;letter-spacing:-0.015em;
+  margin-bottom:32px;
+  font-variation-settings:"opsz" 144;
+}
+.quote em{
+  font-style:normal;color:var(--gold-deep);font-weight:400;
+}
+.quote-attr{
+  font-size:12px;letter-spacing:0.3em;
+  text-transform:uppercase;color:var(--muted);font-weight:600;
+}
+
+/* ========== FEATURES ========== */
+.features{
+  padding:var(--pad-y) var(--pad-x);
+  background:var(--paper);
+  border-top:1px solid var(--rule);
+  position:relative;z-index:2;
+}
+.features-grid{
+  max-width:var(--max-w);
+  margin:clamp(48px, 6vw, 80px) auto 0;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(24px, 3vw, 48px);
+}
+.feature{
+  border-top:1px solid var(--ink);
+  padding-top:24px;
+}
+.feature .feat-num{
+  font-family:'Fraunces', serif;
+  font-style:italic;font-size:13px;
+  color:var(--gold-deep);margin-bottom:20px;
+}
+.feature h4{
+  font-family:'Fraunces', serif;
+  font-size:clamp(20px, 2vw, 24px);
+  font-weight:500;margin-bottom:12px;
+  letter-spacing:-0.01em;line-height:1.2;
+}
+.feature p{
+  font-size:14px;color:var(--muted);line-height:1.65;
+}
+
+/* ========== CTA ========== */
+.cta-section{
+  padding:var(--pad-y) var(--pad-x);
+  background:var(--ink);color:var(--paper);
+  position:relative;z-index:2;
+  text-align:center;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;
+  bottom:-300px;left:50%;
+  transform:translateX(-50%);
+  width:800px;height:800px;
+  background:radial-gradient(circle, rgba(201,169,97,0.15), transparent 60%);
+  border-radius:50%;pointer-events:none;
+}
+.cta-section h2{
+  font-family:'Fraunces', serif;
+  font-size:clamp(44px, 7vw, 104px);
+  font-weight:300;line-height:1.05;
+  letter-spacing:-0.03em;
+  margin-bottom:24px;
+  position:relative;z-index:2;
+  font-variation-settings:"opsz" 144;
+}
+.cta-section h2 em{
+  font-style:italic;color:var(--gold);font-weight:300;
+}
+.cta-section p{
+  font-size:clamp(15px, 1.4vw, 18px);
+  color:rgba(244,239,230,0.7);
+  max-width:560px;
+  margin:0 auto clamp(32px, 4vw, 48px);
+  position:relative;z-index:2;
+}
+.cta-section .btn-primary{
+  background:var(--gold);color:var(--ink);
+  position:relative;z-index:2;
+}
+.cta-section .btn-primary:hover{background:var(--paper);}
+
+/* ========== FOOTER ========== */
+footer{
+  padding:clamp(48px, 8vh, 80px) var(--pad-x) clamp(24px, 4vh, 32px);
+  background:var(--ink);
+  color:rgba(244,239,230,0.6);
+  border-top:1px solid rgba(244,239,230,0.08);
+  position:relative;z-index:2;
+}
+.footer-grid{
+  max-width:var(--max-w);margin:0 auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:clamp(24px, 4vw, 48px);
+  padding-bottom:clamp(32px, 5vh, 48px);
+}
+.footer-brand h3{
+  font-family:'Fraunces', serif;color:var(--paper);
+  font-size:clamp(24px, 2.5vw, 32px);
+  font-weight:500;margin-bottom:12px;
+  letter-spacing:-0.02em;
+}
+.footer-brand p{
+  font-size:14px;max-width:340px;line-height:1.65;
+}
+.footer-col h5{
+  color:var(--paper);font-size:11px;
+  letter-spacing:0.2em;text-transform:uppercase;
+  margin-bottom:20px;font-weight:600;
+}
+.footer-col a{
+  display:block;color:rgba(244,239,230,0.6);
+  text-decoration:none;font-size:14px;
+  margin-bottom:12px;transition:color .25s;
+}
+.footer-col a:hover{color:var(--gold);}
+.footer-bottom{
+  max-width:var(--max-w);margin:0 auto;
+  padding-top:clamp(20px, 3vh, 32px);
+  border-top:1px solid rgba(244,239,230,0.08);
+  display:flex;justify-content:space-between;
+  font-size:11px;
+  font-family:'JetBrains Mono', monospace;
+  letter-spacing:0.04em;flex-wrap:wrap;gap:12px;
+}
+
+/* ========== ANIMATIONS ========== */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(28px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.fade-up{animation:fadeUp 1s cubic-bezier(.16,1,.3,1) backwards;}
+.fade-up.d1{animation-delay:.1s;}
+.fade-up.d2{animation-delay:.25s;}
+.fade-up.d3{animation-delay:.4s;}
+.fade-up.d4{animation-delay:.55s;}
+
+.reveal{
+  opacity:0;transform:translateY(24px);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1);
+}
+.reveal.in{opacity:1;transform:translateY(0);}
+
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+/* Large desktop and up — already styled */
+
+/* Standard desktop / laptop (1280px and below) */
+@media (max-width: 1280px){
+  :root{--pad-x:clamp(20px, 4vw, 48px);}
+}
+
+/* Small desktop / large tablet (1080px and below) */
+@media (max-width: 1080px){
+  .planner-tool{
+    grid-template-columns:1fr;
+    gap:40px;
+  }
+  .input-panel{position:static;}
+  .donut-section{
+    grid-template-columns:1fr;text-align:center;
+  }
+  .donut-wrap{margin:0 auto;}
+}
+
+/* Tablet (900px and below) */
+@media (max-width: 900px){
+  .nav-links{display:none;}
+  .menu-toggle{display:block;}
+  .nav-cta{display:none;}
+  
+  .hero{
+    grid-template-columns:1fr;
+    gap:48px;
+    padding-top:100px;
+  }
+  .hero-card{transform:rotate(0);max-width:520px;}
+  
+  .section-grid{grid-template-columns:1fr;gap:24px;}
+  .section-label{padding-top:8px;display:inline-block;}
+  
+  .method-grid{grid-template-columns:1fr;}
+  .method-card{padding:36px 28px;}
+  
+  .features-grid{grid-template-columns:1fr 1fr;gap:32px 24px;}
+  
+  .goals-grid{grid-template-columns:1fr 1fr;}
+  
+  .projection-tool{grid-template-columns:1fr;gap:32px;}
+  
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px 24px;}
+  
+  .press-inner{
+    grid-template-columns:1fr;text-align:center;
+    gap:24px;
+  }
+  .press-logos{justify-content:center;}
+}
+
+/* Small tablet / large mobile (640px and below) */
+@media (max-width: 640px){
+  :root{
+    --pad-x:20px;
+    --pad-y:80px;
+  }
+  
+  nav{padding:14px 20px;}
+  
+  .hero{
+    padding:100px 20px 60px;
+    gap:40px;
+    min-height:auto;
+  }
+  .hero h1{font-size:clamp(44px, 11vw, 64px);}
+  
+  .hero-card{padding:32px 24px;}
+  .big-number{font-size:clamp(48px, 13vw, 64px);}
+  
+  .results-summary{
+    grid-template-columns:1fr;
+    gap:1px;
+  }
+  .summary-cell{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;}
+  .summary-cell .lbl{margin-bottom:0;}
+  .summary-cell .val{font-size:24px;}
+  
+  .cat-grid{grid-template-columns:1fr;gap:24px;}
+  .full-width-grid{grid-template-columns:1fr;gap:0;}
+  
+  .goals-grid{grid-template-columns:1fr;}
+  .features-grid{grid-template-columns:1fr;gap:32px;}
+  .footer-grid{grid-template-columns:1fr;gap:32px;}
+  
+  .quote-section{padding:80px 20px;}
+  .quote{font-size:clamp(22px, 6vw, 32px);}
+  
+  .input-wrap input{font-size:32px;padding-left:24px;}
+  .input-wrap .prefix{font-size:22px;}
+  
+  .preset-buttons{gap:6px;}
+  .preset-btn{padding:7px 12px;font-size:11px;}
+  
+  .toggle-row button{padding:10px 6px;font-size:10px;letter-spacing:0.06em;}
+  
+  .donut-wrap{width:200px;height:200px;}
+  
+  #projChart{height:220px;}
+  
+  .footer-bottom{
+    flex-direction:column;align-items:flex-start;
+    font-size:10px;
+  }
+}
+
+/* Small mobile (400px and below) */
+@media (max-width: 400px){
+  :root{--pad-x:16px;}
+  .hero h1{font-size:42px;}
+  .hero-card{padding:28px 20px;}
+  .big-number{font-size:48px;}
+  .input-panel{padding:24px 20px;}
+  .method-card{padding:28px 20px;}
+  .goal-card{padding:24px 20px;}
+  .donut-wrap{width:180px;height:180px;}
+  .donut-svg circle{stroke-width:14;}
+  .toggle-row{flex-direction:column;}
+  .toggle-row button{padding:12px;}
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader"><div class="loader-mark"></div></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<nav id="nav">
+  <a href="#" class="logo">
+    <span class="logo-mark"></span>
+    <span>Ledger</span>
+  </a>
+  <div class="nav-links">
+    <a href="#method">Method</a>
+    <a href="#planner">Planner</a>
+    <a href="#projection">Projection</a>
+    <a href="#goals">Goals</a>
+    <a href="#about">Principles</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('planner').scrollIntoView({behavior:'smooth'})">Start Planning</button>
+  <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#method" data-num="01"><span>Method</span><span class="num">01</span></a>
+  <a href="#planner" data-num="02"><span>Planner</span><span class="num">02</span></a>
+  <a href="#projection" data-num="03"><span>Projection</span><span class="num">03</span></a>
+  <a href="#goals" data-num="04"><span>Goals</span><span class="num">04</span></a>
+  <a href="#about" data-num="05"><span>Principles</span><span class="num">05</span></a>
+  <div class="menu-foot">
+    <span>Estd. 2026</span>
+    <span>Hyderabad · India</span>
+  </div>
+</div>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div>
+    <div class="eyebrow fade-up">A Personal Wealth Planner — Estd. 2026</div>
+    <h1 class="fade-up d1">
+      Money,<br>
+      <span class="italic-word">arranged</span><br>
+      with <span class="gold-word">intention.</span>
+    </h1>
+    <p class="lede fade-up d2">
+      A quiet, disciplined approach to your monthly finances. Allocate every rupee with purpose — across needs, wants, and the long horizon — using a method built on a hundred years of financial wisdom.
+    </p>
+    <div class="hero-actions fade-up d3">
+      <a href="#planner" class="btn-primary">Begin Planning</a>
+      <a href="#method" class="btn-ghost">Read the method</a>
+    </div>
+  </div>
+  
+  <div class="hero-card fade-up d2">
+    <div class="card-label">Sample Allocation</div>
+    <div class="card-title">A monthly budget for ₹80,000</div>
+    <div class="big-number">
+      <span class="currency">₹</span>80,000<span class="decimal">.00</span>
+    </div>
+    <div style="font-size:12px;color:rgba(244,239,230,0.5);letter-spacing:0.05em;">Net monthly take-home</div>
+    
+    <div class="card-rule"></div>
+    
+    <div class="allocation-row">
+      <span class="label"><span class="pct">50%</span>Needs · Essentials</span>
+      <span class="value">₹40,000</span>
+    </div>
+    <div class="allocation-row">
+      <span class="label"><span class="pct">30%</span>Wants · Lifestyle</span>
+      <span class="value">₹24,000</span>
+    </div>
+    <div class="allocation-row">
+      <span class="label"><span class="pct">20%</span>Future · Wealth</span>
+      <span class="value">₹16,000</span>
+    </div>
+    
+    <div class="card-rule"></div>
+    
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;gap:12px;">
+      <span style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,239,230,0.4);">Annual savings</span>
+      <span class="serif italic" style="color:var(--gold);font-size:clamp(18px, 2.4vw, 24px);">₹1,92,000</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== METHOD ========== -->
+<section class="method" id="method">
+  <div class="section-grid">
+    <div class="section-label reveal" data-num="01">The Method</div>
+    <div class="section-content">
+      <h2 class="reveal">The fifty<br>thirty <em>twenty</em><br>discipline.</h2>
+      <p class="section-lede reveal">
+        Popularised by Senator Elizabeth Warren in <em>All Your Worth</em>, this framework remains the most enduring rule for personal finance. Three buckets. Clear ratios. A lifetime of compounding clarity.
+      </p>
+    </div>
+  </div>
+  
+  <div class="method-grid">
+    <div class="method-card reveal">
+      <div class="num">i. Foundation</div>
+      <div class="pct">50<sup>%</sup></div>
+      <h3>Needs</h3>
+      <p>The non-negotiables. Shelter, sustenance, transport, the bills that keep the lights on. Half your income should comfortably cover them — if not, the foundation is over-stretched.</p>
+      <div class="examples">RENT · UTILITIES · GROCERIES<br>INSURANCE · EMI · HEALTHCARE</div>
+    </div>
+    <div class="method-card reveal">
+      <div class="num">ii. Pleasure</div>
+      <div class="pct">30<sup>%</sup></div>
+      <h3>Wants</h3>
+      <p>Life lived, not merely sustained. The dinners, the trips, the small luxuries that make a month memorable. Spend without guilt — but stay within the line.</p>
+      <div class="examples">DINING · TRAVEL · ENTERTAINMENT<br>SHOPPING · HOBBIES · GIFTS</div>
+    </div>
+    <div class="method-card reveal">
+      <div class="num">iii. Tomorrow</div>
+      <div class="pct">20<sup>%</sup></div>
+      <h3>Future</h3>
+      <p>Pay yourself first. The portion that compounds quietly into freedom: emergency reserves, equity SIPs, retirement corpus, the long-horizon work of wealth.</p>
+      <div class="examples">SIP · PPF · EPF · STOCKS<br>GOLD · NPS · TERM</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PLANNER (LIVE) ========== -->
+<section class="planner" id="planner">
+  <div class="section-grid">
+    <div class="section-label reveal" data-num="02">The Planner</div>
+    <div class="section-content">
+      <h2 class="reveal">Enter your figures.<br>See your <em>future</em>.</h2>
+      <p class="section-lede reveal">
+        Type your monthly income — the planner divides it across twenty-two carefully chosen categories, instantly. Adjust the strategy. Watch wealth take shape.
+      </p>
+    </div>
+  </div>
+  
+  <div class="planner-tool">
+    <div class="input-panel">
+      <div class="panel-eyebrow">Step One</div>
+      <div class="panel-title">Your monthly take-home</div>
+      
+      <div class="input-group">
+        <label>Net Monthly Income (₹)</label>
+        <div class="input-wrap">
+          <span class="prefix">₹</span>
+          <input type="number" id="incomeInput" placeholder="80,000" value="80000" min="0" inputmode="numeric">
+        </div>
+        <div class="preset-buttons">
+          <button class="preset-btn" data-amt="30000">30K</button>
+          <button class="preset-btn" data-amt="50000">50K</button>
+          <button class="preset-btn active" data-amt="80000">80K</button>
+          <button class="preset-btn" data-amt="150000">1.5L</button>
+          <button class="preset-btn" data-amt="250000">2.5L</button>
+        </div>
+      </div>
+      
+      <div class="input-group">
+        <label>Allocation Strategy</label>
+        <div class="toggle-row" id="strategyToggle">
+          <button class="active" data-strat="balanced">Balanced</button>
+          <button data-strat="aggressive">Aggressive</button>
+          <button data-strat="conservative">Cautious</button>
+        </div>
+        <p style="font-size:13px;color:rgba(244,239,230,0.5);margin-top:14px;line-height:1.6;font-style:italic;font-family:'Fraunces',serif;" id="stratDesc">
+          The classical 50/30/20 — for most circumstances, the steadiest course.
+        </p>
+      </div>
+      
+      <div style="margin-top:36px;padding-top:28px;border-top:1px solid rgba(244,239,230,0.12);">
+        <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,239,230,0.5);margin-bottom:12px;">Annual Wealth Built</div>
+        <div class="serif" style="font-size:clamp(36px, 4.5vw, 52px);font-weight:300;color:var(--gold);letter-spacing:-0.02em;line-height:1;" id="annualSavings">₹1,92,000</div>
+        <div style="font-size:13px;color:rgba(244,239,230,0.5);margin-top:8px;font-style:italic;font-family:'Fraunces',serif;">at this savings rate, sustained</div>
+      </div>
+    </div>
+    
+    <div class="results-panel">
+      <div class="results-summary">
+        <div class="summary-cell">
+          <div class="lbl">Needs</div>
+          <div class="val"><span class="currency">₹</span><span id="needsVal">40,000</span></div>
+        </div>
+        <div class="summary-cell gold">
+          <div class="lbl">Wants</div>
+          <div class="val"><span class="currency">₹</span><span id="wantsVal">24,000</span></div>
+        </div>
+        <div class="summary-cell green">
+          <div class="lbl">Future</div>
+          <div class="val"><span class="currency">₹</span><span id="savingsVal">16,000</span></div>
+        </div>
+      </div>
+      
+      <div class="donut-section">
+        <div class="donut-wrap">
+          <svg class="donut-svg" viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="80" stroke="rgba(244,239,230,0.05)" stroke-width="18"/>
+            <circle id="donutNeeds"   cx="100" cy="100" r="80" stroke="#F4EFE6" stroke-dasharray="0 502" stroke-dashoffset="0"/>
+            <circle id="donutWants"   cx="100" cy="100" r="80" stroke="#C9A961" stroke-dasharray="0 502" stroke-dashoffset="0"/>
+            <circle id="donutSavings" cx="100" cy="100" r="80" stroke="#2D5F3F" stroke-dasharray="0 502" stroke-dashoffset="0"/>
+          </svg>
+          <div class="donut-center">
+            <div class="lbl">Total</div>
+            <div class="val"><span class="currency">₹</span><span id="donutTotal">80,000</span></div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-row">
+            <div class="legend-swatch needs"></div>
+            <div class="legend-name"><strong>Needs</strong><span id="donutNeedsPct">50%</span></div>
+            <div class="legend-amt" id="donutNeedsAmt">₹40,000</div>
+          </div>
+          <div class="donut-legend-row">
+            <div class="legend-swatch wants"></div>
+            <div class="legend-name"><strong>Wants</strong><span id="donutWantsPct">30%</span></div>
+            <div class="legend-amt" id="donutWantsAmt">₹24,000</div>
+          </div>
+          <div class="donut-legend-row">
+            <div class="legend-swatch savings"></div>
+            <div class="legend-name"><strong>Future</strong><span id="donutSavingsPct">20%</span></div>
+            <div class="legend-amt" id="donutSavingsAmt">₹16,000</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="cat-grid">
+        <div class="cat-block">
+          <h4>Foundation · Needs</h4>
+          <div class="cat-row"><span class="name">Rent / Home EMI</span><span class="amt" id="c-rent">₹20,000</span></div>
+          <div class="cat-row"><span class="name">Groceries & Household</span><span class="amt" id="c-grocery">₹6,400</span></div>
+          <div class="cat-row"><span class="name">Utilities & Internet</span><span class="amt" id="c-util">₹4,000</span></div>
+          <div class="cat-row"><span class="name">Transport / Fuel</span><span class="amt" id="c-trans">₹4,000</span></div>
+          <div class="cat-row"><span class="name">Insurance Premiums</span><span class="amt" id="c-ins">₹2,400</span></div>
+          <div class="cat-row"><span class="name">Healthcare</span><span class="amt" id="c-health">₹1,600</span></div>
+          <div class="cat-row"><span class="name">Existing Loan EMIs</span><span class="amt" id="c-loan">₹1,600</span></div>
+        </div>
+        
+        <div class="cat-block">
+          <h4>Pleasure · Wants</h4>
+          <div class="cat-row"><span class="name">Dining & Food Delivery</span><span class="amt" id="c-dine">₹4,000</span></div>
+          <div class="cat-row"><span class="name">Travel & Vacations</span><span class="amt" id="c-travel">₹4,000</span></div>
+          <div class="cat-row"><span class="name">Shopping</span><span class="amt" id="c-shop">₹4,800</span></div>
+          <div class="cat-row"><span class="name">Entertainment & OTT</span><span class="amt" id="c-ent">₹2,400</span></div>
+          <div class="cat-row"><span class="name">Personal Care</span><span class="amt" id="c-care">₹2,400</span></div>
+          <div class="cat-row"><span class="name">Hobbies & Gifts</span><span class="amt" id="c-hobby">₹3,200</span></div>
+          <div class="cat-row"><span class="name">Discretionary</span><span class="amt" id="c-disc">₹3,200</span></div>
+        </div>
+        
+        <div class="cat-block full-width">
+          <h4>Tomorrow · Future</h4>
+          <div class="full-width-grid">
+            <div class="cat-row"><span class="name">Emergency Fund</span><span class="amt" id="c-em">₹3,200</span></div>
+            <div class="cat-row"><span class="name">Equity SIP (Mutual Funds)</span><span class="amt" id="c-sip">₹3,840</span></div>
+            <div class="cat-row"><span class="name">PPF / EPF / VPF</span><span class="amt" id="c-ppf">₹1,920</span></div>
+            <div class="cat-row"><span class="name">NPS / Retirement</span><span class="amt" id="c-nps">₹1,600</span></div>
+            <div class="cat-row"><span class="name">Direct Stocks</span><span class="amt" id="c-stk">₹1,600</span></div>
+            <div class="cat-row"><span class="name">Gold (SGB / Digital)</span><span class="amt" id="c-gold">₹1,280</span></div>
+            <div class="cat-row"><span class="name">Term Insurance</span><span class="amt" id="c-term">₹640</span></div>
+            <div class="cat-row"><span class="name">Discretionary Reserves</span><span class="amt" id="c-res">₹1,920</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PROJECTION ========== -->
+<section class="projection" id="projection">
+  <div class="section-grid">
+    <div class="section-label reveal" data-num="03">The Projection</div>
+    <div class="section-content">
+      <h2 class="reveal">What time<br>and <em>compounding</em><br>will build.</h2>
+      <p class="section-lede reveal">
+        At a 12% expected annual return on equity SIPs, this is what your monthly contributions become — over five, ten, twenty years. Adjust the assumptions to suit your view of the markets.
+      </p>
+    </div>
+  </div>
+  
+  <div class="projection-tool">
+    <div class="projection-input">
+      <div class="proj-stat">
+        <div class="lbl">Monthly Investment</div>
+        <div class="val"><span class="currency">₹</span><span id="projMonthly">16,000</span></div>
+        <div class="sub">your future allocation, automated</div>
+      </div>
+      
+      <div class="proj-controls">
+        <span class="range-label">Expected Annual Return</span>
+        <div class="range-wrap">
+          <input type="range" id="rateInput" min="6" max="18" step="0.5" value="12">
+          <span class="range-val" id="rateVal">12.0%</span>
+        </div>
+      </div>
+      
+      <div class="proj-controls">
+        <span class="range-label">Investment Horizon</span>
+        <div class="range-wrap">
+          <input type="range" id="yearsInput" min="3" max="35" step="1" value="20">
+          <span class="range-val" id="yearsVal">20 yrs</span>
+        </div>
+      </div>
+      
+      <div class="proj-stat">
+        <div class="lbl">Projected Corpus</div>
+        <div class="val gold"><span class="currency">₹</span><span id="projTotal">1.60 Cr</span></div>
+        <div class="sub">at the end of your horizon</div>
+      </div>
+    </div>
+    
+    <div class="proj-chart">
+      <div class="proj-chart-header">
+        <div class="proj-chart-title">Wealth growth over time</div>
+        <div class="proj-chart-meta" id="projChartMeta">12% · 20 yrs</div>
+      </div>
+      <svg id="projChart" viewBox="0 0 600 280" preserveAspectRatio="none"></svg>
+      <div class="proj-chart-legend">
+        <span class="principal">Principal Invested</span>
+        <span class="interest">Interest Earned</span>
+        <span class="total">Total Wealth</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== GOALS ========== -->
+<section class="goals-section" id="goals">
+  <div class="section-grid">
+    <div class="section-label reveal" data-num="04">The Goals</div>
+    <div class="section-content">
+      <h2 class="reveal">Specific.<br>Measurable.<br><em>Reached.</em></h2>
+      <p class="section-lede reveal">
+        Wealth without a destination is mere accumulation. Set the targets — the planner shows precisely how many months until each goal is met at your contribution rate.
+      </p>
+    </div>
+  </div>
+  
+  <div class="goals-grid">
+    <div class="goal-card reveal" data-pct="40">
+      <div class="goal-icon"><span class="italic">Liquidity</span><span class="num">G/01</span></div>
+      <h4>Emergency Fund</h4>
+      <p class="goal-desc">Six months of essential expenses, parked in liquid savings — the bedrock of financial calm.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" data-target="40"></div></div>
+      <div class="progress-meta"><span class="saved">₹1,20,000 saved</span><span>of ₹3,00,000</span></div>
+    </div>
+    
+    <div class="goal-card reveal" data-pct="18">
+      <div class="goal-icon"><span class="italic">Shelter</span><span class="num">G/02</span></div>
+      <h4>Home Down-payment</h4>
+      <p class="goal-desc">A meaningful down-payment in three years, allowing for a moderate mortgage and quiet ownership.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" data-target="18"></div></div>
+      <div class="progress-meta"><span class="saved">₹2,70,000 saved</span><span>of ₹15,00,000</span></div>
+    </div>
+    
+    <div class="goal-card reveal" data-pct="65">
+      <div class="goal-icon"><span class="italic">Leisure</span><span class="num">G/03</span></div>
+      <h4>European Holiday</h4>
+      <p class="goal-desc">A two-week journey through Italy and France, set aside in pleasant monthly increments.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" data-target="65"></div></div>
+      <div class="progress-meta"><span class="saved">₹2,60,000 saved</span><span>of ₹4,00,000</span></div>
+    </div>
+    
+    <div class="goal-card reveal" data-pct="25">
+      <div class="goal-icon"><span class="italic">Mobility</span><span class="num">G/04</span></div>
+      <h4>New Vehicle</h4>
+      <p class="goal-desc">A reliable car, financed mostly from savings rather than credit, preserving long-term flexibility.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" data-target="25"></div></div>
+      <div class="progress-meta"><span class="saved">₹2,00,000 saved</span><span>of ₹8,00,000</span></div>
+    </div>
+    
+    <div class="goal-card reveal" data-pct="8">
+      <div class="goal-icon"><span class="italic">Education</span><span class="num">G/05</span></div>
+      <h4>Children's Future</h4>
+      <p class="goal-desc">Higher education funded through a long-running equity SIP — the most powerful weapon in compound interest.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" data-target="8"></div></div>
+      <div class="progress-meta"><span class="saved">₹1,60,000 saved</span><span>of ₹20,00,000</span></div>
+    </div>
+    
+    <div class="goal-card reveal" data-pct="12">
+      <div class="goal-icon"><span class="italic">Horizon</span><span class="num">G/06</span></div>
+      <h4>Retirement Corpus</h4>
+      <p class="goal-desc">Financial independence by sixty — a corpus that yields enough for the life you have grown accustomed to.</p>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" data-target="12"></div></div>
+      <div class="progress-meta"><span class="saved">₹6,00,000 saved</span><span>of ₹50,00,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PRESS STRIP ========== -->
+<section class="press">
+  <div class="press-inner">
+    <div class="press-label">Inspired by the<br>writings of —</div>
+    <div class="press-logos">
+      <span class="italic">All Your Worth</span>
+      <span class="condensed">RICH DAD</span>
+      <span class="italic">Psychology of Money</span>
+      <span class="condensed">BOGLEHEADS</span>
+      <span class="italic">Intelligent Investor</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== QUOTE ========== -->
+<section class="quote-section">
+  <div class="quote-wrap">
+    <div class="quote-mark reveal">"</div>
+    <p class="quote reveal">
+      Do not save what is left after spending; <em>spend what is left after saving.</em>
+    </p>
+    <div class="quote-attr reveal">— Warren Buffett</div>
+  </div>
+</section>
+
+<!-- ========== FEATURES ========== -->
+<section class="features" id="about">
+  <div class="section-grid">
+    <div class="section-label reveal" data-num="05">The Principles</div>
+    <div class="section-content">
+      <h2 class="reveal">Quiet rules<br>for a <em>confident</em><br>financial life.</h2>
+    </div>
+  </div>
+  
+  <div class="features-grid">
+    <div class="feature reveal">
+      <div class="feat-num">i.</div>
+      <h4>Pay yourself first</h4>
+      <p>Automate investments on the day your salary arrives. Saving must not be a residual decision — it should be the first one.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feat-num">ii.</div>
+      <h4>Insurance ≠ investment</h4>
+      <p>Term insurance for life cover. Health insurance for medical risk. Mutual funds for wealth. Never let a single product try to do all three.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feat-num">iii.</div>
+      <h4>Diversify with intention</h4>
+      <p>Equity for growth. Debt for stability. Gold for insurance. The exact ratio depends on your age, your appetite, and your horizon — not on tips.</p>
+    </div>
+    <div class="feature reveal">
+      <div class="feat-num">iv.</div>
+      <h4>Beware lifestyle inflation</h4>
+      <p>When income rises, increase your savings rate before your spending. The most dangerous wealth destroyer is the one you never notice.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section class="cta-section">
+  <h2 class="reveal">Begin the<br><em>steady work</em><br>of wealth.</h2>
+  <p class="reveal">Your financial calm is not an emergency. It's a discipline. Start with this month — and let the years compound.</p>
+  <a href="#planner" class="btn-primary reveal">Open the Planner</a>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <h3>Ledger</h3>
+      <p>A quiet, disciplined planner for the considered financial life. Built on a hundred years of personal finance wisdom.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Method</h5>
+      <a href="#method">50/30/20 Rule</a>
+      <a href="#planner">The Planner</a>
+      <a href="#projection">Projection</a>
+      <a href="#goals">Goals</a>
+    </div>
+    <div class="footer-col">
+      <h5>Principles</h5>
+      <a href="#about">Pay Yourself First</a>
+      <a href="#about">Diversification</a>
+      <a href="#about">Insurance Discipline</a>
+    </div>
+    <div class="footer-col">
+      <h5>About</h5>
+      <a href="#">Our Philosophy</a>
+      <a href="#">Press</a>
+      <a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Ledger · Estd. for the considered investor</span>
+    <span>Not financial advice. Consult a SEBI-registered advisor.</span>
+  </div>
+</footer>
+
+<script>
+// ============= UTILS =============
+function fmtINR(n){
+  if(n >= 10000000){
+    const cr = n/10000000;
+    return (cr >= 100 ? cr.toFixed(0) : cr.toFixed(2).replace(/\.?0+$/,'')) + ' Cr';
+  }
+  if(n >= 100000){
+    const lk = n/100000;
+    return lk.toFixed(2).replace(/\.?0+$/,'') + ' L';
+  }
+  const fixed = Math.round(n).toString();
+  if(fixed.length <= 3) return fixed;
+  let lastThree = fixed.substring(fixed.length-3);
+  let otherNumbers = fixed.substring(0, fixed.length-3);
+  return otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + ',' + lastThree;
+}
+
+// ============= LOADER =============
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('loader').classList.add('done');
+    setTimeout(() => document.getElementById('loader').remove(), 800);
+  }, 400);
+});
+
+// ============= NAV SCROLL EFFECT =============
+const nav = document.getElementById('nav');
+const scrollProgress = document.getElementById('scrollProgress');
+window.addEventListener('scroll', () => {
+  if(window.scrollY > 20) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+  
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = (window.scrollY / docHeight) * 100;
+  scrollProgress.style.width = progress + '%';
+}, {passive: true});
+
+// ============= MOBILE MENU =============
+const menuToggle = document.getElementById('menuToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+menuToggle.addEventListener('click', () => {
+  document.body.classList.toggle('menu-open');
+  menuToggle.setAttribute('aria-label',
+    document.body.classList.contains('menu-open') ? 'Close menu' : 'Open menu');
+});
+mobileMenu.querySelectorAll('a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.body.classList.remove('menu-open');
+  });
+});
+
+// ============= PLANNER =============
+const strategies = {
+  balanced:    { needs: 0.50, wants: 0.30, savings: 0.20, desc: "The classical 50/30/20 — for most circumstances, the steadiest course." },
+  aggressive:  { needs: 0.45, wants: 0.20, savings: 0.35, desc: "A wealth-builder's split — heavier into the future, lighter on lifestyle." },
+  conservative:{ needs: 0.55, wants: 0.30, savings: 0.15, desc: "A gentler savings rate — best when income is unstable or new." }
+};
+
+const subSplits = {
+  needs:   { rent:0.50, grocery:0.16, util:0.10, trans:0.10, ins:0.06, health:0.04, loan:0.04 },
+  wants:   { dine:0.17, travel:0.17, shop:0.20, ent:0.10, care:0.10, hobby:0.13, disc:0.13 },
+  savings: { em:0.20,   sip:0.24,    ppf:0.12,  nps:0.10,  stk:0.10,  gold:0.08,  term:0.04, res:0.12 }
+};
+
+let currentStrategy = 'balanced';
+const DONUT_CIRC = 2 * Math.PI * 80; // 502.65
+
+function setDonut(needsPct, wantsPct, savingsPct){
+  const nLen = needsPct * DONUT_CIRC;
+  const wLen = wantsPct * DONUT_CIRC;
+  const sLen = savingsPct * DONUT_CIRC;
+  
+  const needs = document.getElementById('donutNeeds');
+  const wants = document.getElementById('donutWants');
+  const savings = document.getElementById('donutSavings');
+  
+  needs.setAttribute('stroke-dasharray', `${nLen} ${DONUT_CIRC - nLen}`);
+  needs.setAttribute('stroke-dashoffset', '0');
+  
+  wants.setAttribute('stroke-dasharray', `${wLen} ${DONUT_CIRC - wLen}`);
+  wants.setAttribute('stroke-dashoffset', `${-nLen}`);
+  
+  savings.setAttribute('stroke-dasharray', `${sLen} ${DONUT_CIRC - sLen}`);
+  savings.setAttribute('stroke-dashoffset', `${-(nLen + wLen)}`);
+}
+
+function updatePlanner(){
+  const inc = parseFloat(document.getElementById('incomeInput').value) || 0;
+  const s = strategies[currentStrategy];
+  
+  const needs = inc * s.needs;
+  const wants = inc * s.wants;
+  const savings = inc * s.savings;
+  
+  document.getElementById('needsVal').textContent = fmtINR(needs);
+  document.getElementById('wantsVal').textContent = fmtINR(wants);
+  document.getElementById('savingsVal').textContent = fmtINR(savings);
+  
+  // Donut
+  document.getElementById('donutTotal').textContent = fmtINR(inc);
+  document.getElementById('donutNeedsAmt').textContent = '₹' + fmtINR(needs);
+  document.getElementById('donutWantsAmt').textContent = '₹' + fmtINR(wants);
+  document.getElementById('donutSavingsAmt').textContent = '₹' + fmtINR(savings);
+  document.getElementById('donutNeedsPct').textContent = (s.needs*100).toFixed(0) + '% of income';
+  document.getElementById('donutWantsPct').textContent = (s.wants*100).toFixed(0) + '% of income';
+  document.getElementById('donutSavingsPct').textContent = (s.savings*100).toFixed(0) + '% of income';
+  setDonut(s.needs, s.wants, s.savings);
+  
+  // Sub-categories
+  const n = subSplits.needs;
+  document.getElementById('c-rent').textContent    = '₹' + fmtINR(needs * n.rent);
+  document.getElementById('c-grocery').textContent = '₹' + fmtINR(needs * n.grocery);
+  document.getElementById('c-util').textContent    = '₹' + fmtINR(needs * n.util);
+  document.getElementById('c-trans').textContent   = '₹' + fmtINR(needs * n.trans);
+  document.getElementById('c-ins').textContent     = '₹' + fmtINR(needs * n.ins);
+  document.getElementById('c-health').textContent  = '₹' + fmtINR(needs * n.health);
+  document.getElementById('c-loan').textContent    = '₹' + fmtINR(needs * n.loan);
+  
+  const w = subSplits.wants;
+  document.getElementById('c-dine').textContent   = '₹' + fmtINR(wants * w.dine);
+  document.getElementById('c-travel').textContent = '₹' + fmtINR(wants * w.travel);
+  document.getElementById('c-shop').textContent   = '₹' + fmtINR(wants * w.shop);
+  document.getElementById('c-ent').textContent    = '₹' + fmtINR(wants * w.ent);
+  document.getElementById('c-care').textContent   = '₹' + fmtINR(wants * w.care);
+  document.getElementById('c-hobby').textContent  = '₹' + fmtINR(wants * w.hobby);
+  document.getElementById('c-disc').textContent   = '₹' + fmtINR(wants * w.disc);
+  
+  const sv = subSplits.savings;
+  document.getElementById('c-em').textContent   = '₹' + fmtINR(savings * sv.em);
+  document.getElementById('c-sip').textContent  = '₹' + fmtINR(savings * sv.sip);
+  document.getElementById('c-ppf').textContent  = '₹' + fmtINR(savings * sv.ppf);
+  document.getElementById('c-nps').textContent  = '₹' + fmtINR(savings * sv.nps);
+  document.getElementById('c-stk').textContent  = '₹' + fmtINR(savings * sv.stk);
+  document.getElementById('c-gold').textContent = '₹' + fmtINR(savings * sv.gold);
+  document.getElementById('c-term').textContent = '₹' + fmtINR(savings * sv.term);
+  document.getElementById('c-res').textContent  = '₹' + fmtINR(savings * sv.res);
+  
+  document.getElementById('annualSavings').textContent = '₹' + fmtINR(savings * 12);
+  
+  // Update projection module input
+  document.getElementById('projMonthly').textContent = fmtINR(savings);
+  updateProjection(savings);
+}
+
+document.getElementById('incomeInput').addEventListener('input', updatePlanner);
+
+document.querySelectorAll('.preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const amt = btn.dataset.amt;
+    document.getElementById('incomeInput').value = amt;
+    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updatePlanner();
+  });
+});
+
+document.querySelectorAll('#strategyToggle button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#strategyToggle button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentStrategy = btn.dataset.strat;
+    document.getElementById('stratDesc').textContent = strategies[currentStrategy].desc;
+    updatePlanner();
+  });
+});
+
+// ============= PROJECTION CHART =============
+const rateInput = document.getElementById('rateInput');
+const yearsInput = document.getElementById('yearsInput');
+const rateVal = document.getElementById('rateVal');
+const yearsVal = document.getElementById('yearsVal');
+const projChart = document.getElementById('projChart');
+const projTotal = document.getElementById('projTotal');
+const projChartMeta = document.getElementById('projChartMeta');
+
+function calcProjection(monthly, annualRate, years){
+  // FV of SIP: monthly * [((1+r)^n - 1)/r] * (1+r) where r = monthly rate, n = months
+  const r = (annualRate/100)/12;
+  const points = [];
+  for(let y = 0; y <= years; y++){
+    const n = y * 12;
+    const principal = monthly * n;
+    const fv = n === 0 ? 0 : monthly * (((Math.pow(1+r, n) - 1) / r) * (1+r));
+    points.push({ year: y, principal, total: fv, interest: fv - principal });
+  }
+  return points;
+}
+
+function drawProjChart(monthly, rate, years){
+  const points = calcProjection(monthly, rate, years);
+  const W = 600, H = 280;
+  const PAD_L = 60, PAD_R = 20, PAD_T = 20, PAD_B = 32;
+  const innerW = W - PAD_L - PAD_R;
+  const innerH = H - PAD_T - PAD_B;
+  
+  const maxVal = Math.max(...points.map(p => p.total), 1);
+  const xStep = innerW / (points.length - 1);
+  
+  const xPos = i => PAD_L + i * xStep;
+  const yPos = v => PAD_T + innerH - (v / maxVal) * innerH;
+  
+  const principalPath = points.map((p,i) => `${i===0?'M':'L'} ${xPos(i)} ${yPos(p.principal)}`).join(' ');
+  const totalPath = points.map((p,i) => `${i===0?'M':'L'} ${xPos(i)} ${yPos(p.total)}`).join(' ');
+  
+  // Area for interest (between principal and total)
+  const interestArea = 
+    points.map((p,i) => `${i===0?'M':'L'} ${xPos(i)} ${yPos(p.total)}`).join(' ') +
+    ' ' + points.slice().reverse().map((p,i) => `L ${xPos(points.length-1-i)} ${yPos(p.principal)}`).join(' ') + ' Z';
+  
+  // Y-axis ticks (4 lines)
+  const ticks = 4;
+  let yLines = '';
+  let yLabels = '';
+  for(let i = 0; i <= ticks; i++){
+    const v = (maxVal / ticks) * i;
+    const y = yPos(v);
+    yLines += `<line x1="${PAD_L}" y1="${y}" x2="${W-PAD_R}" y2="${y}" stroke="rgba(14,20,20,0.06)" stroke-width="1"/>`;
+    yLabels += `<text x="${PAD_L-10}" y="${y+4}" text-anchor="end" font-family="JetBrains Mono" font-size="10" fill="rgba(14,20,20,0.5)">₹${fmtINR(v)}</text>`;
+  }
+  
+  // X-axis labels
+  let xLabels = '';
+  const labelEvery = Math.max(1, Math.ceil(years/6));
+  for(let i = 0; i <= years; i += labelEvery){
+    xLabels += `<text x="${xPos(i)}" y="${H-10}" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="rgba(14,20,20,0.5)">${i}y</text>`;
+  }
+  
+  projChart.innerHTML = `
+    <defs>
+      <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#C9A961" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#C9A961" stop-opacity="0.05"/>
+      </linearGradient>
+    </defs>
+    ${yLines}
+    <path d="${interestArea}" fill="url(#goldGrad)" stroke="none"/>
+    <path d="${principalPath}" fill="none" stroke="#0E1414" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${totalPath}" fill="none" stroke="#2D5F3F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${xPos(points.length-1)}" cy="${yPos(points[points.length-1].total)}" r="5" fill="#2D5F3F"/>
+    <circle cx="${xPos(points.length-1)}" cy="${yPos(points[points.length-1].total)}" r="9" fill="#2D5F3F" opacity="0.2"/>
+    ${yLabels}
+    ${xLabels}
+  `;
+  
+  // Final value
+  const finalTotal = points[points.length-1].total;
+  projTotal.textContent = fmtINR(finalTotal);
+  projChartMeta.textContent = `${rate}% · ${years} yrs`;
+}
+
+let currentMonthly = 16000;
+function updateProjection(monthly){
+  if(monthly !== undefined) currentMonthly = monthly;
+  const rate = parseFloat(rateInput.value);
+  const years = parseInt(yearsInput.value);
+  rateVal.textContent = rate.toFixed(1) + '%';
+  yearsVal.textContent = years + ' yrs';
+  drawProjChart(currentMonthly, rate, years);
+}
+
+rateInput.addEventListener('input', () => updateProjection());
+yearsInput.addEventListener('input', () => updateProjection());
+
+// ============= REVEAL ON SCROLL =============
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting){
+      setTimeout(() => e.target.classList.add('in'), i * 80);
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ============= GOAL PROGRESS BARS =============
+const goalObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      const fill = e.target.querySelector('.progress-bar-fill');
+      const target = fill.dataset.target;
+      setTimeout(() => fill.style.width = target + '%', 200);
+      goalObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.goal-card').forEach(el => goalObserver.observe(el));
+
+// ============= NUMBER COUNT-UP ON HERO CARD =============
+function animateCount(el, target, duration = 1400, formatter = (n)=>fmtINR(n)){
+  const start = performance.now();
+  const initial = 0;
+  function step(ts){
+    const t = Math.min((ts - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - t, 3);
+    const val = initial + (target - initial) * eased;
+    el.textContent = formatter(val);
+    if(t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+// ============= INIT =============
+window.addEventListener('DOMContentLoaded', () => {
+  updatePlanner();
+  setTimeout(() => updateProjection(16000), 100);
+});
+
+// Window resize - redraw chart for responsive
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => updateProjection(), 200);
+});
+</script>
+
+</body>
+</html>
