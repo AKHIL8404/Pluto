@@ -3,28 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Keyboard Shortcuts — Complete Windows Reference</title>
+<title>Windows Shortcuts — Complete Reference (by function & by key)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#E9EBEF;
-    --surface:#FFFFFF;
-    --ink:#14171C;
-    --ink-2:#565E6C;
-    --ink-3:#8B92A0;
-    --line:#E1E4E9;
-    --line-2:#EEF0F3;
-    --accent:#B45309;        /* bronze, text-safe on white */
-    --accent-2:#F59E0B;      /* bright amber, decorative */
-    --accent-soft:#FBEFD8;   /* amber wash */
-    --accent-ink:#8A4108;
-    --key-top:#FFFFFF;
-    --key-bot:#EDF0F4;
-    --key-border:#CDD3DC;
-    --key-skirt:#C0C6D0;
-    --key-ink:#2A2F39;
+    --bg:#E9EBEF; --surface:#FFFFFF;
+    --ink:#14171C; --ink-2:#565E6C; --ink-3:#8B92A0;
+    --line:#E1E4E9; --line-2:#EEF0F3;
+    --accent:#B45309; --accent-2:#F59E0B; --accent-soft:#FBEFD8; --accent-ink:#8A4108;
+    --key-top:#FFFFFF; --key-bot:#EDF0F4; --key-border:#CDD3DC; --key-skirt:#C0C6D0; --key-ink:#2A2F39;
     --tb:66px;
     --mono:"JetBrains Mono",ui-monospace,"Cascadia Code","SF Mono",Consolas,Menlo,monospace;
     --display:"Space Grotesk","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
@@ -33,138 +22,91 @@
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
-  body{
-    margin:0;
-    background:
-      radial-gradient(1200px 500px at 80% -120px, #F3EFE6 0%, rgba(243,239,230,0) 60%),
-      var(--bg);
-    color:var(--ink);
-    font-family:var(--body);
-    -webkit-font-smoothing:antialiased;
-    line-height:1.5;
-  }
+  body{margin:0;background:radial-gradient(1200px 500px at 80% -120px,#F3EFE6 0%,rgba(243,239,230,0) 60%),var(--bg);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;line-height:1.5}
 
-  /* ---------- HERO ---------- */
-  .hero{max-width:1140px;margin:0 auto;padding:44px 24px 26px;}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:9px;
-    font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-    color:var(--accent);margin:0 0 16px;
-  }
+  /* HERO */
+  .hero{max-width:1180px;margin:0 auto;padding:44px 24px 24px}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 16px}
   .eyebrow::before{content:"";width:18px;height:2px;background:var(--accent-2);border-radius:2px}
   .hero-grid{display:flex;flex-wrap:wrap;gap:30px;align-items:flex-end;justify-content:space-between}
-  h1{
-    font-family:var(--display);font-weight:700;
-    font-size:clamp(2.1rem,5.4vw,3.5rem);line-height:1.02;letter-spacing:-.02em;
-    margin:0;max-width:13ch;
-  }
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(2.1rem,5.2vw,3.4rem);line-height:1.03;letter-spacing:-.02em;margin:0;max-width:15ch}
   h1 .amp{color:var(--accent)}
-  .lede{margin:14px 0 0;color:var(--ink-2);font-size:1.04rem;max-width:46ch}
+  .lede{margin:14px 0 0;color:var(--ink-2);font-size:1.04rem;max-width:52ch}
+  .hero-jump{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+  .hero-jump a{display:inline-flex;align-items:center;gap:8px;font:600 .9rem/1 var(--body);text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--key-border);border-radius:10px;padding:11px 15px;transition:border-color .15s,transform .1s}
+  .hero-jump a::after{content:"↓";color:var(--accent);font-family:var(--mono);font-weight:700}
+  .hero-jump a:hover{border-color:var(--accent-2);transform:translateY(-1px)}
   .keycluster{display:flex;gap:10px;align-items:flex-end;flex-shrink:0}
-  .bigkey{
-    display:flex;align-items:center;justify-content:center;
-    font:700 .9rem/1 var(--mono);color:var(--key-ink);
-    min-width:64px;height:64px;padding:0 14px;border-radius:13px;
-    background:linear-gradient(180deg,var(--key-top),var(--key-bot));
-    border:1px solid var(--key-border);
-    box-shadow:0 4px 0 var(--key-skirt),0 7px 14px rgba(20,24,35,.16);
-    transition:transform .12s ease,box-shadow .12s ease;
-    user-select:none;
-  }
-  .bigkey.tall{height:64px}
-  .bigkey:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--key-skirt),0 4px 9px rgba(20,24,35,.16)}
-  .bigkey .glyph{font-size:1.2rem;margin-right:6px;color:var(--accent)}
-  @media (prefers-reduced-motion:reduce){.bigkey{transition:none}}
+  a.bigkey{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-decoration:none;color:var(--key-ink);min-width:72px;height:70px;padding:0 12px;border-radius:13px;background:linear-gradient(180deg,var(--key-top),var(--key-bot));border:1px solid var(--key-border);box-shadow:0 4px 0 var(--key-skirt),0 7px 14px rgba(20,24,35,.16);transition:transform .12s ease,box-shadow .12s ease}
+  a.bigkey .lbl{font:700 .82rem/1 var(--mono)}
+  a.bigkey .tag{font:600 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+  a.bigkey:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--key-skirt),0 4px 9px rgba(20,24,35,.16)}
+  a.bigkey .glyph{color:var(--accent)}
+  @media (prefers-reduced-motion:reduce){a.bigkey{transition:none}}
 
-  /* ---------- STICKY TOOLBAR ---------- */
-  .toolbar{
-    position:sticky;top:0;z-index:50;
-    background:rgba(233,235,239,.86);
-    backdrop-filter:saturate(1.4) blur(10px);
-    -webkit-backdrop-filter:saturate(1.4) blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  .toolbar-in{
-    max-width:1140px;margin:0 auto;padding:12px 24px;
-    display:flex;gap:14px;align-items:center;flex-wrap:wrap;
-  }
+  /* TOOLBAR */
+  .toolbar{position:sticky;top:0;z-index:50;background:rgba(233,235,239,.86);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+  .toolbar-in{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
   .search{position:relative;flex:1 1 320px;min-width:0}
   .search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--ink-3)}
-  #q{
-    width:100%;font-family:var(--body);font-size:.97rem;color:var(--ink);
-    padding:11px 86px 11px 40px;border:1px solid var(--key-border);border-radius:11px;
-    background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s;
-  }
+  #q{width:100%;font-family:var(--body);font-size:.97rem;color:var(--ink);padding:11px 86px 11px 40px;border:1px solid var(--key-border);border-radius:11px;background:var(--surface);outline:none;transition:border-color .15s,box-shadow .15s}
   #q::placeholder{color:var(--ink-3)}
   #q:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px var(--accent-soft)}
-  .slash{
-    position:absolute;right:12px;top:50%;transform:translateY(-50%);
-    font:600 11px/1 var(--mono);color:var(--ink-3);
-    border:1px solid var(--line);border-radius:6px;padding:4px 7px;background:var(--line-2);
-    pointer-events:none;
-  }
+  .slash{position:absolute;right:12px;top:50%;transform:translateY(-50%);font:600 11px/1 var(--mono);color:var(--ink-3);border:1px solid var(--line);border-radius:6px;padding:4px 7px;background:var(--line-2);pointer-events:none}
   .count{font:600 13px/1 var(--mono);color:var(--ink-2);white-space:nowrap}
   .count b{color:var(--accent)}
-  .badge{
-    font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;
-    color:var(--accent-ink);background:var(--accent-soft);
-    border:1px solid #F2DDB4;border-radius:999px;padding:6px 11px;white-space:nowrap;
-  }
+  .badge{font:600 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);border:1px solid #F2DDB4;border-radius:999px;padding:6px 11px;white-space:nowrap}
 
-  /* ---------- LAYOUT ---------- */
-  .wrap{max-width:1140px;margin:0 auto;padding:26px 24px 80px;display:grid;grid-template-columns:230px 1fr;gap:38px;align-items:start}
-
-  /* nav */
+  /* LAYOUT */
+  .wrap{max-width:1180px;margin:0 auto;padding:22px 24px 80px;display:grid;grid-template-columns:236px 1fr;gap:38px;align-items:start}
   nav{position:sticky;top:calc(var(--tb) + 14px);max-height:calc(100vh - var(--tb) - 30px);overflow:auto}
-  .nav-group{margin:0 0 18px}
-  .nav-group > p{
-    margin:0 0 7px;padding:0 10px;
-    font:700 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);
-  }
-  nav a{
-    display:block;padding:7px 10px;border-radius:8px;
-    color:var(--ink-2);text-decoration:none;font-size:.9rem;
-    border-left:2px solid transparent;transition:background .12s,color .12s;
-  }
-  nav a:hover{background:var(--line-2);color:var(--ink)}
-  nav a.active{background:var(--accent-soft);color:var(--accent-ink);font-weight:600;border-left-color:var(--accent-2)}
+  .nav-part{margin:4px 0 10px;padding:0 10px}
+  .nav-part:not(:first-child){margin-top:20px}
+  .nav-part a{display:block;font:700 11px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);text-decoration:none;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .nav-part a:hover{color:var(--accent-ink)}
+  .nav-part.hide{display:none}
+  .nav-group{margin:0 0 16px}
+  .nav-group > p{margin:0 0 7px;padding:0 10px;font:700 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3)}
+  nav a.cl{display:block;padding:7px 10px;border-radius:8px;color:var(--ink-2);text-decoration:none;font-size:.9rem;border-left:2px solid transparent;transition:background .12s,color .12s}
+  nav a.cl:hover{background:var(--line-2);color:var(--ink)}
+  nav a.cl.active{background:var(--accent-soft);color:var(--accent-ink);font-weight:600;border-left-color:var(--accent-2)}
 
-  /* content */
   main{min-width:0}
-  .group-head{
-    font-family:var(--display);font-weight:700;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--accent);margin:6px 0 14px;display:flex;align-items:center;gap:11px;
-  }
+  .part{margin:40px 0 18px;scroll-margin-top:calc(var(--tb) + 16px)}
+  .part:first-of-type{margin-top:8px}
+  .part .plabel{font:700 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+  .part .ptitle{font-family:var(--display);font-weight:700;font-size:clamp(1.5rem,3.6vw,1.95rem);letter-spacing:-.02em;margin:7px 0 5px}
+  .part .pdesc{color:var(--ink-2);font-size:.96rem;max-width:66ch;margin:0}
+  .part .prule{height:3px;background:linear-gradient(90deg,var(--accent-2),rgba(245,158,11,0));border-radius:2px;margin-top:14px}
+
+  .group-head{font-family:var(--display);font-weight:700;font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:36px 0 14px;display:flex;align-items:center;gap:11px}
   .group-head::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
-  .group-head:not(:first-child){margin-top:42px}
+  .part + .group-head{margin-top:18px}
 
-  .cat{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:6px 20px 8px;margin:0 0 16px;scroll-margin-top:calc(var(--tb) + 18px)}
-  .cat h2{
-    font-family:var(--display);font-weight:600;font-size:1.16rem;letter-spacing:-.01em;
-    margin:16px 0 4px;display:flex;align-items:baseline;gap:10px;
-  }
+  .cat{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:6px 20px 14px;margin:0 0 16px;scroll-margin-top:calc(var(--tb) + 18px)}
+  .cat h2{font-family:var(--display);margin:16px 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cat h2 .mod{display:inline-flex;align-items:center;gap:5px}
+  .cat h2 .scope{font-weight:600;font-size:1.12rem;letter-spacing:-.01em}
   .cat h2 .n{font:600 12px/1 var(--mono);color:var(--ink-3)}
-  .cat .sub{color:var(--ink-3);font-size:.86rem;margin:0 0 8px}
+  .cat .sub{color:var(--ink-3);font-size:.86rem;margin:0 0 10px;max-width:76ch}
 
-  .item{
-    display:flex;gap:16px;align-items:center;justify-content:space-between;
-    padding:11px 4px;border-top:1px solid var(--line-2);
-  }
+  .keygrid{display:grid;grid-template-columns:1fr 1fr;column-gap:36px}
+  .krow{display:flex;align-items:center;gap:14px;padding:9px 2px;border-top:1px solid var(--line-2)}
+  .keygrid .krow:nth-child(1),.keygrid .krow:nth-child(2){border-top:none}
+  .krow .act{min-width:0;font-size:.93rem}
+  .krow .act .apps{display:block;color:var(--ink-3);font-size:.78rem;margin-top:1px}
+  .krow.dim{opacity:.42}
+
+  .item{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:11px 4px;border-top:1px solid var(--line-2)}
   .item:first-of-type{border-top:none}
   .item .desc{color:var(--ink);font-size:.95rem;min-width:0}
-  .item .desc mark{background:var(--accent-soft);color:var(--accent-ink);border-radius:3px;padding:0 2px}
   .item .note{display:block;color:var(--ink-3);font-size:.8rem;margin-top:2px}
   .combo{display:flex;align-items:center;gap:5px;flex-wrap:wrap;justify-content:flex-end;flex-shrink:0}
 
-  kbd.kbd{
-    display:inline-flex;align-items:center;justify-content:center;
-    min-width:30px;height:31px;padding:0 9px;
-    font:600 .8rem/1 var(--mono);color:var(--key-ink);
-    background:linear-gradient(180deg,var(--key-top),var(--key-bot));
-    border:1px solid var(--key-border);border-radius:8px;
-    box-shadow:0 2px 0 var(--key-skirt),0 2px 4px rgba(20,24,35,.08);
-    white-space:nowrap;
-  }
+  .act mark,.desc mark{background:var(--accent-soft);color:var(--accent-ink);border-radius:3px;padding:0 2px}
+  kbd.kbd{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:31px;padding:0 9px;font:600 .8rem/1 var(--mono);color:var(--key-ink);background:linear-gradient(180deg,var(--key-top),var(--key-bot));border:1px solid var(--key-border);border-radius:8px;box-shadow:0 2px 0 var(--key-skirt),0 2px 4px rgba(20,24,35,.08);white-space:nowrap}
+  .keygrid kbd.kbd{min-width:40px;height:40px;font-size:1rem;flex-shrink:0}
+  .cat h2 .mod kbd.kbd{min-width:34px;height:34px;font-size:.84rem}
   .plus{color:var(--ink-3);font-size:.78rem;margin:0 1px;font-family:var(--mono)}
   .then{font:600 10px/1 var(--mono);color:var(--accent);text-transform:uppercase;letter-spacing:.05em;margin:0 3px;padding:3px 5px;background:var(--accent-soft);border-radius:5px}
   .orsep{color:var(--ink-3);font-size:.8rem;margin:0 6px}
@@ -173,39 +115,34 @@
   .empty{display:none;text-align:center;padding:60px 20px;color:var(--ink-2)}
   .empty.show{display:block}
   .empty .k{font-family:var(--mono);color:var(--accent)}
-
-  .footnote{
-    max-width:1140px;margin:0 auto;padding:0 24px 60px;color:var(--ink-3);font-size:.84rem;
-  }
+  .footnote{max-width:1180px;margin:0 auto;padding:0 24px 60px;color:var(--ink-3);font-size:.84rem}
   .footnote a{color:var(--accent)}
+  .footnote span.m{font-family:var(--mono)}
 
-  /* ---------- RESPONSIVE ---------- */
   @media (max-width:900px){
     .wrap{grid-template-columns:1fr;gap:18px}
-    nav{
-      position:sticky;top:var(--tb);z-index:40;max-height:none;overflow-x:auto;overflow-y:hidden;
-      display:flex;gap:6px;padding:10px 0;margin:0 -24px;padding-left:24px;padding-right:24px;
-      background:rgba(233,235,239,.92);backdrop-filter:blur(8px);
-      border-bottom:1px solid var(--line);scrollbar-width:none;
-    }
+    nav{position:sticky;top:var(--tb);z-index:40;max-height:none;overflow-x:auto;overflow-y:hidden;display:flex;gap:6px;margin:0 -24px;padding:10px 24px;background:rgba(233,235,239,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);scrollbar-width:none}
     nav::-webkit-scrollbar{display:none}
+    .nav-part{display:none}
     .nav-group{display:flex;gap:6px;margin:0}
     .nav-group > p{display:none}
-    nav a{white-space:nowrap;border:1px solid var(--line);border-left:1px solid var(--line);background:var(--surface);padding:7px 12px}
-    nav a.active{border-color:var(--accent-2)}
+    nav a.cl{white-space:nowrap;border:1px solid var(--line);background:var(--surface);padding:7px 12px}
+    nav a.cl.active{border-color:var(--accent-2)}
+  }
+  @media (max-width:760px){
+    .keygrid{grid-template-columns:1fr}
+    .keygrid .krow:nth-child(2){border-top:1px solid var(--line-2)}
     .item{flex-direction:column;align-items:flex-start;gap:8px}
     .combo{justify-content:flex-start}
-    .keycluster{display:none}
+    .keycluster{flex-wrap:wrap}
   }
-
-  /* ---------- PRINT ---------- */
   @media print{
     body{background:#fff}
-    .toolbar,nav,.keycluster,.slash{display:none!important}
+    .toolbar,nav,.keycluster,.slash,.hero-jump{display:none!important}
     .wrap{display:block;padding:0;max-width:none}
     .hero{padding:0 0 14px}
     .cat{break-inside:avoid;border:1px solid #ccc;box-shadow:none}
-    .item{break-inside:avoid}
+    .krow,.item{break-inside:avoid}
     kbd.kbd{box-shadow:none}
   }
 </style>
@@ -213,17 +150,21 @@
 <body>
 
 <header class="hero">
-  <p class="eyebrow">Windows 11 · Standard keyboard layout</p>
+  <p class="eyebrow">Windows 11 · Complete reference</p>
   <div class="hero-grid">
     <div>
-      <h1>Keyboard Shortcuts <span class="amp">&</span> Hotkeys</h1>
-      <p class="lede">A complete, searchable reference for Windows plus Chrome, Edge, Teams, Word, Excel, and Outlook. Type to filter every shortcut at once.</p>
+      <h1>Every Windows Shortcut, <span class="amp">Two Ways</span></h1>
+      <p class="lede">Browse <strong>by function</strong> — screenshots, snapping, formatting, meetings — or look up any key directly, A–Z and 0–9. One searchable reference covering Windows plus Chrome, Edge, Teams, Word, Excel, and Outlook.</p>
+      <div class="hero-jump">
+        <a href="#by-function">Browse by function</a>
+        <a href="#by-key">Browse by key</a>
+      </div>
     </div>
-    <div class="keycluster" aria-hidden="true">
-      <div class="bigkey tall"><span class="glyph">⊞</span>Win</div>
-      <div class="bigkey tall">Ctrl</div>
-      <div class="bigkey tall">Alt</div>
-      <div class="bigkey tall">Esc</div>
+    <div class="keycluster">
+      <a class="bigkey" href="#ctrl-letters"><span class="lbl">Ctrl</span><span class="tag">A–Z · 0–9</span></a>
+      <a class="bigkey" href="#ctrlshift-letters"><span class="lbl">Ctrl+⇧</span><span class="tag">A–Z · 0–9</span></a>
+      <a class="bigkey" href="#win-letters"><span class="lbl"><span class="glyph">⊞</span> Win</span><span class="tag">A–Z · 0–9</span></a>
+      <a class="bigkey" href="#alt-letters"><span class="lbl">Alt</span><span class="tag">A–Z</span></a>
     </div>
   </div>
 </header>
@@ -232,7 +173,7 @@
   <div class="toolbar-in">
     <div class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
-      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search shortcuts — try “screenshot”, “snap”, “mute”, “tab”…" aria-label="Search shortcuts">
+      <input id="q" type="search" autocomplete="off" spellcheck="false" placeholder="Search across everything — “screenshot”, “snap”, “ctrl j”, “win e”, “mute”…" aria-label="Search shortcuts">
       <span class="slash">/</span>
     </div>
     <span class="count" id="count"></span>
@@ -245,446 +186,722 @@
   <main id="main">
     <div class="empty" id="empty">
       <p>No shortcuts match <span class="k" id="emptyq"></span>.</p>
-      <p>Try a simpler word, or press <span class="k">Esc</span> to clear.</p>
+      <p>Try a key like <span class="k">ctrl d</span> or a word like <span class="k">snap</span>, or press <span class="k">Esc</span> to clear.</p>
     </div>
   </main>
 </div>
 
 <p class="footnote">
-  Based on the US/standard keyboard layout and Windows 11. <strong>“+”</strong> means press the keys together; <strong>then</strong> means press them in sequence. Many app shortcuts can be remapped — inside Teams press <span style="font-family:var(--mono)">Ctrl + .</span> to see your live list, and most browsers let you reassign extension shortcuts. App-specific lists verified against Microsoft and Google support documentation. On a Mac, swap <span style="font-family:var(--mono)">Ctrl</span> for <span style="font-family:var(--mono)">⌘ Cmd</span> for most browser and Office shortcuts.
+  Based on the US/standard keyboard layout and Windows 11. Where a key does different things in different programs, the most common meanings are shown with the app in grey. <span class="m">+</span> means press together; <span class="m">then</span> means in sequence. Many apps let you reassign these — inside Teams press <span class="m">Ctrl + .</span> to see your live list. App-specific entries verified against Microsoft and Google support documentation. On a Mac, swap <span class="m">Ctrl</span> for <span class="m">⌘ Cmd</span> for most browser and Office shortcuts.
 </p>
 
 <script>
-const GLYPH = {Plus:"+",Minus:"−",Equals:"=",Comma:",",Period:".",Semicolon:";",Up:"↑",Down:"↓",Left:"←",Right:"→",Spacebar:"Space"};
+const GLYPH={Plus:"+",Minus:"−",Equals:"=",Comma:",",Period:".",Semicolon:";",Up:"↑",Down:"↓",Left:"←",Right:"→",Spacebar:"Space"};
+const ALIAS={Win:"win windows",Ctrl:"ctrl control",Shift:"shift",Alt:"alt"};
+const PART_ID={"Browse by function":"by-function","Browse by key":"by-key"};
+const PART_DESC={
+  "Browse by function":"Grouped by what you're trying to do — formatting, windows, screenshots, browsing, meetings. Best when you know the task but not the keys.",
+  "Browse by key":"Every modifier + key in order, A–Z and 0–9, plus function and special keys. Best when you know the keys but not what they do — or want to learn a whole row at once."
+};
 
-const DATA = [
-  { group:"Windows system", cats:[
-    { id:"essentials", title:"Everyday essentials", sub:"The universal commands that work almost everywhere in Windows.", items:[
-      {d:"Copy",k:"Ctrl + C"},{d:"Cut",k:"Ctrl + X"},{d:"Paste",k:"Ctrl + V"},
-      {d:"Paste as plain text (most apps)",k:"Ctrl + Shift + V"},
-      {d:"Undo",k:"Ctrl + Z"},{d:"Redo",k:"Ctrl + Y"},
-      {d:"Select all",k:"Ctrl + A"},{d:"Save",k:"Ctrl + S"},{d:"Print",k:"Ctrl + P"},
-      {d:"Open",k:"Ctrl + O"},{d:"New",k:"Ctrl + N"},{d:"Find",k:"Ctrl + F"},
-      {d:"Switch between open apps",k:"Alt + Tab"},
-      {d:"Switch apps in reverse",k:"Alt + Shift + Tab"},
-      {d:"Cycle apps in the order opened",k:"Alt + Esc"},
-      {d:"Close the active app (or open shut-down menu on desktop)",k:"Alt + F4"},
-      {d:"Security screen: lock, switch user, Task Manager, sign out",k:"Ctrl + Alt + Delete"},
-      {d:"Open Task Manager directly",k:"Ctrl + Shift + Esc"},
-      {d:"Rename the selected item",k:"F2"},
-      {d:"Refresh the current window",k:"F5 / Ctrl + R"},
-      {d:"Properties of the selected item",k:"Alt + Enter"},
-      {d:"Open the right-click (context) menu",k:"Shift + F10 / Menu"},
-      {d:"Activate the menu bar of the active app",k:"F10"},
-      {d:"Delete to Recycle Bin",k:"Delete"},
-      {d:"Delete permanently (skip Recycle Bin)",k:"Shift + Delete"},
-      {d:"Cancel / close the current dialog or menu",k:"Esc"},
-    ]},
-    { id:"winkey", title:"Windows logo key", sub:"Shortcuts that start with the ⊞ Win key.", items:[
-      {d:"Open or close Start",k:"Win"},
-      {d:"Open Quick Settings (Wi-Fi, volume, brightness)",k:"Win + A"},
-      {d:"Open Notification Center & calendar",k:"Win + N"},
-      {d:"Open Copilot",k:"Win + C"},
-      {d:"Show or hide the desktop",k:"Win + D"},
-      {d:"Open File Explorer",k:"Win + E"},
-      {d:"Open Settings",k:"Win + I"},
-      {d:"Open the Run dialog",k:"Win + R"},
-      {d:"Open Search",k:"Win + S / Win + Q"},
-      {d:"Open clipboard history",k:"Win + V"},
-      {d:"Open the emoji & symbol panel",k:"Win + Period / Win + Semicolon"},
-      {d:"Lock your PC",k:"Win + L"},
-      {d:"Open the Quick Link (power user) menu",k:"Win + X"},
-      {d:"Open the Game Bar",k:"Win + G"},
-      {d:"Connect to a wireless display or audio device",k:"Win + K"},
-      {d:"Project to a second screen",k:"Win + P"},
-      {d:"Start voice typing / dictation",k:"Win + H"},
-      {d:"Open Widgets",k:"Win + W"},
-      {d:"Open Feedback Hub",k:"Win + F"},
-      {d:"Minimize all windows",k:"Win + M"},
-      {d:"Restore minimized windows",k:"Win + Shift + M"},
-      {d:"Open accessibility settings",k:"Win + U"},
-      {d:"Set focus to the notification area",k:"Win + B"},
-      {d:"Peek at the desktop",k:"Win + Comma", n:"Hold the keys, release to return."},
-      {d:"Open System ▸ About",k:"Win + Pause"},
-      {d:"Switch keyboard / input language",k:"Win + Spacebar"},
-      {d:"Wake the PC from a black or blank screen",k:"Win + Ctrl + Shift + B"},
-    ]},
-    { id:"windows-mgmt", title:"Window & snap management", sub:"Arrange and resize windows without the mouse.", items:[
-      {d:"Maximize the window",k:"Win + Up"},
-      {d:"Minimize or restore the window",k:"Win + Down"},
-      {d:"Snap the window to the left half",k:"Win + Left"},
-      {d:"Snap the window to the right half",k:"Win + Right"},
-      {d:"Move the window to the other monitor",k:"Win + Shift + Left / Win + Shift + Right"},
-      {d:"Stretch the window to the top and bottom",k:"Win + Shift + Up"},
-      {d:"Open Snap Layouts",k:"Win + Z"},
-      {d:"Minimize everything except the active window",k:"Win + Home"},
-      {d:"Cycle through apps on the taskbar",k:"Win + T"},
-    ]},
-    { id:"desktops", title:"Virtual desktops & Task View", sub:"", items:[
-      {d:"Open Task View",k:"Win + Tab"},
-      {d:"Create a new virtual desktop",k:"Win + Ctrl + D"},
-      {d:"Switch to the next virtual desktop",k:"Win + Ctrl + Right"},
-      {d:"Switch to the previous virtual desktop",k:"Win + Ctrl + Left"},
-      {d:"Close the current virtual desktop",k:"Win + Ctrl + F4"},
-    ]},
-    { id:"explorer", title:"File Explorer", sub:"", items:[
-      {d:"Open File Explorer",k:"Win + E"},
-      {d:"New window",k:"Ctrl + N"},
-      {d:"New folder",k:"Ctrl + Shift + N"},
-      {d:"Close the window",k:"Ctrl + W"},
-      {d:"Search the current folder",k:"Ctrl + F / Ctrl + E"},
-      {d:"Focus the address bar",k:"Alt + D / Ctrl + L"},
-      {d:"Go up one level",k:"Alt + Up"},
-      {d:"Go back",k:"Alt + Left"},
-      {d:"Go forward",k:"Alt + Right"},
-      {d:"Show or hide the preview pane",k:"Alt + P"},
-      {d:"Maximize or minimize the window",k:"F11"},
-      {d:"Change the view / icon size",k:"Ctrl + Mouse wheel"},
-      {d:"Expand the selected folder (in the tree)",k:"Right"},
-      {d:"Collapse the selected folder",k:"Left"},
-      {d:"Display all subfolders of the selection",k:"Num Lock + Asterisk"},
-    ]},
-    { id:"screenshots", title:"Screenshots & screen recording", sub:"", items:[
-      {d:"Snip a region with the Snipping Tool",k:"Win + Shift + S"},
-      {d:"Copy the whole screen to the clipboard",k:"PrtScn"},
-      {d:"Save the whole screen as a file (Pictures ▸ Screenshots)",k:"Win + PrtScn"},
-      {d:"Copy the active window to the clipboard",k:"Alt + PrtScn"},
-      {d:"Take a screenshot with the Game Bar",k:"Win + Alt + PrtScn"},
-      {d:"Start or stop recording (Game Bar)",k:"Win + Alt + R"},
-      {d:"Record the last 30 seconds (Game Bar)",k:"Win + Alt + G"},
-    ]},
-    { id:"text-nav", title:"Text editing & cursor movement", sub:"Works in nearly every text field, editor, and document.", items:[
-      {d:"Move the cursor one word left / right",k:"Ctrl + Left / Ctrl + Right"},
-      {d:"Move to the start / end of the line",k:"Home / End"},
-      {d:"Move to the start / end of the document",k:"Ctrl + Home / Ctrl + End"},
-      {d:"Select one character left / right",k:"Shift + Left / Shift + Right"},
-      {d:"Select one word at a time",k:"Ctrl + Shift + Left / Ctrl + Shift + Right"},
-      {d:"Select to the start / end of the line",k:"Shift + Home / Shift + End"},
-      {d:"Select to the start / end of the document",k:"Ctrl + Shift + Home / Ctrl + Shift + End"},
-      {d:"Select the line above / below",k:"Shift + Up / Shift + Down"},
-      {d:"Delete the word to the left",k:"Ctrl + Backspace"},
-      {d:"Delete the word to the right",k:"Ctrl + Delete"},
-      {d:"Bold / Italic / Underline (rich text)",k:"Ctrl + B / Ctrl + I / Ctrl + U"},
-    ]},
-    { id:"dialogs", title:"Dialog boxes", sub:"", items:[
-      {d:"Move forward through options",k:"Tab"},
-      {d:"Move back through options",k:"Shift + Tab"},
-      {d:"Move forward through tabs",k:"Ctrl + Tab"},
-      {d:"Move back through tabs",k:"Ctrl + Shift + Tab"},
-      {d:"Jump to the nth tab",k:"Ctrl + number"},
-      {d:"Select or clear a checkbox",k:"Spacebar"},
-      {d:"Open a dropdown list",k:"F4"},
-      {d:"Run the command for an underlined letter",k:"Alt + letter"},
-      {d:"Go up one folder (Open / Save dialog)",k:"Alt + Up / Backspace"},
-    ]},
-    { id:"terminal", title:"Command Prompt & Windows Terminal", sub:"", items:[
-      {d:"Copy the selection",k:"Ctrl + C"},
-      {d:"Paste",k:"Ctrl + V"},
-      {d:"Enter mark / selection mode (Command Prompt)",k:"Ctrl + M"},
-      {d:"Find",k:"Ctrl + F / Ctrl + Shift + F"},
-      {d:"Scroll one line up / down",k:"Ctrl + Up / Ctrl + Down"},
-      {d:"Scroll one page up / down",k:"Ctrl + PgUp / Ctrl + PgDn"},
-      {d:"Cycle through command history",k:"Up / Down"},
-      {d:"New tab (Windows Terminal)",k:"Ctrl + Shift + T"},
-      {d:"New window (Windows Terminal)",k:"Ctrl + Shift + N"},
-      {d:"Split a pane automatically",k:"Alt + Shift + D"},
-      {d:"Move focus between panes",k:"Alt + Arrow"},
-      {d:"Close the current pane or tab",k:"Ctrl + Shift + W"},
-    ]},
-    { id:"accessibility", title:"Accessibility & ease of access", sub:"", items:[
-      {d:"Open accessibility settings",k:"Win + U"},
-      {d:"Open Magnifier / zoom in",k:"Win + Plus"},
-      {d:"Zoom out (Magnifier)",k:"Win + Minus"},
-      {d:"Close Magnifier",k:"Win + Esc"},
-      {d:"Turn Narrator on or off",k:"Win + Ctrl + Enter"},
-      {d:"Open the on-screen keyboard",k:"Win + Ctrl + O"},
-      {d:"Toggle High Contrast",k:"Left Alt + Left Shift + PrtScn"},
-      {d:"Toggle Mouse Keys",k:"Left Alt + Left Shift + Num Lock"},
-      {d:"Toggle Sticky Keys",k:"Shift", n:"Press Shift five times in a row."},
-      {d:"Toggle Filter Keys",k:"Right Shift", n:"Hold Right Shift for eight seconds."},
-      {d:"Toggle Toggle Keys",k:"Num Lock", n:"Hold Num Lock for five seconds."},
-    ]},
-    { id:"taskbar", title:"Taskbar", sub:"", items:[
-      {d:"Open the app pinned in position 1–9",k:"Win + number"},
-      {d:"Open a new instance of a taskbar app",k:"Win + Shift + number / Shift + Click"},
-      {d:"Switch to the last active window of an app",k:"Win + Ctrl + number"},
-      {d:"Open the jump list for an app",k:"Win + Alt + number"},
-      {d:"Open a taskbar app as administrator",k:"Ctrl + Shift + Click"},
-      {d:"Show the window menu for a taskbar app",k:"Shift + Right-click"},
-    ]},
-  ]},
+const DATA=[
 
-  { group:"Web browsers", cats:[
-    { id:"chrome", title:"Google Chrome", sub:"Tabs, navigation, and tools. Edge shares almost all of these.", items:[
-      {d:"New tab",k:"Ctrl + T"},
-      {d:"New window",k:"Ctrl + N"},
-      {d:"New Incognito window",k:"Ctrl + Shift + N"},
-      {d:"Close the current tab",k:"Ctrl + W / Ctrl + F4"},
-      {d:"Close the current window",k:"Ctrl + Shift + W"},
-      {d:"Reopen the last closed tab",k:"Ctrl + Shift + T"},
-      {d:"Next tab",k:"Ctrl + Tab / Ctrl + PgDn"},
-      {d:"Previous tab",k:"Ctrl + Shift + Tab / Ctrl + PgUp"},
-      {d:"Jump to tab 1–8",k:"Ctrl + 1 … Ctrl + 8"},
-      {d:"Jump to the last tab",k:"Ctrl + 9"},
-      {d:"Open a link in a new background tab",k:"Ctrl + Click"},
-      {d:"Open a link in a new tab and switch to it",k:"Ctrl + Shift + Click"},
-      {d:"Open a link in a new window",k:"Shift + Click"},
-      {d:"Go back",k:"Alt + Left"},
-      {d:"Go forward",k:"Alt + Right"},
-      {d:"Reload the page",k:"Ctrl + R / F5"},
-      {d:"Reload ignoring cached files (hard reload)",k:"Ctrl + Shift + R"},
-      {d:"Stop loading",k:"Esc"},
-      {d:"Focus the address bar",k:"Ctrl + L / Alt + D / F6"},
-      {d:"Add www. and .com around your typing",k:"Ctrl + Enter"},
-      {d:"Search from the address bar",k:"Ctrl + E / Ctrl + K"},
-      {d:"Find on the page",k:"Ctrl + F"},
-      {d:"Find next / previous match",k:"Ctrl + G / Ctrl + Shift + G"},
-      {d:"Print",k:"Ctrl + P"},
-      {d:"Save the page",k:"Ctrl + S"},
-      {d:"Zoom in / out",k:"Ctrl + Plus / Ctrl + Minus"},
-      {d:"Reset zoom to 100%",k:"Ctrl + 0"},
-      {d:"Toggle full screen",k:"F11"},
-      {d:"Scroll down / up one screen",k:"Spacebar / Shift + Spacebar"},
-      {d:"Bookmark this page",k:"Ctrl + D"},
-      {d:"Bookmark all open tabs",k:"Ctrl + Shift + D"},
-      {d:"Show or hide the bookmarks bar",k:"Ctrl + Shift + B"},
-      {d:"Open the Bookmark Manager",k:"Ctrl + Shift + O"},
-      {d:"Open History",k:"Ctrl + H"},
-      {d:"Open Downloads",k:"Ctrl + J"},
-      {d:"Clear browsing data",k:"Ctrl + Shift + Delete"},
-      {d:"Open Chrome's Task Manager",k:"Shift + Esc"},
-      {d:"Open Developer Tools",k:"Ctrl + Shift + I / F12"},
-      {d:"Open the JavaScript console",k:"Ctrl + Shift + J"},
-      {d:"Inspect an element",k:"Ctrl + Shift + C"},
-      {d:"View page source",k:"Ctrl + U"},
-      {d:"Open the Chrome menu",k:"Alt + F / Alt + E"},
-    ]},
-    { id:"edge", title:"Microsoft Edge", sub:"Edge is Chromium-based, so the Chrome shortcuts above also apply. These are the Edge essentials plus its own extras.", items:[
-      {d:"New tab",k:"Ctrl + T"},
-      {d:"New window",k:"Ctrl + N"},
-      {d:"New InPrivate window",k:"Ctrl + Shift + N"},
-      {d:"Close the current tab",k:"Ctrl + W"},
-      {d:"Reopen the last closed tab",k:"Ctrl + Shift + T"},
-      {d:"Duplicate the current tab",k:"Ctrl + Shift + K"},
-      {d:"Mute or unmute the current tab",k:"Ctrl + M"},
-      {d:"Next / previous tab",k:"Ctrl + Tab / Ctrl + Shift + Tab"},
-      {d:"Jump to tab 1–8 / last tab",k:"Ctrl + 1 … Ctrl + 9"},
-      {d:"Go back / forward",k:"Alt + Left / Alt + Right"},
-      {d:"Reload / hard reload",k:"Ctrl + R / Ctrl + Shift + R"},
-      {d:"Focus the address bar",k:"Ctrl + L / Alt + D"},
-      {d:"Search from the address bar",k:"Ctrl + E"},
-      {d:"Find on the page",k:"Ctrl + F"},
-      {d:"Add a favorite",k:"Ctrl + D"},
-      {d:"Add all open tabs to favorites",k:"Ctrl + Shift + D"},
-      {d:"Show or hide the favorites bar",k:"Ctrl + Shift + B"},
-      {d:"Open the favorites pane",k:"Ctrl + Shift + O"},
-      {d:"Open History / Downloads",k:"Ctrl + H / Ctrl + J"},
-      {d:"Open Collections",k:"Ctrl + Shift + Y"},
-      {d:"Start or stop Read aloud",k:"Ctrl + Shift + U"},
-      {d:"Take a Web capture (screenshot)",k:"Ctrl + Shift + S"},
-      {d:"Open Immersive Reader (reading view)",k:"F9"},
-      {d:"Open Developer Tools",k:"F12 / Ctrl + Shift + I"},
-      {d:"View page source",k:"Ctrl + U"},
-      {d:"Print",k:"Ctrl + P"},
-      {d:"Zoom in / out / reset",k:"Ctrl + Plus / Ctrl + Minus / Ctrl + 0"},
-      {d:"Toggle full screen",k:"F11"},
-      {d:"Clear browsing data",k:"Ctrl + Shift + Delete"},
-      {d:"Open the Settings and more (…) menu",k:"Alt + F"},
-    ]},
+ /* ===================== PART 1 — BY FUNCTION ===================== */
+ {part:"Browse by function", group:"Windows system", cats:[
+  {id:"essentials", scope:"Everyday essentials", mode:"list", sub:"The universal commands that work almost everywhere in Windows.", items:[
+    {d:"Copy",k:"Ctrl + C"},{d:"Cut",k:"Ctrl + X"},{d:"Paste",k:"Ctrl + V"},
+    {d:"Paste as plain text (most apps)",k:"Ctrl + Shift + V"},
+    {d:"Undo",k:"Ctrl + Z"},{d:"Redo",k:"Ctrl + Y"},
+    {d:"Select all",k:"Ctrl + A"},{d:"Save",k:"Ctrl + S"},{d:"Print",k:"Ctrl + P"},
+    {d:"Open",k:"Ctrl + O"},{d:"New",k:"Ctrl + N"},{d:"Find",k:"Ctrl + F"},
+    {d:"Switch between open apps",k:"Alt + Tab"},
+    {d:"Switch apps in reverse",k:"Alt + Shift + Tab"},
+    {d:"Cycle apps in the order opened",k:"Alt + Esc"},
+    {d:"Close the active app (or open shut-down menu on desktop)",k:"Alt + F4"},
+    {d:"Security screen: lock, switch user, Task Manager, sign out",k:"Ctrl + Alt + Delete"},
+    {d:"Open Task Manager directly",k:"Ctrl + Shift + Esc"},
+    {d:"Rename the selected item",k:"F2"},
+    {d:"Refresh the current window",k:"F5 / Ctrl + R"},
+    {d:"Properties of the selected item",k:"Alt + Enter"},
+    {d:"Open the right-click (context) menu",k:"Shift + F10 / Menu"},
+    {d:"Activate the menu bar of the active app",k:"F10"},
+    {d:"Delete to Recycle Bin",k:"Delete"},
+    {d:"Delete permanently (skip Recycle Bin)",k:"Shift + Delete"},
+    {d:"Cancel / close the current dialog or menu",k:"Esc"},
   ]},
+  {id:"winkey", scope:"Windows logo key", mode:"list", sub:"Shortcuts that start with the ⊞ Win key.", items:[
+    {d:"Open or close Start",k:"Win"},
+    {d:"Open Quick Settings (Wi-Fi, volume, brightness)",k:"Win + A"},
+    {d:"Open Notification Center & calendar",k:"Win + N"},
+    {d:"Open Copilot",k:"Win + C"},
+    {d:"Show or hide the desktop",k:"Win + D"},
+    {d:"Open File Explorer",k:"Win + E"},
+    {d:"Open Settings",k:"Win + I"},
+    {d:"Open the Run dialog",k:"Win + R"},
+    {d:"Open Search",k:"Win + S / Win + Q"},
+    {d:"Open clipboard history",k:"Win + V"},
+    {d:"Open the emoji & symbol panel",k:"Win + Period / Win + Semicolon"},
+    {d:"Lock your PC",k:"Win + L"},
+    {d:"Open the Quick Link (power user) menu",k:"Win + X"},
+    {d:"Open the Game Bar",k:"Win + G"},
+    {d:"Connect to a wireless display or audio device",k:"Win + K"},
+    {d:"Project to a second screen",k:"Win + P"},
+    {d:"Start voice typing / dictation",k:"Win + H"},
+    {d:"Open Widgets",k:"Win + W"},
+    {d:"Open Feedback Hub",k:"Win + F"},
+    {d:"Minimize all windows",k:"Win + M"},
+    {d:"Restore minimized windows",k:"Win + Shift + M"},
+    {d:"Open accessibility settings",k:"Win + U"},
+    {d:"Set focus to the notification area",k:"Win + B"},
+    {d:"Peek at the desktop",k:"Win + Comma", n:"Hold the keys, release to return."},
+    {d:"Open System ▸ About",k:"Win + Pause"},
+    {d:"Switch keyboard / input language",k:"Win + Spacebar"},
+    {d:"Wake the PC from a black or blank screen",k:"Win + Ctrl + Shift + B"},
+  ]},
+  {id:"windows-mgmt", scope:"Window & snap management", mode:"list", sub:"Arrange and resize windows without the mouse.", items:[
+    {d:"Maximize the window",k:"Win + Up"},
+    {d:"Minimize or restore the window",k:"Win + Down"},
+    {d:"Snap the window to the left half",k:"Win + Left"},
+    {d:"Snap the window to the right half",k:"Win + Right"},
+    {d:"Move the window to the other monitor",k:"Win + Shift + Left / Win + Shift + Right"},
+    {d:"Stretch the window to the top and bottom",k:"Win + Shift + Up"},
+    {d:"Open Snap Layouts",k:"Win + Z"},
+    {d:"Minimize everything except the active window",k:"Win + Home"},
+    {d:"Cycle through apps on the taskbar",k:"Win + T"},
+  ]},
+  {id:"desktops", scope:"Virtual desktops & Task View", mode:"list", items:[
+    {d:"Open Task View",k:"Win + Tab"},
+    {d:"Create a new virtual desktop",k:"Win + Ctrl + D"},
+    {d:"Switch to the next virtual desktop",k:"Win + Ctrl + Right"},
+    {d:"Switch to the previous virtual desktop",k:"Win + Ctrl + Left"},
+    {d:"Close the current virtual desktop",k:"Win + Ctrl + F4"},
+  ]},
+  {id:"explorer", scope:"File Explorer", mode:"list", items:[
+    {d:"Open File Explorer",k:"Win + E"},
+    {d:"New window",k:"Ctrl + N"},
+    {d:"New folder",k:"Ctrl + Shift + N"},
+    {d:"Close the window",k:"Ctrl + W"},
+    {d:"Search the current folder",k:"Ctrl + F / Ctrl + E"},
+    {d:"Focus the address bar",k:"Alt + D / Ctrl + L"},
+    {d:"Go up one level",k:"Alt + Up"},
+    {d:"Go back",k:"Alt + Left"},
+    {d:"Go forward",k:"Alt + Right"},
+    {d:"Show or hide the preview pane",k:"Alt + P"},
+    {d:"Maximize or minimize the window",k:"F11"},
+    {d:"Change the view / icon size",k:"Ctrl + Mouse wheel"},
+    {d:"Expand the selected folder (in the tree)",k:"Right"},
+    {d:"Collapse the selected folder",k:"Left"},
+    {d:"Display all subfolders of the selection",k:"Num Lock + Asterisk"},
+  ]},
+  {id:"screenshots", scope:"Screenshots & screen recording", mode:"list", items:[
+    {d:"Snip a region with the Snipping Tool",k:"Win + Shift + S"},
+    {d:"Copy the whole screen to the clipboard",k:"PrtScn"},
+    {d:"Save the whole screen as a file (Pictures ▸ Screenshots)",k:"Win + PrtScn"},
+    {d:"Copy the active window to the clipboard",k:"Alt + PrtScn"},
+    {d:"Take a screenshot with the Game Bar",k:"Win + Alt + PrtScn"},
+    {d:"Start or stop recording (Game Bar)",k:"Win + Alt + R"},
+    {d:"Record the last 30 seconds (Game Bar)",k:"Win + Alt + G"},
+  ]},
+  {id:"text-nav", scope:"Text editing & cursor movement", mode:"list", sub:"Works in nearly every text field, editor, and document.", items:[
+    {d:"Move the cursor one word left / right",k:"Ctrl + Left / Ctrl + Right"},
+    {d:"Move to the start / end of the line",k:"Home / End"},
+    {d:"Move to the start / end of the document",k:"Ctrl + Home / Ctrl + End"},
+    {d:"Select one character left / right",k:"Shift + Left / Shift + Right"},
+    {d:"Select one word at a time",k:"Ctrl + Shift + Left / Ctrl + Shift + Right"},
+    {d:"Select to the start / end of the line",k:"Shift + Home / Shift + End"},
+    {d:"Select to the start / end of the document",k:"Ctrl + Shift + Home / Ctrl + Shift + End"},
+    {d:"Select the line above / below",k:"Shift + Up / Shift + Down"},
+    {d:"Delete the word to the left",k:"Ctrl + Backspace"},
+    {d:"Delete the word to the right",k:"Ctrl + Delete"},
+    {d:"Bold / Italic / Underline (rich text)",k:"Ctrl + B / Ctrl + I / Ctrl + U"},
+  ]},
+  {id:"dialogs", scope:"Dialog boxes", mode:"list", items:[
+    {d:"Move forward through options",k:"Tab"},
+    {d:"Move back through options",k:"Shift + Tab"},
+    {d:"Move forward through tabs",k:"Ctrl + Tab"},
+    {d:"Move back through tabs",k:"Ctrl + Shift + Tab"},
+    {d:"Jump to the nth tab",k:"Ctrl + number"},
+    {d:"Select or clear a checkbox",k:"Spacebar"},
+    {d:"Open a dropdown list",k:"F4"},
+    {d:"Run the command for an underlined letter",k:"Alt + letter"},
+    {d:"Go up one folder (Open / Save dialog)",k:"Alt + Up / Backspace"},
+  ]},
+  {id:"terminal", scope:"Command Prompt & Windows Terminal", mode:"list", items:[
+    {d:"Copy the selection",k:"Ctrl + C"},
+    {d:"Paste",k:"Ctrl + V"},
+    {d:"Enter mark / selection mode (Command Prompt)",k:"Ctrl + M"},
+    {d:"Find",k:"Ctrl + F / Ctrl + Shift + F"},
+    {d:"Scroll one line up / down",k:"Ctrl + Up / Ctrl + Down"},
+    {d:"Scroll one page up / down",k:"Ctrl + PgUp / Ctrl + PgDn"},
+    {d:"Cycle through command history",k:"Up / Down"},
+    {d:"New tab (Windows Terminal)",k:"Ctrl + Shift + T"},
+    {d:"New window (Windows Terminal)",k:"Ctrl + Shift + N"},
+    {d:"Split a pane automatically",k:"Alt + Shift + D"},
+    {d:"Move focus between panes",k:"Alt + Arrow"},
+    {d:"Close the current pane or tab",k:"Ctrl + Shift + W"},
+  ]},
+  {id:"accessibility", scope:"Accessibility & ease of access", mode:"list", items:[
+    {d:"Open accessibility settings",k:"Win + U"},
+    {d:"Open Magnifier / zoom in",k:"Win + Plus"},
+    {d:"Zoom out (Magnifier)",k:"Win + Minus"},
+    {d:"Close Magnifier",k:"Win + Esc"},
+    {d:"Turn Narrator on or off",k:"Win + Ctrl + Enter"},
+    {d:"Open the on-screen keyboard",k:"Win + Ctrl + O"},
+    {d:"Toggle High Contrast",k:"Left Alt + Left Shift + PrtScn"},
+    {d:"Toggle Mouse Keys",k:"Left Alt + Left Shift + Num Lock"},
+    {d:"Toggle Sticky Keys",k:"Shift", n:"Press Shift five times in a row."},
+    {d:"Toggle Filter Keys",k:"Right Shift", n:"Hold Right Shift for eight seconds."},
+    {d:"Toggle Toggle Keys",k:"Num Lock", n:"Hold Num Lock for five seconds."},
+  ]},
+  {id:"taskbar", scope:"Taskbar", mode:"list", items:[
+    {d:"Open the app pinned in position 1–9",k:"Win + number"},
+    {d:"Open a new instance of a taskbar app",k:"Win + Shift + number / Shift + Click"},
+    {d:"Switch to the last active window of an app",k:"Win + Ctrl + number"},
+    {d:"Open the jump list for an app",k:"Win + Alt + number"},
+    {d:"Open a taskbar app as administrator",k:"Ctrl + Shift + Click"},
+    {d:"Show the window menu for a taskbar app",k:"Shift + Right-click"},
+  ]},
+ ]},
 
-  { group:"Microsoft Teams", cats:[
-    { id:"teams-general", title:"Teams — general & navigation", sub:"Desktop app on Windows. Press Ctrl + . inside Teams to see your live, customizable list.", items:[
-      {d:"Show keyboard shortcuts",k:"Ctrl + Period"},
-      {d:"Go to Search",k:"Ctrl + E"},
-      {d:"Go to a specific chat or channel",k:"Ctrl + G"},
-      {d:"Open the filter",k:"Ctrl + Shift + F"},
-      {d:"Start a new chat",k:"Ctrl + N"},
-      {d:"Start a chat in a new window",k:"Ctrl + Shift + N"},
-      {d:"Open an existing conversation in a new window",k:"Ctrl + O"},
-      {d:"Pin a window on top",k:"Ctrl + Shift + T"},
-      {d:"Open Settings",k:"Ctrl + Comma"},
-      {d:"Open Help",k:"F1"},
-      {d:"Zoom in / out",k:"Ctrl + Equals / Ctrl + Minus"},
-      {d:"Reset zoom",k:"Ctrl + 0"},
-      {d:"Open the 1st–9th app on the app bar",k:"Ctrl + 1 … Ctrl + 9"},
-      {d:"Move focus to the chat / channel list",k:"Ctrl + L"},
-      {d:"Move focus to the message pane",k:"Ctrl + M"},
-      {d:"Go to the compose box",k:"Ctrl + R"},
-      {d:"Open the history menu",k:"Ctrl + H"},
-      {d:"Go to the next / previous section",k:"Ctrl + F6 / Ctrl + Shift + F6"},
-      {d:"Go back / forward",k:"Alt + Left / Alt + Right"},
-      {d:"Report a problem",k:"Ctrl + Alt + Shift + R"},
-    ]},
-    { id:"teams-messaging", title:"Teams — messaging & compose", sub:"", items:[
-      {d:"Expand the compose box",k:"Ctrl + Shift + X"},
-      {d:"Send when the compose box is expanded",k:"Ctrl + Enter"},
-      {d:"Start a new line in a message",k:"Shift + Enter"},
-      {d:"Reply to the last message",k:"Alt + Shift + R"},
-      {d:"React to the last message",k:"Ctrl + Alt + R"},
-      {d:"Mark a message as important",k:"Ctrl + Shift + I"},
-      {d:"Find in the current chat or channel",k:"Ctrl + F"},
-      {d:"Jump to the last read / newest message",k:"Ctrl + J"},
-      {d:"Mark all as read",k:"Shift + Esc"},
-      {d:"Bold / Italic / Underline",k:"Ctrl + B / Ctrl + I / Ctrl + U"},
-      {d:"Strikethrough",k:"Ctrl + Alt + X"},
-      {d:"Insert a link",k:"Ctrl + K"},
-      {d:"Insert inline code",k:"Ctrl + Shift + C"},
-      {d:"Insert a code block",k:"Ctrl + Shift + B"},
-      {d:"Apply Heading 1 / 2 / 3",k:"Ctrl + Alt + 1 / Ctrl + Alt + 2 / Ctrl + Alt + 3"},
-      {d:"Attach a file",k:"Alt + Shift + O"},
-      {d:"Rewrite with Copilot",k:"Alt + A"},
-      {d:"Toggle the details pane",k:"Alt + P"},
-      {d:"Open the 1st–9th tab on the chat header",k:"Alt + 1 … Alt + 9"},
-      {d:"See all unread chats",k:"Ctrl + Alt + U"},
-      {d:"See all chat conversations",k:"Ctrl + Alt + C"},
-      {d:"See all channel conversations",k:"Ctrl + Alt + A"},
-      {d:"Clear all filters",k:"Ctrl + Alt + Z"},
-    ]},
-    { id:"teams-meetings", title:"Teams — meetings, calls & calendar", sub:"To temporarily unmute, first enable it in Settings ▸ Privacy.", items:[
-      {d:"Accept an incoming video call",k:"Ctrl + Shift + A"},
-      {d:"Accept an incoming audio call",k:"Ctrl + Shift + S"},
-      {d:"Decline a call",k:"Ctrl + Shift + D"},
-      {d:"Start an audio call",k:"Alt + Shift + A"},
-      {d:"Start a video call",k:"Alt + Shift + V"},
-      {d:"Toggle mute",k:"Ctrl + Shift + M"},
-      {d:"Temporarily unmute",k:"Ctrl + Spacebar", n:"Hold to talk, release to re-mute."},
-      {d:"Toggle your video",k:"Ctrl + Shift + O"},
-      {d:"Toggle the speaker",k:"Ctrl + Shift + U"},
-      {d:"Raise or lower your hand",k:"Ctrl + Shift + K"},
-      {d:"Start or stop sharing your screen",k:"Ctrl + Shift + E"},
-      {d:"Admit people from the lobby",k:"Ctrl + Shift + Y"},
-      {d:"End the call",k:"Ctrl + Shift + H"},
-      {d:"Toggle full screen",k:"F11"},
-      {d:"Zoom in / out on shared content",k:"Alt + Shift + Plus / Alt + Shift + Minus"},
-      {d:"Schedule a meeting",k:"Alt + N"},
-      {d:"Join from meeting details",k:"Alt + Shift + J"},
-      {d:"Open the calendar (default app-bar position)",k:"Ctrl + 3"},
-      {d:"Day / Work week / Week / Month view",k:"Alt + Shift + 1 / Alt + Shift + 2 / Alt + Shift + 3 / Alt + Shift + 4"},
-      {d:"Previous / next time period",k:"Ctrl + Alt + Left / Ctrl + Alt + Right"},
-      {d:"Go to today",k:"Alt + Shift + Y / Home"},
-      {d:"Create a new event",k:"Alt + N"},
-      {d:"Save an appointment",k:"Ctrl + S"},
-      {d:"Send a meeting",k:"Ctrl + Enter"},
-      {d:"Join the selected event",k:"Ctrl + J"},
-    ]},
+ {part:"Browse by function", group:"Web browsers", cats:[
+  {id:"chrome", scope:"Google Chrome", mode:"list", sub:"Tabs, navigation, and tools. Edge shares almost all of these.", items:[
+    {d:"New tab",k:"Ctrl + T"},
+    {d:"New window",k:"Ctrl + N"},
+    {d:"New Incognito window",k:"Ctrl + Shift + N"},
+    {d:"Close the current tab",k:"Ctrl + W / Ctrl + F4"},
+    {d:"Close the current window",k:"Ctrl + Shift + W"},
+    {d:"Reopen the last closed tab",k:"Ctrl + Shift + T"},
+    {d:"Next tab",k:"Ctrl + Tab / Ctrl + PgDn"},
+    {d:"Previous tab",k:"Ctrl + Shift + Tab / Ctrl + PgUp"},
+    {d:"Jump to tab 1–8",k:"Ctrl + 1 … Ctrl + 8"},
+    {d:"Jump to the last tab",k:"Ctrl + 9"},
+    {d:"Open a link in a new background tab",k:"Ctrl + Click"},
+    {d:"Open a link in a new tab and switch to it",k:"Ctrl + Shift + Click"},
+    {d:"Open a link in a new window",k:"Shift + Click"},
+    {d:"Go back",k:"Alt + Left"},
+    {d:"Go forward",k:"Alt + Right"},
+    {d:"Reload the page",k:"Ctrl + R / F5"},
+    {d:"Reload ignoring cached files (hard reload)",k:"Ctrl + Shift + R"},
+    {d:"Stop loading",k:"Esc"},
+    {d:"Focus the address bar",k:"Ctrl + L / Alt + D / F6"},
+    {d:"Add www. and .com around your typing",k:"Ctrl + Enter"},
+    {d:"Search from the address bar",k:"Ctrl + E / Ctrl + K"},
+    {d:"Find on the page",k:"Ctrl + F"},
+    {d:"Find next / previous match",k:"Ctrl + G / Ctrl + Shift + G"},
+    {d:"Print",k:"Ctrl + P"},
+    {d:"Save the page",k:"Ctrl + S"},
+    {d:"Zoom in / out",k:"Ctrl + Plus / Ctrl + Minus"},
+    {d:"Reset zoom to 100%",k:"Ctrl + 0"},
+    {d:"Toggle full screen",k:"F11"},
+    {d:"Scroll down / up one screen",k:"Spacebar / Shift + Spacebar"},
+    {d:"Bookmark this page",k:"Ctrl + D"},
+    {d:"Bookmark all open tabs",k:"Ctrl + Shift + D"},
+    {d:"Show or hide the bookmarks bar",k:"Ctrl + Shift + B"},
+    {d:"Open the Bookmark Manager",k:"Ctrl + Shift + O"},
+    {d:"Open History",k:"Ctrl + H"},
+    {d:"Open Downloads",k:"Ctrl + J"},
+    {d:"Clear browsing data",k:"Ctrl + Shift + Delete"},
+    {d:"Open Chrome's Task Manager",k:"Shift + Esc"},
+    {d:"Open Developer Tools",k:"Ctrl + Shift + I / F12"},
+    {d:"Open the JavaScript console",k:"Ctrl + Shift + J"},
+    {d:"Inspect an element",k:"Ctrl + Shift + C"},
+    {d:"View page source",k:"Ctrl + U"},
+    {d:"Open the Chrome menu",k:"Alt + F / Alt + E"},
   ]},
+  {id:"edge", scope:"Microsoft Edge", mode:"list", sub:"Edge is Chromium-based, so the Chrome shortcuts also apply. These are the Edge essentials plus its own extras.", items:[
+    {d:"New tab",k:"Ctrl + T"},
+    {d:"New window",k:"Ctrl + N"},
+    {d:"New InPrivate window",k:"Ctrl + Shift + N"},
+    {d:"Close the current tab",k:"Ctrl + W"},
+    {d:"Reopen the last closed tab",k:"Ctrl + Shift + T"},
+    {d:"Duplicate the current tab",k:"Ctrl + Shift + K"},
+    {d:"Mute or unmute the current tab",k:"Ctrl + M"},
+    {d:"Next / previous tab",k:"Ctrl + Tab / Ctrl + Shift + Tab"},
+    {d:"Jump to tab 1–8 / last tab",k:"Ctrl + 1 … Ctrl + 9"},
+    {d:"Go back / forward",k:"Alt + Left / Alt + Right"},
+    {d:"Reload / hard reload",k:"Ctrl + R / Ctrl + Shift + R"},
+    {d:"Focus the address bar",k:"Ctrl + L / Alt + D"},
+    {d:"Search from the address bar",k:"Ctrl + E"},
+    {d:"Find on the page",k:"Ctrl + F"},
+    {d:"Add a favorite",k:"Ctrl + D"},
+    {d:"Add all open tabs to favorites",k:"Ctrl + Shift + D"},
+    {d:"Show or hide the favorites bar",k:"Ctrl + Shift + B"},
+    {d:"Open the favorites pane",k:"Ctrl + Shift + O"},
+    {d:"Open History / Downloads",k:"Ctrl + H / Ctrl + J"},
+    {d:"Open Collections",k:"Ctrl + Shift + Y"},
+    {d:"Start or stop Read aloud",k:"Ctrl + Shift + U"},
+    {d:"Take a Web capture (screenshot)",k:"Ctrl + Shift + S"},
+    {d:"Open Immersive Reader (reading view)",k:"F9"},
+    {d:"Open Developer Tools",k:"F12 / Ctrl + Shift + I"},
+    {d:"View page source",k:"Ctrl + U"},
+    {d:"Print",k:"Ctrl + P"},
+    {d:"Zoom in / out / reset",k:"Ctrl + Plus / Ctrl + Minus / Ctrl + 0"},
+    {d:"Toggle full screen",k:"F11"},
+    {d:"Clear browsing data",k:"Ctrl + Shift + Delete"},
+    {d:"Open the Settings and more (…) menu",k:"Alt + F"},
+  ]},
+ ]},
 
-  { group:"Microsoft Office", cats:[
-    { id:"word", title:"Microsoft Word", sub:"", items:[
-      {d:"New document",k:"Ctrl + N"},
-      {d:"Open",k:"Ctrl + O"},
-      {d:"Save",k:"Ctrl + S"},
-      {d:"Save As",k:"F12"},
-      {d:"Print",k:"Ctrl + P"},
-      {d:"Close the document",k:"Ctrl + W"},
-      {d:"Undo / Redo",k:"Ctrl + Z / Ctrl + Y"},
-      {d:"Paste Special",k:"Ctrl + Alt + V"},
-      {d:"Bold / Italic / Underline",k:"Ctrl + B / Ctrl + I / Ctrl + U"},
-      {d:"Align left / center / right / justify",k:"Ctrl + L / Ctrl + E / Ctrl + R / Ctrl + J"},
-      {d:"Grow / shrink font size",k:"Ctrl + Shift + Period / Ctrl + Shift + Comma"},
-      {d:"Find",k:"Ctrl + F"},
-      {d:"Replace",k:"Ctrl + H"},
-      {d:"Go To",k:"Ctrl + G"},
-      {d:"Insert a hyperlink",k:"Ctrl + K"},
-      {d:"Insert a page break",k:"Ctrl + Enter"},
-      {d:"Spelling & grammar check",k:"F7"},
-      {d:"Apply Heading 1 / 2 / 3",k:"Ctrl + Alt + 1 / Ctrl + Alt + 2 / Ctrl + Alt + 3"},
-      {d:"Apply the Normal style",k:"Ctrl + Shift + N"},
-      {d:"Single / 1.5 / double line spacing",k:"Ctrl + 1 / Ctrl + 5 / Ctrl + 2"},
-      {d:"Move to the start / end of the document",k:"Ctrl + Home / Ctrl + End"},
-    ]},
-    { id:"excel", title:"Microsoft Excel", sub:"", items:[
-      {d:"New workbook",k:"Ctrl + N"},
-      {d:"Save / Open / Print",k:"Ctrl + S / Ctrl + O / Ctrl + P"},
-      {d:"Edit the active cell",k:"F2"},
-      {d:"Confirm entry and move down",k:"Enter"},
-      {d:"Confirm entry without moving",k:"Ctrl + Enter"},
-      {d:"Start a new line inside a cell",k:"Alt + Enter"},
-      {d:"AutoSum",k:"Alt + Equals"},
-      {d:"Insert today's date",k:"Ctrl + Semicolon"},
-      {d:"Insert the current time",k:"Ctrl + Shift + Semicolon"},
-      {d:"Select the entire column",k:"Ctrl + Spacebar"},
-      {d:"Select the entire row",k:"Shift + Spacebar"},
-      {d:"Jump to the edge of the data region",k:"Ctrl + Arrow"},
-      {d:"Extend the selection to the edge of data",k:"Ctrl + Shift + Arrow"},
-      {d:"Insert cells / rows / columns",k:"Ctrl + Shift + Plus"},
-      {d:"Delete cells / rows / columns",k:"Ctrl + Minus"},
-      {d:"Open the Format Cells dialog",k:"Ctrl + 1"},
-      {d:"Apply currency / percent format",k:"Ctrl + Shift + 4 / Ctrl + Shift + 5"},
-      {d:"Fill down / fill right",k:"Ctrl + D / Ctrl + R"},
-      {d:"Toggle absolute / relative reference (while editing)",k:"F4"},
-      {d:"Create a chart from the selection",k:"Alt + F1 / F11", n:"Alt + F1 embeds it; F11 puts it on a new sheet."},
-      {d:"Insert a table",k:"Ctrl + T"},
-      {d:"Toggle AutoFilter",k:"Ctrl + Shift + L"},
-      {d:"Go to cell A1",k:"Ctrl + Home"},
-      {d:"Next / previous worksheet",k:"Ctrl + PgDn / Ctrl + PgUp"},
-      {d:"Go To",k:"Ctrl + G / F5"},
-    ]},
-    { id:"outlook", title:"Microsoft Outlook", sub:"Note: inside an open message, Ctrl + F forwards it — use F4 to find within an item.", items:[
-      {d:"New email (anywhere in Outlook)",k:"Ctrl + Shift + M"},
-      {d:"New email (when in Mail)",k:"Ctrl + N"},
-      {d:"New appointment",k:"Ctrl + Shift + A"},
-      {d:"New meeting request",k:"Ctrl + Shift + Q"},
-      {d:"New task",k:"Ctrl + Shift + K"},
-      {d:"New contact",k:"Ctrl + Shift + C"},
-      {d:"Send the message",k:"Ctrl + Enter / Alt + S"},
-      {d:"Reply",k:"Ctrl + R"},
-      {d:"Reply all",k:"Ctrl + Shift + R"},
-      {d:"Forward",k:"Ctrl + F"},
-      {d:"Send / receive all folders",k:"F9"},
-      {d:"Mark as read / unread",k:"Ctrl + Q / Ctrl + U"},
-      {d:"Flag for follow-up",k:"Ctrl + Shift + G"},
-      {d:"Delete the selected item",k:"Delete / Ctrl + D"},
-      {d:"Move to a folder",k:"Ctrl + Shift + V"},
-      {d:"Search",k:"Ctrl + E / F3"},
-      {d:"Go to Mail / Calendar / People / Tasks",k:"Ctrl + 1 / Ctrl + 2 / Ctrl + 3 / Ctrl + 4"},
-      {d:"Next / previous message",k:"Ctrl + Period / Ctrl + Comma"},
-      {d:"Open the address book",k:"Ctrl + Shift + B"},
-      {d:"Insert a hyperlink (in a message)",k:"Ctrl + K"},
-    ]},
+ {part:"Browse by function", group:"Microsoft Teams", cats:[
+  {id:"teams-general", scope:"Teams — general & navigation", mode:"list", sub:"Desktop app on Windows. Press Ctrl + . inside Teams to see your live, customizable list.", items:[
+    {d:"Show keyboard shortcuts",k:"Ctrl + Period"},
+    {d:"Go to Search",k:"Ctrl + E"},
+    {d:"Go to a specific chat or channel",k:"Ctrl + G"},
+    {d:"Open the filter",k:"Ctrl + Shift + F"},
+    {d:"Start a new chat",k:"Ctrl + N"},
+    {d:"Start a chat in a new window",k:"Ctrl + Shift + N"},
+    {d:"Open an existing conversation in a new window",k:"Ctrl + O"},
+    {d:"Pin a window on top",k:"Ctrl + Shift + T"},
+    {d:"Open Settings",k:"Ctrl + Comma"},
+    {d:"Open Help",k:"F1"},
+    {d:"Zoom in / out",k:"Ctrl + Equals / Ctrl + Minus"},
+    {d:"Reset zoom",k:"Ctrl + 0"},
+    {d:"Open the 1st–9th app on the app bar",k:"Ctrl + 1 … Ctrl + 9"},
+    {d:"Move focus to the chat / channel list",k:"Ctrl + L"},
+    {d:"Move focus to the message pane",k:"Ctrl + M"},
+    {d:"Go to the compose box",k:"Ctrl + R"},
+    {d:"Open the history menu",k:"Ctrl + H"},
+    {d:"Go to the next / previous section",k:"Ctrl + F6 / Ctrl + Shift + F6"},
+    {d:"Go back / forward",k:"Alt + Left / Alt + Right"},
+    {d:"Report a problem",k:"Ctrl + Alt + Shift + R"},
   ]},
+  {id:"teams-messaging", scope:"Teams — messaging & compose", mode:"list", items:[
+    {d:"Expand the compose box",k:"Ctrl + Shift + X"},
+    {d:"Send when the compose box is expanded",k:"Ctrl + Enter"},
+    {d:"Start a new line in a message",k:"Shift + Enter"},
+    {d:"Reply to the last message",k:"Alt + Shift + R"},
+    {d:"React to the last message",k:"Ctrl + Alt + R"},
+    {d:"Mark a message as important",k:"Ctrl + Shift + I"},
+    {d:"Find in the current chat or channel",k:"Ctrl + F"},
+    {d:"Jump to the last read / newest message",k:"Ctrl + J"},
+    {d:"Mark all as read",k:"Shift + Esc"},
+    {d:"Bold / Italic / Underline",k:"Ctrl + B / Ctrl + I / Ctrl + U"},
+    {d:"Strikethrough",k:"Ctrl + Alt + X"},
+    {d:"Insert a link",k:"Ctrl + K"},
+    {d:"Insert inline code",k:"Ctrl + Shift + C"},
+    {d:"Insert a code block",k:"Ctrl + Shift + B"},
+    {d:"Apply Heading 1 / 2 / 3",k:"Ctrl + Alt + 1 / Ctrl + Alt + 2 / Ctrl + Alt + 3"},
+    {d:"Attach a file",k:"Alt + Shift + O"},
+    {d:"Rewrite with Copilot",k:"Alt + A"},
+    {d:"Toggle the details pane",k:"Alt + P"},
+    {d:"Open the 1st–9th tab on the chat header",k:"Alt + 1 … Alt + 9"},
+    {d:"See all unread chats",k:"Ctrl + Alt + U"},
+    {d:"See all chat conversations",k:"Ctrl + Alt + C"},
+    {d:"See all channel conversations",k:"Ctrl + Alt + A"},
+    {d:"Clear all filters",k:"Ctrl + Alt + Z"},
+  ]},
+  {id:"teams-meetings", scope:"Teams — meetings, calls & calendar", mode:"list", sub:"To temporarily unmute, first enable it in Settings ▸ Privacy.", items:[
+    {d:"Accept an incoming video call",k:"Ctrl + Shift + A"},
+    {d:"Accept an incoming audio call",k:"Ctrl + Shift + S"},
+    {d:"Decline a call",k:"Ctrl + Shift + D"},
+    {d:"Start an audio call",k:"Alt + Shift + A"},
+    {d:"Start a video call",k:"Alt + Shift + V"},
+    {d:"Toggle mute",k:"Ctrl + Shift + M"},
+    {d:"Temporarily unmute",k:"Ctrl + Spacebar", n:"Hold to talk, release to re-mute."},
+    {d:"Toggle your video",k:"Ctrl + Shift + O"},
+    {d:"Toggle the speaker",k:"Ctrl + Shift + U"},
+    {d:"Raise or lower your hand",k:"Ctrl + Shift + K"},
+    {d:"Start or stop sharing your screen",k:"Ctrl + Shift + E"},
+    {d:"Admit people from the lobby",k:"Ctrl + Shift + Y"},
+    {d:"End the call",k:"Ctrl + Shift + H"},
+    {d:"Toggle full screen",k:"F11"},
+    {d:"Zoom in / out on shared content",k:"Alt + Shift + Plus / Alt + Shift + Minus"},
+    {d:"Schedule a meeting",k:"Alt + N"},
+    {d:"Join from meeting details",k:"Alt + Shift + J"},
+    {d:"Open the calendar (default app-bar position)",k:"Ctrl + 3"},
+    {d:"Day / Work week / Week / Month view",k:"Alt + Shift + 1 / Alt + Shift + 2 / Alt + Shift + 3 / Alt + Shift + 4"},
+    {d:"Previous / next time period",k:"Ctrl + Alt + Left / Ctrl + Alt + Right"},
+    {d:"Go to today",k:"Alt + Shift + Y / Home"},
+    {d:"Create a new event",k:"Alt + N"},
+    {d:"Save an appointment",k:"Ctrl + S"},
+    {d:"Send a meeting",k:"Ctrl + Enter"},
+    {d:"Join the selected event",k:"Ctrl + J"},
+  ]},
+ ]},
+
+ {part:"Browse by function", group:"Microsoft Office", cats:[
+  {id:"word", scope:"Microsoft Word", mode:"list", items:[
+    {d:"New document",k:"Ctrl + N"},
+    {d:"Open",k:"Ctrl + O"},
+    {d:"Save",k:"Ctrl + S"},
+    {d:"Save As",k:"F12"},
+    {d:"Print",k:"Ctrl + P"},
+    {d:"Close the document",k:"Ctrl + W"},
+    {d:"Undo / Redo",k:"Ctrl + Z / Ctrl + Y"},
+    {d:"Paste Special",k:"Ctrl + Alt + V"},
+    {d:"Bold / Italic / Underline",k:"Ctrl + B / Ctrl + I / Ctrl + U"},
+    {d:"Align left / center / right / justify",k:"Ctrl + L / Ctrl + E / Ctrl + R / Ctrl + J"},
+    {d:"Grow / shrink font size",k:"Ctrl + Shift + Period / Ctrl + Shift + Comma"},
+    {d:"Find",k:"Ctrl + F"},
+    {d:"Replace",k:"Ctrl + H"},
+    {d:"Go To",k:"Ctrl + G"},
+    {d:"Insert a hyperlink",k:"Ctrl + K"},
+    {d:"Insert a page break",k:"Ctrl + Enter"},
+    {d:"Spelling & grammar check",k:"F7"},
+    {d:"Apply Heading 1 / 2 / 3",k:"Ctrl + Alt + 1 / Ctrl + Alt + 2 / Ctrl + Alt + 3"},
+    {d:"Apply the Normal style",k:"Ctrl + Shift + N"},
+    {d:"Single / 1.5 / double line spacing",k:"Ctrl + 1 / Ctrl + 5 / Ctrl + 2"},
+    {d:"Move to the start / end of the document",k:"Ctrl + Home / Ctrl + End"},
+  ]},
+  {id:"excel", scope:"Microsoft Excel", mode:"list", items:[
+    {d:"New workbook",k:"Ctrl + N"},
+    {d:"Save / Open / Print",k:"Ctrl + S / Ctrl + O / Ctrl + P"},
+    {d:"Edit the active cell",k:"F2"},
+    {d:"Confirm entry and move down",k:"Enter"},
+    {d:"Confirm entry without moving",k:"Ctrl + Enter"},
+    {d:"Start a new line inside a cell",k:"Alt + Enter"},
+    {d:"AutoSum",k:"Alt + Equals"},
+    {d:"Insert today's date",k:"Ctrl + Semicolon"},
+    {d:"Insert the current time",k:"Ctrl + Shift + Semicolon"},
+    {d:"Select the entire column",k:"Ctrl + Spacebar"},
+    {d:"Select the entire row",k:"Shift + Spacebar"},
+    {d:"Jump to the edge of the data region",k:"Ctrl + Arrow"},
+    {d:"Extend the selection to the edge of data",k:"Ctrl + Shift + Arrow"},
+    {d:"Insert cells / rows / columns",k:"Ctrl + Shift + Plus"},
+    {d:"Delete cells / rows / columns",k:"Ctrl + Minus"},
+    {d:"Open the Format Cells dialog",k:"Ctrl + 1"},
+    {d:"Apply currency / percent format",k:"Ctrl + Shift + 4 / Ctrl + Shift + 5"},
+    {d:"Fill down / fill right",k:"Ctrl + D / Ctrl + R"},
+    {d:"Toggle absolute / relative reference (while editing)",k:"F4"},
+    {d:"Create a chart from the selection",k:"Alt + F1 / F11", n:"Alt + F1 embeds it; F11 puts it on a new sheet."},
+    {d:"Insert a table",k:"Ctrl + T"},
+    {d:"Toggle AutoFilter",k:"Ctrl + Shift + L"},
+    {d:"Go to cell A1",k:"Ctrl + Home"},
+    {d:"Next / previous worksheet",k:"Ctrl + PgDn / Ctrl + PgUp"},
+    {d:"Go To",k:"Ctrl + G / F5"},
+  ]},
+  {id:"outlook", scope:"Microsoft Outlook", mode:"list", sub:"Note: inside an open message, Ctrl + F forwards it — use F4 to find within an item.", items:[
+    {d:"New email (anywhere in Outlook)",k:"Ctrl + Shift + M"},
+    {d:"New email (when in Mail)",k:"Ctrl + N"},
+    {d:"New appointment",k:"Ctrl + Shift + A"},
+    {d:"New meeting request",k:"Ctrl + Shift + Q"},
+    {d:"New task",k:"Ctrl + Shift + K"},
+    {d:"New contact",k:"Ctrl + Shift + C"},
+    {d:"Send the message",k:"Ctrl + Enter / Alt + S"},
+    {d:"Reply",k:"Ctrl + R"},
+    {d:"Reply all",k:"Ctrl + Shift + R"},
+    {d:"Forward",k:"Ctrl + F"},
+    {d:"Send / receive all folders",k:"F9"},
+    {d:"Mark as read / unread",k:"Ctrl + Q / Ctrl + U"},
+    {d:"Flag for follow-up",k:"Ctrl + Shift + G"},
+    {d:"Delete the selected item",k:"Delete / Ctrl + D"},
+    {d:"Move to a folder",k:"Ctrl + Shift + V"},
+    {d:"Search",k:"Ctrl + E / F3"},
+    {d:"Go to Mail / Calendar / People / Tasks",k:"Ctrl + 1 / Ctrl + 2 / Ctrl + 3 / Ctrl + 4"},
+    {d:"Next / previous message",k:"Ctrl + Period / Ctrl + Comma"},
+    {d:"Open the address book",k:"Ctrl + Shift + B"},
+    {d:"Insert a hyperlink (in a message)",k:"Ctrl + K"},
+  ]},
+ ]},
+
+ /* ===================== PART 2 — BY KEY ===================== */
+ {part:"Browse by key", group:"Ctrl +", cats:[
+  {id:"ctrl-letters", mod:["Ctrl"], scope:"Letters A–Z", mode:"grid", items:[
+    {key:"A",act:"Select all"},
+    {key:"B",act:"Bold",apps:"Text & document apps"},
+    {key:"C",act:"Copy"},
+    {key:"D",act:"Bookmark this page",apps:"Browsers · Fill down in Excel"},
+    {key:"E",act:"Center text · open search",apps:"Word · browsers, Explorer, Teams"},
+    {key:"F",act:"Find on page / in document"},
+    {key:"G",act:"Find next · Go To",apps:"Browsers · Office"},
+    {key:"H",act:"Replace · History",apps:"Office · browsers"},
+    {key:"I",act:"Italic"},
+    {key:"J",act:"Downloads · jump to newest",apps:"Browsers · Teams"},
+    {key:"K",act:"Insert hyperlink"},
+    {key:"L",act:"Focus address bar · align left",apps:"Browsers · Word"},
+    {key:"M",act:"Increase indent · focus message pane",apps:"Word · Teams"},
+    {key:"N",act:"New window / tab / document / item"},
+    {key:"O",act:"Open"},
+    {key:"P",act:"Print"},
+    {key:"Q",act:"Mark as read · quit",apps:"Outlook · some apps"},
+    {key:"R",act:"Reload · reply · align right",apps:"Browsers · Outlook · Word"},
+    {key:"S",act:"Save"},
+    {key:"T",act:"New tab",apps:"Browsers"},
+    {key:"U",act:"Underline · view page source",apps:"Word · browsers"},
+    {key:"V",act:"Paste"},
+    {key:"W",act:"Close tab / window / document"},
+    {key:"X",act:"Cut"},
+    {key:"Y",act:"Redo"},
+    {key:"Z",act:"Undo"},
+  ]},
+  {id:"ctrl-numbers", mod:["Ctrl"], scope:"Numbers 0–9", mode:"grid", items:[
+    {key:"0",act:"Reset zoom to 100%",apps:"Browsers & Office"},
+    {key:"1",act:"Switch to tab 1 · single line spacing",apps:"Browsers · Word · Outlook → Mail"},
+    {key:"2",act:"Switch to tab 2 · double line spacing",apps:"Browsers · Word · Outlook → Calendar"},
+    {key:"3",act:"Switch to tab 3",apps:"Browsers · Outlook → People"},
+    {key:"4",act:"Switch to tab 4",apps:"Browsers · Outlook → Tasks"},
+    {key:"5",act:"Switch to tab 5 · 1.5 line spacing",apps:"Browsers · Word"},
+    {key:"6",act:"Switch to tab 6",apps:"Browsers"},
+    {key:"7",act:"Switch to tab 7",apps:"Browsers"},
+    {key:"8",act:"Switch to tab 8",apps:"Browsers"},
+    {key:"9",act:"Switch to the last tab",apps:"Browsers"},
+  ]},
+  {id:"ctrlshift-letters", mod:["Ctrl","Shift"], scope:"Letters A–Z", mode:"grid", items:[
+    {key:"A",act:"Format as all capitals · accept video call",apps:"Word · Teams"},
+    {key:"B",act:"Show / hide the bookmarks bar",apps:"Browsers"},
+    {key:"C",act:"Copy formatting · inspect element · inline code",apps:"Word · DevTools · Teams"},
+    {key:"D",act:"Bookmark all open tabs · decline call",apps:"Browsers · Teams"},
+    {key:"E",act:"Track Changes · share screen",apps:"Word · Teams"},
+    {key:"F",act:"Font dialog · open filter",apps:"Word · Teams"},
+    {key:"G",act:"Find previous · word count",apps:"Browsers · Word"},
+    {key:"H",act:"No common default",dim:true},
+    {key:"I",act:"Open Developer Tools · mark message important",apps:"Browsers · Teams"},
+    {key:"J",act:"Open the JavaScript console",apps:"Browsers"},
+    {key:"K",act:"Duplicate tab · raise/lower hand · new task",apps:"Edge · Teams · Outlook"},
+    {key:"L",act:"Bulleted list · toggle AutoFilter · announce hands",apps:"Word · Excel · Teams"},
+    {key:"M",act:"New email · decrease indent · toggle mute",apps:"Outlook · Word · Teams"},
+    {key:"N",act:"New private window · new folder · Normal style",apps:"Browsers · Explorer · Word"},
+    {key:"O",act:"Bookmark / favorites manager · toggle video",apps:"Browsers · Teams"},
+    {key:"P",act:"Background settings · command palette",apps:"Teams · varies"},
+    {key:"Q",act:"New meeting request",apps:"Outlook · Teams"},
+    {key:"R",act:"Hard reload (ignore cache) · reply all",apps:"Browsers · Outlook"},
+    {key:"S",act:"Web capture (screenshot) · accept audio call · Save As",apps:"Edge · Teams · some apps"},
+    {key:"T",act:"Reopen the last closed tab · pin window on top",apps:"Browsers · Teams"},
+    {key:"U",act:"Read aloud · toggle speaker",apps:"Edge · Teams"},
+    {key:"V",act:"Paste without formatting · move to folder",apps:"Many apps · Outlook"},
+    {key:"W",act:"Close the window",apps:"Browsers · Terminal (close pane)"},
+    {key:"X",act:"Expand compose box · strikethrough",apps:"Teams · some editors"},
+    {key:"Y",act:"Open Collections · admit from lobby",apps:"Edge · Teams"},
+    {key:"Z",act:"Redo (alternate)",apps:"Some apps"},
+  ]},
+  {id:"ctrlshift-numbers", mod:["Ctrl","Shift"], scope:"Numbers 0–9", mode:"grid", items:[
+    {key:"0",act:"Unhide columns",apps:"Excel"},
+    {key:"1",act:"Number format · open 1st app",apps:"Excel · Teams (web)"},
+    {key:"2",act:"Time format",apps:"Excel"},
+    {key:"3",act:"Date format",apps:"Excel"},
+    {key:"4",act:"Currency format",apps:"Excel"},
+    {key:"5",act:"Percentage format",apps:"Excel"},
+    {key:"6",act:"Scientific (exponential) format",apps:"Excel"},
+    {key:"7",act:"Apply outline border",apps:"Excel"},
+    {key:"8",act:"Show / hide formatting marks ¶",apps:"Word"},
+    {key:"9",act:"Unhide rows",apps:"Excel"},
+  ]},
+ ]},
+
+ {part:"Browse by key", group:"Windows ⊞ +", cats:[
+  {id:"win-letters", mod:["Win"], scope:"Letters A–Z", mode:"grid", items:[
+    {key:"A",act:"Open Quick Settings (Wi-Fi, volume, brightness)"},
+    {key:"B",act:"Set focus to the system-tray notification area"},
+    {key:"C",act:"Open Copilot"},
+    {key:"D",act:"Show or hide the desktop"},
+    {key:"E",act:"Open File Explorer"},
+    {key:"F",act:"Open the Feedback Hub"},
+    {key:"G",act:"Open the Game Bar"},
+    {key:"H",act:"Start voice typing / dictation"},
+    {key:"I",act:"Open Settings"},
+    {key:"J",act:"Set focus to a Windows tip (when one is shown)"},
+    {key:"K",act:"Connect / cast to a wireless display or audio device"},
+    {key:"L",act:"Lock your PC"},
+    {key:"M",act:"Minimize all windows"},
+    {key:"N",act:"Open Notification Center & calendar"},
+    {key:"O",act:"Lock the screen orientation",apps:"Tablets & 2-in-1s"},
+    {key:"P",act:"Project to a second screen"},
+    {key:"Q",act:"Open Search"},
+    {key:"R",act:"Open the Run dialog"},
+    {key:"S",act:"Open Search"},
+    {key:"T",act:"Cycle through apps on the taskbar"},
+    {key:"U",act:"Open accessibility settings"},
+    {key:"V",act:"Open clipboard history"},
+    {key:"W",act:"Open Widgets"},
+    {key:"X",act:"Open the Quick Link (power user) menu"},
+    {key:"Y",act:"Switch input between Windows Mixed Reality and the desktop"},
+    {key:"Z",act:"Open Snap Layouts"},
+  ]},
+  {id:"win-numbers", mod:["Win"], scope:"Numbers 0–9", mode:"grid", items:[
+    {key:"0",act:"No default shortcut",dim:true},
+    {key:"1",act:"Open or switch to the 1st app pinned on the taskbar"},
+    {key:"2",act:"Open or switch to the 2nd taskbar app"},
+    {key:"3",act:"Open or switch to the 3rd taskbar app"},
+    {key:"4",act:"Open or switch to the 4th taskbar app"},
+    {key:"5",act:"Open or switch to the 5th taskbar app"},
+    {key:"6",act:"Open or switch to the 6th taskbar app"},
+    {key:"7",act:"Open or switch to the 7th taskbar app"},
+    {key:"8",act:"Open or switch to the 8th taskbar app"},
+    {key:"9",act:"Open or switch to the 9th taskbar app"},
+  ]},
+  {id:"win-combos", scope:"Multi-key Windows commands", mode:"list", sub:"Window snapping, virtual desktops, screenshots, magnifier, and more.", items:[
+    {d:"Maximize the window",k:"Win + Up"},
+    {d:"Minimize or restore the window",k:"Win + Down"},
+    {d:"Snap the window to the left / right half",k:"Win + Left / Win + Right"},
+    {d:"Stretch the window to the top and bottom",k:"Win + Shift + Up"},
+    {d:"Move the window to the other monitor",k:"Win + Shift + Left / Win + Shift + Right"},
+    {d:"Minimize everything except the active window",k:"Win + Home"},
+    {d:"Open Task View",k:"Win + Tab"},
+    {d:"Create a new virtual desktop",k:"Win + Ctrl + D"},
+    {d:"Switch between virtual desktops",k:"Win + Ctrl + Left / Win + Ctrl + Right"},
+    {d:"Close the current virtual desktop",k:"Win + Ctrl + F4"},
+    {d:"Snip a region (screenshot)",k:"Win + Shift + S"},
+    {d:"Save a full-screen screenshot to a file",k:"Win + PrtScn"},
+    {d:"Screenshot the active window (Game Bar)",k:"Win + Alt + PrtScn"},
+    {d:"Start / stop recording (Game Bar)",k:"Win + Alt + R"},
+    {d:"Record the last 30 seconds (Game Bar)",k:"Win + Alt + G"},
+    {d:"Open Magnifier / zoom in",k:"Win + Plus"},
+    {d:"Zoom out (Magnifier)",k:"Win + Minus"},
+    {d:"Close Magnifier",k:"Win + Esc"},
+    {d:"Turn Narrator on or off",k:"Win + Ctrl + Enter"},
+    {d:"Open the on-screen keyboard",k:"Win + Ctrl + O"},
+    {d:"Switch keyboard / input language",k:"Win + Spacebar"},
+    {d:"Open the emoji & symbol panel",k:"Win + Period / Win + Semicolon"},
+    {d:"Peek at the desktop",k:"Win + Comma",n:"Hold the keys, release to return."},
+    {d:"Open System ▸ About",k:"Win + Pause"},
+    {d:"Wake the display from a black screen",k:"Win + Ctrl + Shift + B"},
+    {d:"Open a new instance of a taskbar app",k:"Win + Shift + number"},
+    {d:"Switch to the last active window of a taskbar app",k:"Win + Ctrl + number"},
+    {d:"Open the jump list for a taskbar app",k:"Win + Alt + number"},
+  ]},
+ ]},
+
+ {part:"Browse by key", group:"Alt +", cats:[
+  {id:"alt-letters", mod:["Alt"], scope:"Letters A–Z", mode:"grid",
+   sub:"Alt is Windows' menu key, so most Alt + letter combos have no fixed action — a dash means Alt + that letter opens the menu or ribbon command underlined with it (KeyTips: e.g. Alt then H opens the Home ribbon in Office). On the numeric keypad, Alt + a number code types special characters (Alt codes).",
+   items:[
+    {key:"A",act:"Rewrite with Copilot",apps:"Teams"},
+    {key:"B",act:"—",dim:true},
+    {key:"C",act:"—",dim:true},
+    {key:"D",act:"Focus the address bar",apps:"Browsers · File Explorer"},
+    {key:"E",act:"Open the Edit / browser menu"},
+    {key:"F",act:"Open the File / app menu"},
+    {key:"G",act:"—",dim:true},
+    {key:"H",act:"—",dim:true},
+    {key:"I",act:"—",dim:true},
+    {key:"J",act:"—",dim:true},
+    {key:"K",act:"—",dim:true},
+    {key:"L",act:"—",dim:true},
+    {key:"M",act:"—",dim:true},
+    {key:"N",act:"—",dim:true},
+    {key:"O",act:"—",dim:true},
+    {key:"P",act:"Toggle the preview / details pane",apps:"File Explorer · Teams"},
+    {key:"Q",act:"—",dim:true},
+    {key:"R",act:"—",dim:true},
+    {key:"S",act:"—",dim:true},
+    {key:"T",act:"—",dim:true},
+    {key:"U",act:"—",dim:true},
+    {key:"V",act:"—",dim:true},
+    {key:"W",act:"—",dim:true},
+    {key:"X",act:"—",dim:true},
+    {key:"Y",act:"—",dim:true},
+    {key:"Z",act:"—",dim:true},
+  ]},
+  {id:"alt-combos", scope:"Essential Alt commands", mode:"list", sub:"The Alt shortcuts that actually do the heavy lifting.", items:[
+    {d:"Switch between open apps",k:"Alt + Tab"},
+    {d:"Switch apps in reverse",k:"Alt + Shift + Tab"},
+    {d:"Cycle through apps in the order they were opened",k:"Alt + Esc"},
+    {d:"Close the active app (or open the shut-down menu on the desktop)",k:"Alt + F4"},
+    {d:"Open the active window's system menu (move, size, close)",k:"Alt + Spacebar"},
+    {d:"Open Properties of the selected item · new line inside an Excel cell",k:"Alt + Enter"},
+    {d:"Go back / forward",k:"Alt + Left / Alt + Right",n:"Browsers and File Explorer."},
+    {d:"Go up one folder",k:"Alt + Up",n:"File Explorer."},
+    {d:"Go to the home page",k:"Alt + Home",n:"Browsers."},
+    {d:"Copy the active window to the clipboard",k:"Alt + PrtScn"},
+    {d:"Run a specific menu or ribbon command",k:"Alt + letter",n:"KeyTips — the underlined letter on a menu."},
+  ]},
+ ]},
+
+ {part:"Browse by key", group:"Function & special keys", cats:[
+  {id:"function-keys", scope:"Function keys F1–F12", mode:"list", items:[
+    {d:"Open Help",k:"F1"},
+    {d:"Rename the selected item",k:"F2"},
+    {d:"Open Search",k:"F3"},
+    {d:"Show the address-bar list (Explorer) · repeat the last action (Office)",k:"F4"},
+    {d:"Refresh / reload",k:"F5"},
+    {d:"Move focus between panes or screen elements",k:"F6"},
+    {d:"Run a spelling & grammar check",k:"F7",n:"Office apps."},
+    {d:"Turn on extend-selection mode (Word) · access boot options at startup",k:"F8"},
+    {d:"Send & receive all folders (Outlook) · update fields (Word)",k:"F9"},
+    {d:"Activate the menu bar",k:"F10",n:"Shift + F10 opens the right-click menu."},
+    {d:"Toggle full screen",k:"F11",n:"Browsers and File Explorer."},
+    {d:"Save As (Office) · open Developer Tools (browsers)",k:"F12"},
+    {d:"Get the F1–F12 action on a laptop where the keys default to media/brightness",k:"Fn",n:"Hold Fn, or toggle Fn Lock."},
+  ]},
+  {id:"special-keys", scope:"Navigation & editing keys", mode:"list", items:[
+    {d:"Cancel or close the current menu, dialog, or action",k:"Esc"},
+    {d:"Move forward through fields, links, or options",k:"Tab"},
+    {d:"Move backward through fields or options",k:"Shift + Tab"},
+    {d:"Copy the whole screen to the clipboard",k:"PrtScn"},
+    {d:"Delete to the Recycle Bin",k:"Delete",n:"Shift + Delete deletes permanently."},
+    {d:"Go back / up one folder · delete the character to the left",k:"Backspace"},
+    {d:"Move to the start / end of the line",k:"Home / End"},
+    {d:"Move to the start / end of the document",k:"Ctrl + Home / Ctrl + End"},
+    {d:"Scroll up / down one screen",k:"Page Up / Page Down"},
+    {d:"Toggle insert / overtype mode",k:"Insert"},
+    {d:"Activate a button · scroll down a page · tick a checkbox",k:"Spacebar"},
+    {d:"Confirm or activate the selection",k:"Enter"},
+    {d:"Move the cursor or navigate items",k:"Arrow keys"},
+    {d:"Move the cursor one word left / right",k:"Ctrl + Left / Ctrl + Right"},
+    {d:"Select one word or block at a time",k:"Ctrl + Shift + Left / Ctrl + Shift + Right"},
+    {d:"Extend the selection by one character or line",k:"Shift + Arrow"},
+    {d:"Delete the whole word to the left / right",k:"Ctrl + Backspace / Ctrl + Delete"},
+  ]},
+  {id:"system-keys", scope:"System & security combos", mode:"list", items:[
+    {d:"Open the security screen: lock, switch user, Task Manager, sign out",k:"Ctrl + Alt + Delete"},
+    {d:"Open Task Manager directly",k:"Ctrl + Shift + Esc"},
+    {d:"Open the Start menu",k:"Ctrl + Esc"},
+    {d:"Lock your PC",k:"Win + L"},
+    {d:"Wake the display when the screen is black",k:"Win + Ctrl + Shift + B"},
+  ]},
+ ]},
 ];
 
 /* ---------- render ---------- */
-function esc(s){return s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));}
+function slug(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");}
 function keycap(tok){const l=GLYPH[tok]||tok;return '<kbd class="kbd">'+esc(l)+'</kbd>';}
 function renderCombo(str){
   return str.split(" / ").map(alt=>{
-    const seq=alt.split(" then ").map(s=>
-      s.split(" + ").map(keycap).join('<span class="plus">+</span>')
-    ).join('<span class="then">then</span>');
+    const seq=alt.split(" then ").map(s=>s.split(" + ").map(keycap).join('<span class="plus">+</span>')).join('<span class="then">then</span>');
     return '<span class="alt">'+seq+'</span>';
   }).join('<span class="orsep">/</span>');
 }
+function modHTML(mod){return mod.map(keycap).join('<span class="plus">+</span>');}
+function modAlias(mod){return (mod||[]).map(m=>(ALIAS[m]||m)).join(" ");}
 
 const main=document.getElementById("main");
 const nav=document.getElementById("nav");
-let total=0;
-let navHTML="";
+let total=0, navHTML="", curPart=null, partN=0;
 
 DATA.forEach(g=>{
-  navHTML+='<div class="nav-group"><p>'+esc(g.group)+'</p>';
-  const gh=document.createElement("div");
-  gh.className="group-head";
-  gh.textContent=g.group;
-  main.appendChild(gh);
+  if(g.part!==curPart){
+    curPart=g.part; partN++;
+    const pid=PART_ID[g.part]||slug(g.part);
+    g._pid=pid;
+    const band=document.createElement("section");
+    band.className="part"; band.id=pid; band.dataset.part=pid;
+    band.innerHTML='<div class="plabel">Part '+partN+'</div><div class="ptitle">'+esc(g.part)+'</div><p class="pdesc">'+esc(PART_DESC[g.part]||"")+'</p><div class="prule"></div>';
+    main.appendChild(band);
+    navHTML+='<div class="nav-part" data-part="'+pid+'"><a href="#'+pid+'">Part '+partN+' · '+esc(g.part)+'</a></div>';
+  }
+  const pid=g._pid||PART_ID[g.part]||slug(g.part);
+  navHTML+='<div class="nav-group" data-part="'+pid+'"><p>'+esc(g.group)+'</p>';
+  const gh=document.createElement("div"); gh.className="group-head"; gh.dataset.part=pid; gh.textContent=g.group; main.appendChild(gh);
+
   g.cats.forEach(cat=>{
-    navHTML+='<a href="#'+cat.id+'" data-target="'+cat.id+'">'+esc(cat.title)+'</a>';
-    const sec=document.createElement("section");
-    sec.className="cat";
-    sec.id=cat.id;
-    let html='<h2>'+esc(cat.title)+' <span class="n">'+cat.items.length+'</span></h2>';
-    if(cat.sub) html+='<p class="sub">'+esc(cat.sub)+'</p>';
-    cat.items.forEach(it=>{
-      total++;
-      const hay=(it.d+" "+it.k+(it.n?" "+it.n:"")).toLowerCase().replace(/\+/g," ");
-      html+='<div class="item" data-hay="'+esc(hay)+'" data-desc="'+esc(it.d)+'">'+
-              '<div class="desc"><span class="desc-t">'+esc(it.d)+'</span>'+(it.n?'<span class="note">'+esc(it.n)+'</span>':'')+'</div>'+
-              '<div class="combo">'+renderCombo(it.k)+'</div>'+
-            '</div>';
-    });
-    sec.innerHTML=html;
+    navHTML+='<a class="cl" href="#'+cat.id+'" data-target="'+cat.id+'">'+esc(cat.scope)+'</a>';
+    const sec=document.createElement("section"); sec.className="cat"; sec.id=cat.id; sec.dataset.part=pid;
+    let head='<h2>';
+    if(cat.mod&&cat.mod.length) head+='<span class="mod">'+modHTML(cat.mod)+'</span><span class="plus">+</span>';
+    head+='<span class="scope">'+esc(cat.scope)+'</span> <span class="n">'+cat.items.length+'</span></h2>';
+    if(cat.sub) head+='<p class="sub">'+esc(cat.sub)+'</p>';
+
+    let body="";
+    if(cat.mode==="grid"){
+      body+='<div class="keygrid">';
+      cat.items.forEach(it=>{
+        total++;
+        const hay=(modAlias(cat.mod)+" "+it.key+" "+it.act+" "+(it.apps||"")).toLowerCase();
+        body+='<div class="krow'+(it.dim?' dim':'')+'" data-hay="'+esc(hay)+'" data-act="'+esc(it.act)+'">'+keycap(it.key)+
+              '<div class="act"><span class="act-t">'+esc(it.act)+'</span>'+(it.apps?'<span class="apps">'+esc(it.apps)+'</span>':'')+'</div></div>';
+      });
+      body+='</div>';
+    } else {
+      cat.items.forEach(it=>{
+        total++;
+        const hay=(it.d+" "+it.k+(it.n?" "+it.n:"")).toLowerCase().replace(/\+/g," ");
+        body+='<div class="item" data-hay="'+esc(hay)+'" data-act="'+esc(it.d)+'">'+
+              '<div class="desc"><span class="act-t">'+esc(it.d)+'</span>'+(it.n?'<span class="note">'+esc(it.n)+'</span>':'')+'</div>'+
+              '<div class="combo">'+renderCombo(it.k)+'</div></div>';
+      });
+    }
+    sec.innerHTML=head+body;
     main.appendChild(sec);
   });
   navHTML+='</div>';
@@ -694,11 +911,12 @@ nav.innerHTML=navHTML;
 const countEl=document.getElementById("count");
 const emptyEl=document.getElementById("empty");
 const emptyQ=document.getElementById("emptyq");
-const items=[...document.querySelectorAll(".item")];
+const rows=[...document.querySelectorAll(".krow,.item")];
 const cats=[...document.querySelectorAll(".cat")];
 const groupHeads=[...document.querySelectorAll(".group-head")];
 const navGroups=[...document.querySelectorAll(".nav-group")];
-
+const parts=[...document.querySelectorAll(".part")];
+const navParts=[...document.querySelectorAll(".nav-part")];
 function setCount(n){countEl.innerHTML='<b>'+n+'</b> of '+total+' shortcuts';}
 setCount(total);
 
@@ -707,72 +925,49 @@ function highlight(text,tokens){
   if(!safe.length) return esc(text);
   const re=new RegExp("("+safe.join("|")+")","ig");
   let out="",last=0,m;
-  while((m=re.exec(text))){
-    out+=esc(text.slice(last,m.index))+"<mark>"+esc(m[0])+"</mark>";
-    last=m.index+m[0].length;
-    if(m.index===re.lastIndex) re.lastIndex++;
-  }
+  while((m=re.exec(text))){out+=esc(text.slice(last,m.index))+"<mark>"+esc(m[0])+"</mark>";last=m.index+m[0].length;if(m.index===re.lastIndex)re.lastIndex++;}
   return out+esc(text.slice(last));
 }
 
 const q=document.getElementById("q");
 function filter(){
-  const raw=q.value.trim().toLowerCase();
-  const tokens=raw.split(/\s+/).filter(Boolean);
+  const tokens=q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
   let visible=0;
-  items.forEach(it=>{
-    const hay=it.dataset.hay;
-    const ok=tokens.every(t=>hay.includes(t));
-    it.style.display=ok?"":"none";
-    if(ok){
-      visible++;
-      it.querySelector(".desc-t").innerHTML=highlight(it.dataset.desc,tokens);
-    }
+  rows.forEach(r=>{
+    const ok=tokens.every(t=>r.dataset.hay.includes(t));
+    r.style.display=ok?"":"none";
+    if(ok){visible++; r.querySelector(".act-t").innerHTML=highlight(r.dataset.act,tokens);}
   });
   cats.forEach(c=>{
-    const any=[...c.querySelectorAll(".item")].some(i=>i.style.display!=="none");
+    const any=[...c.querySelectorAll(".krow,.item")].some(i=>i.style.display!=="none");
     c.style.display=any?"":"none";
   });
   navGroups.forEach((ng,i)=>{
-    const head=groupHeads[i];
-    const links=[...ng.querySelectorAll("a")];
-    let groupVisible=false;
-    links.forEach(a=>{
-      const sec=document.getElementById(a.dataset.target);
-      const vis=sec.style.display!=="none";
-      a.style.display=vis?"":"none";
-      if(vis) groupVisible=true;
-    });
-    head.style.display=groupVisible?"":"none";
-    ng.style.display=groupVisible?"":"none";
+    let gv=false;
+    ng.querySelectorAll("a.cl").forEach(a=>{const sec=document.getElementById(a.dataset.target);const vis=sec.style.display!=="none";a.style.display=vis?"":"none";if(vis)gv=true;});
+    groupHeads[i].style.display=gv?"":"none"; ng.style.display=gv?"":"none";
   });
+  parts.forEach(p=>{const pid=p.dataset.part;p.style.display=cats.some(c=>c.dataset.part===pid&&c.style.display!=="none")?"":"none";});
+  navParts.forEach(np=>{const pid=np.dataset.part;np.classList.toggle("hide",!navGroups.some(ng=>ng.dataset.part===pid&&ng.style.display!=="none"));});
   setCount(visible);
   emptyEl.classList.toggle("show",visible===0);
   if(visible===0) emptyQ.textContent='“'+q.value.trim()+'”';
 }
 q.addEventListener("input",filter);
 
-/* "/" to focus, Esc to clear */
 document.addEventListener("keydown",e=>{
-  if(e.key==="/" && document.activeElement!==q && !/input|textarea/i.test(document.activeElement.tagName)){
-    e.preventDefault();q.focus();
-  } else if(e.key==="Escape" && document.activeElement===q){
-    q.value="";filter();q.blur();
-  }
+  if(e.key==="/"&&document.activeElement!==q&&!/input|textarea/i.test(document.activeElement.tagName)){e.preventDefault();q.focus();}
+  else if(e.key==="Escape"&&document.activeElement===q){q.value="";filter();q.blur();}
 });
 
-/* active nav via scroll */
-const navLinks=[...nav.querySelectorAll("a")];
-const linkFor={};
-navLinks.forEach(a=>linkFor[a.dataset.target]=a);
+const navLinks=[...nav.querySelectorAll("a.cl")];
+const linkFor={}; navLinks.forEach(a=>linkFor[a.dataset.target]=a);
 const io=new IntersectionObserver(entries=>{
   entries.forEach(en=>{
     if(en.isIntersecting){
       navLinks.forEach(a=>a.classList.remove("active"));
       const a=linkFor[en.target.id];
-      if(a){a.classList.add("active");
-        if(window.innerWidth<=900) a.scrollIntoView({block:"nearest",inline:"center"});
-      }
+      if(a){a.classList.add("active"); if(window.innerWidth<=900)a.scrollIntoView({block:"nearest",inline:"center"});}
     }
   });
 },{rootMargin:"-90px 0px -70% 0px",threshold:0});
